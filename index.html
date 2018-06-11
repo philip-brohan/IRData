@@ -71,17 +71,16 @@
 <h1>OWData: An API for accessing synoptic-timescale reanalyis data<a class="headerlink" href="#owdata-an-api-for-accessing-synoptic-timescale-reanalyis-data" title="Permalink to this headline">¶</a></h1>
 <p>This code library extends <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/index.html">Iris</a> in providing tools for accessing general circulation model (GCM) data. It uses Iris data structures and methods for handling the data, and adds to it by providing functions for importing synoptic-timescale reanalysis data from several sources.</p>
 <p>The idea is have an API for loading synoptic-timescale reanalysis data into an <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">iris.cube.Cube</span></code></a>. That is, to say something like:</p>
-<p>‘from the CERA20C reanalysis, load the 2m air temperature at 7am (utc) on 16th October 1987.`</p>
+<p>‘from the Twentieth Century reanalysis version 2c, load the 2m air temperature at 7am (utc) on 16th October 1987.`</p>
 <p>and the code would find and download the data, interpolating to the requested time as necessary. This module provides such an API, for several reanalyses. The request above is:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="n">dtime</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">OWData.cera20c</span> <span class="kn">as</span> <span class="nn">cera20c</span>
-<span class="n">cera20c</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;air.2m&#39;</span><span class="p">,</span><span class="n">dtime</span><span class="p">)</span>        <span class="c1"># Slow, but only needed the first time</span>
-<span class="n">mycube</span><span class="o">=</span><span class="n">cera20c</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;air.2m&#39;</span><span class="p">,</span><span class="n">dtime</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">OWData.twcr</span> <span class="kn">as</span> <span class="nn">twcr</span>
+<span class="n">twcr</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;air.2m&#39;</span><span class="p">,</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>  <span class="c1"># Slow the first time data accessed</span>
+<span class="n">mycube</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;air.2m&#39;</span><span class="p">,</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>There is one sub-package for each of several data sources, with <cite>fetch</cite> methods for getting a copy of the data from a remote server to a local filesystem. and <cite>load</cite> methods for loading iris cubes from the fetched data.</p>
-<p>Note that this is one person’s personal library: I have no resources for support or extension beyond what is necessary for my own research. You are welcome to re-use any part of it (subject to the license, see below), but you would almost certainly be better advised to copy any bits you like and incoporate them into your own codebase than to rely on the stability of this.</p>
+<p>There is one sub-package for each of several data sources; each with <cite>fetch</cite> methods for getting a copy of the data from a remote server to a local filesystem, and <cite>load</cite> methods for loading iris cubes from the fetched data.</p>
 <p>Installation instructions:</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -99,6 +98,7 @@
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
+<p>Note that this is one person’s personal library: I have no resources for support or extension beyond what is necessary for my own research. You are welcome to re-use any part of it (subject to the license, see below), but you would almost certainly be better advised to copy any bits you like and incoporate them into your own codebase than to rely on the stability of this.</p>
 <p>The code in this library is licensed under the terms of the <a class="reference external" href="https://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License</a>. The documentation under the terms of the <a class="reference external" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/">Open Government Licence</a>.</p>
 </div>
 
