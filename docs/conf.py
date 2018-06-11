@@ -142,7 +142,7 @@ html_title = u'An API for accessing synoptic-timescale reanalyis data'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
-html_short_title = u'Meteorographica'
+html_short_title = u'OWData'
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
@@ -306,7 +306,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'meteorographica', u'Meteorographica Documentation',
+    (master_doc, 'OWData', u'OWData Documentation',
      [author], 1)
 ]
 

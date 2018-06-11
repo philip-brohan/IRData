@@ -1,7 +1,7 @@
-Meteorographica.data.twcr
-=========================
+OWData.twcr
+===========
 
-.. automodule:: Meteorographica.data.twcr
+.. automodule:: OWData.twcr
     :members:
     :imported-members:
 

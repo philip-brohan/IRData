@@ -2,7 +2,7 @@
 
  SciTools/Iris provides a data structure for GCM weather data, and tools for file IO. I want to go beyond that and have an API for loading the particular weather data I need into an iris Cube. That is, to say something like:
 
-'from the CERA20C reanalysis, load the 2m air temperature at 7am (utc) on 16th October 1987.`
+'from the CERA20C reanalysis, load the 2m air temperature at 7am (UTC) on 16th October 1987.`
 
 and the code would find and download the data, interpolating to the requested time as necessary. OWData provides such an API, for synoptic-timescale reanalysis data, from several reanalyses. The request above is:
 

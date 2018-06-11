@@ -1,7 +1,7 @@
-Meteorographica.data.era5
-=========================
+OWData.era5
+===========
 
-.. automodule:: Meteorographica.data.era5
+.. automodule:: OWData.era5
     :members:
     :imported-members:
 

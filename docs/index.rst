@@ -1,15 +1,16 @@
 OWData: An API for accessing synoptic-timescale reanalyis data
 ==============================================================
 
-This code library extends `Iris <http://scitools.org.uk/iris/docs/latest/index.html>`_) in providing tools for accessing general circulation model (GCM) data. It uses Iris data structures and methods for handling the data, and adds to it by providing functions for importing synoptic-timescale reanalysis data from several sources.
+This code library extends `Iris <http://scitools.org.uk/iris/docs/latest/index.html>`_ in providing tools for accessing general circulation model (GCM) data. It uses Iris data structures and methods for handling the data, and adds to it by providing functions for importing synoptic-timescale reanalysis data from several sources.
 
-The idea is have an API for loading synoptic-timescale reanalysis data into an iris Cube. That is, to say something like:
+The idea is have an API for loading synoptic-timescale reanalysis data into an :class:`iris.cube.Cube`. That is, to say something like:
 
 'from the CERA20C reanalysis, load the 2m air temperature at 7am (utc) on 16th October 1987.`
 
 and the code would find and download the data, interpolating to the requested time as necessary. This module provides such an API, for several reanalyses. The request above is:
 
 .. code-block:: python
+
     import datetime
     dtime=datetime.datetime(1987,10,16,7)
     import OWData.cera20c as cera20c

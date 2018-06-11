@@ -25,36 +25,42 @@ Only hourly data is supported (no daily or monthly averages) for 5 surface varia
 * 10m meridional wind: 'uwnd.10m'
 * 10m zonal wind: 'vwnd.10m'
 
-Data retrieved is stored in directory $SCRATCH/20CR - the 'SCRATCH' environment variable must be set. Data is retrieved in 1-year batches
+Data retrieved is stored in directory $SCRATCH/20CR - the 'SCRATCH' environment variable must be set.
 
 For example:
 
 .. code-block:: python
 
-    import Meteorographica.data.twcr as twcr
-    twcr.fetch('prate',1987,version='2c')
+    import datetime
+    import OWData.twcr as twcr
+    twcr.fetch('prate',
+               datetime.datetime(1987,3,12),
+               version='2c')
 
-Will retrieve precipitation rate data for the whole of 1987, and
+Will retrieve precipitation rate data for the whole of 1987, 20CR2c data is fetched in one-calendar-year blocks, so this will retrieve data for the whole of 1987. The retrieval is slow, as the data has to be fetched from NERSC, but the retrieval is only run if necessary - if that year's data has been previously fetched and is already on local disc, the fetch command will detect this and return instantly.
+
+Once the data has been fetched, 
 
 .. code-block:: python
 
-    pr=twcr.load('prate',1987,3,12,15.25,version='2c')
+    pr=twcr.load('prate',
+                 datetime.datetime(1987,3,12,15,15),
+                 version='2c')
 
-will then load the precipitation rates at quarter past 3pm on March 12 1987 from the retrieved dataset as an :obj:`iris.cube.Cube`. Note that as 20CR only provides data at 6-hourly or 3-hourly intervals, the value for 15.25 will be interpolated between the outputs. Also, as 20CR is an ensemble dataset, the result will include all 56 ensemble members.
+will then load the precipitation rates at quarter past 3pm on March 12 1987 from the retrieved dataset as an :obj:`iris.cube.Cube`. Note that as 20CR only provides data at 6-hourly or 3-hourly intervals, the value for 3:15pm will be interpolated between the outputs (to get uninterpolated data, only call load for times when 20CR has output). Also, as 20CR2c is an ensemble dataset, the result will include all 56 ensemble members.
 
 Observations files are also available. They can be fetched with:
 
 .. code-block:: python
 
-    twcr.fetch_observations(1987,version='2c')
+    import datetime
+    twcr.fetch_observations(datetime.datetime(1987,3,12,15,15),
+                            version='2c')
 
-There is one observations file for each 6-hourly assimilation run. Load all the observations available to the assimilation run for 12 noon on March 12 1987 (as a :obj:`pandas.DataFrame`) with:
 
-.. code-block:: python
+Observations are also fetched in one-calendar-year blocks, so this will retrieve observations (from NERSC) for the whole of 1987. Again, the retrieval is only run if necessary - if that year's data has been previously fetched and is already on local disc, the fetch command will detect this and return instantly.
 
-    o=twcr.load_observations_1file(1987,3,12,12,version='2c')
-
-or just load all the observations valid between 6am and 6pm that day with:
+Once the observations have been fetched, load all the observations valid between two times with:
 
 .. code-block:: python
 
@@ -63,6 +69,21 @@ or just load all the observations valid between 6am and 6pm that day with:
                              datetime.datetime(1987,3,12,18),
                              version='2c')
 
+It's also possible to load all the observations associated with a particular reanalysis field. 20CR assimilates observations every 6-hours, so there is one observations file for each 6-hourly assimilation run. Load all the observations available to the assimilation run for 12 noon on March 12 1987 (as a :obj:`pandas.DataFrame`) with:
+
+.. code-block:: python
+
+    o=twcr.load_observations_1file(datetime.datetime(1987,3,12,12),
+                                   version='2c')
+
+That's only possible for times that match an assimilation time (hour=0,6,12,18). For in-between times (interpolated fields), load all the observations contributing to the field with:
+
+.. code-block:: python
+
+    o=twcr.load_observations_fortime(datetime.datetime(1987,3,12,12),
+                                     version='2c')
+
+This gets all the observations from each field used in the interpolation, and assigns a weight to each one - the same as the weight used in interpolating the fields.
 
 |
 """

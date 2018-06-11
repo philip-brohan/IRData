@@ -10,7 +10,7 @@ One environment variable must be set:
 Relies on `Iris <http://scitools.org.uk/iris/docs/latest/index.html>`_, so first install that.
 Uses the ECMWF api: `ecmwfapi <https://software.ecmwf.int/wiki/display/WEBAPI/Access+ECMWF+Public+Datasets>`_ - to download CERA-20C or ERA5 data. Follow the instructions on that page to get an ECMWF api account (free).
 
-Then install the package from the source in `<https://github.com/philip-brohan/OWData>`_:
+Then download or fork the source in `<https://github.com/philip-brohan/OWData>`_:
 
 * Install with 'python setup.py install --user'.
 * Test with 'python setup.py test'.

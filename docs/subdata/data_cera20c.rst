@@ -1,7 +1,7 @@
-Meteorographica.data.cera20c
-============================
+OWData.cera20c
+==============
 
-.. automodule:: Meteorographica.data.cera20c
+.. automodule:: OWData.cera20c
     :members:
     :imported-members:
 
