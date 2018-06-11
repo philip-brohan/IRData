@@ -37,7 +37,7 @@ For example:
                datetime.datetime(1987,3,12),
                version='2c')
 
-Will retrieve precipitation rate data for the whole of 1987, 20CR2c data is fetched in one-calendar-year blocks, so this will retrieve data for the whole of 1987. The retrieval is slow, as the data has to be fetched from NERSC, but the retrieval is only run if necessary - if that year's data has been previously fetched and is already on local disc, the fetch command will detect this and return instantly.
+Will retrieve precipitation rate data for the selected date. 20CR2c data is fetched in one-calendar-year blocks, so this will retrieve data for the whole of 1987. The retrieval is slow, as the data has to be fetched from NERSC, but the retrieval is only run if necessary - if that year's data has been previously fetched and is already on local disc, the fetch command will detect this and return instantly.
 
 Once the data has been fetched, 
 

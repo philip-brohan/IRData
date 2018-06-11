@@ -37,7 +37,7 @@ For example:
                datetime.datetime(2015,3,12),
                stream='enda')
 
-Will retrieve precipitation rate data for the whole of March 2015, ERA5 data is fetched in one-calendar-month blocks, so this will retrieve data for the whole of March 2015. The retrieval is slow, as the data has to be fetched from MARS at ECMWF, but the retrieval is only run if necessary - if that month's data has been previously fetched and is already on local disc, the fetch command will detect this and return instantly.
+will retrieve precipitation rate data for the selected date. ERA5 data is fetched in one-calendar-month blocks, so this will retrieve data for the whole of March 2015. The retrieval is slow, as the data has to be fetched from MARS at ECMWF, but the retrieval is only run if necessary - if that month's data has been previously fetched and is already on local disc, the fetch command will detect this and return instantly.
 
 Once the data has been fetched, 
 
