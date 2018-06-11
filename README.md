@@ -6,12 +6,13 @@
 
 and the code would find and download the data, interpolating to the requested time as necessary. OWData provides such an API, for synoptic-timescale reanalysis data, from several reanalyses. The request above is:
 
-.. code-block:: python
+```
     import datetime
     dtime=datetime.datetime(1987,10,16,7)
     import OWData.cera20c as cera20c
     cera20c.fetch('air.2m',dtime)        # Slow, but only needed the first time
     mycube=cera20c.load('air.2m',dtime)
+```
 
 There is one sub-package for each of several data sources, with `fetch` methods for getting a copy of the data from a remote server to a local filesystem. and `load` methods for loading iris cubes from the fetched data. 
 
