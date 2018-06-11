@@ -1,0 +1,120 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Installation &#8212; An API for accessing synoptic-timescale reanalyis data</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="OWData.twcr" href="subdata/data_20CR.html" />
+    <link rel="prev" title="OWData: An API for accessing synoptic-timescale reanalyis data" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="subdata/data_20CR.html" title="OWData.twcr"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="OWData: An API for accessing synoptic-timescale reanalyis data"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">OWData</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/UK.GS1987.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">OWData: An API for accessing synoptic-timescale reanalyis data</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="subdata/data_20CR.html"
+                        title="next chapter">OWData.twcr</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/install.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Known to work on with Python 2.7 on modern Linux and OS X systems. Not tested on anything else.</p>
+<p>One environment variable must be set:</p>
+<ul class="simple">
+<li>SCRATCH - the name of a directory to download weather data to.</li>
+</ul>
+<p>Relies on <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/index.html">Iris</a>, so first install that.
+Uses the ECMWF api: <a class="reference external" href="https://software.ecmwf.int/wiki/display/WEBAPI/Access+ECMWF+Public+Datasets">ecmwfapi</a> - to download CERA-20C or ERA5 data. Follow the instructions on that page to get an ECMWF api account (free).</p>
+<p>Then download or fork the source in <a class="reference external" href="https://github.com/philip-brohan/OWData">https://github.com/philip-brohan/OWData</a>:</p>
+<ul class="simple">
+<li>Install with ‘python setup.py install –user’.</li>
+<li>Test with ‘python setup.py test’.</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="subdata/data_20CR.html" title="OWData.twcr"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="OWData: An API for accessing synoptic-timescale reanalyis data"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">OWData</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    </div>
+  </body>
+</html>
