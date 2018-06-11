@@ -17,33 +17,40 @@ import os
 import subprocess
 import calendar
 import ecmwfapi
+import datetime
 
 from utils import _hourly_get_file_name
 from utils import _translate_for_file_names
 from utils import monolevel_analysis
 from utils import monolevel_forecast
 
-def fetch(variable,year,month):
+def fetch(variable,dtime):
     """Get all data for one variable, for one month, from ECMWF's archive.
 
     Data wil be stored locally in directory $SCRATCH/CERA-20C, to be retrieved by :func:`load`. If the local file that would be produced already exists, this function does nothing.
 
     Args:
         variable (:obj:`str`): Variable to fetch (e.g. 'prmsl')
-        year (:obj:`int`): Year to get data for.
+        dtime (:obj:`datetime.datetime`): Date-time to fetch the data for.
         month (:obj:`int`): Month to get data for (1-12).
+
+    Will retrieve the data for the year and month of the given date-time. If the selected time is within 6-hours of the end of the calendar month, loading data for that time will also need data from the next calendar month (for interpolation). In this case, also fetch the data for the next calendar month. 
 
     Raises:
         StandardError: If Variable is not a supported value.
 
     |
     """
+
+    ndtime=dtime+datetime.timedelta(hours=6)
+    if ndtime.month!=dtime.month:
+        fetch(variable,ndtime)
     if variable in monolevel_analysis:
-        return _fetch_analysis_data_for_month(variable,year,
-                                             month)
+        return _fetch_analysis_data_for_month(variable,
+                                      dtime.year,dtime.month)
     if variable in monolevel_forecast:
-        return _fetch_forecast_data_for_month(variable,year,
-                                             month)
+        return  _fetch_forecast_data_for_month(variable,
+                                      dtime.year,dtime.month)
     raise StandardError("Unsupported variable %s" % variable)
 
 def _fetch_analysis_data_for_month(variable,year,month):
@@ -127,7 +134,7 @@ def _fetch_forecast_data_for_month(variable,year,month):
     if not os.path.exists(os.path.dirname(local_file)):
         os.makedirs(os.path.dirname(local_file))
 
-    server = ECMWFDataServer()
+    server = ecmwfapi.ECMWFDataServer()
     server.retrieve({
         'dataset'   : 'cera20c',
         'stream'    : 'enda',

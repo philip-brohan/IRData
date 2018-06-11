@@ -62,10 +62,11 @@ def _get_data_dir():
     scratch=os.getenv('SCRATCH')
     if scratch is None:
         raise StandardError("SCRATCH environment variable is undefined")
+    if not os.path.isdir(scratch):
+        raise StandardError("Scratch directory %s does not exist" % 
+                               scratch)
     base_file = "%s/CERA_20C" % scratch
-    if os.path.isdir(base_file):
-        return base_file
-    raise StandardError("Scratch directory %s does not exist" % scratch)
+    return base_file
 
 # File name for data for a given variable and month
 def _hourly_get_file_name(variable,year,month,
