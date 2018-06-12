@@ -16,7 +16,8 @@ class TestFetch(unittest.TestCase):
         os.environ["SCRATCH"]=tempfile.mkdtemp()
 
     def tearDown(self):
-        shutil.rmtree("%s/CERA_20C" % os.environ["SCRATCH"])
+        if os.path.isdir("%s/CERA_20C" % os.environ["SCRATCH"]):
+            shutil.rmtree("%s/CERA_20C" % os.environ["SCRATCH"])
         os.rmdir(os.environ["SCRATCH"])
         os.environ["SCRATCH"]=self.oldscratch
 
@@ -118,6 +119,13 @@ class TestFetch(unittest.TestCase):
                  'time': '00/03/06/09/12/15/18/21',
                  'type': 'an'})
 
+    # Dud variable
+    def test_fetch_mslp(self):
+        with self.assertRaises(StandardError) as cm:
+            cera20c.fetch('mslp',
+                          datetime.datetime(1969,3,12))
+        self.assertEqual("Unsupported variable mslp",
+                         str(cm.exception))
  
 if __name__ == '__main__':
     unittest.main()

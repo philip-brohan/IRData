@@ -16,6 +16,7 @@
 
 import os
 import subprocess
+import datetime
 import calendar
 import ecmwfapi
 
@@ -24,29 +25,36 @@ from utils import _translate_for_file_names
 from utils import monolevel_analysis
 from utils import monolevel_forecast
 
-def fetch(variable,year,month,stream='enda'):
+def fetch(variable,dtime,stream='enda'):
     """Get all data for one variable, for one month, from ECMWF's archive.
 
     Data wil be stored locally in directory $SCRATCH/ERA5, to be retrieved by :func:`load`. If the local file that would be produced already exists, this function does nothing.
 
     Args:
         variable (:obj:`str`): Variable to fetch (e.g. 'prmsl').
-        year (:obj:`int`): Year to get data for.
+        dtime (:obj:`datetime.datetime`): Date and time to get data for.
         month (:obj:`int`): Month to get data for (1-12).
         stream (:obj:`str`): Analysis stream to use, can be 'enda' - ensemble DA, or 'oper' - high res single member.
+
+    Will retrieve the data for the year and month of the given date-time. If the selected time is very close to the end of the calendar month, loading data for that time will also need data from the next calendar month (for interpolation). In this case, also fetch the data for the next calendar month. 
 
     Raises:
         StandardError: If variable is not a supported value.
  
     |
     """
+    ndtime=dtime+datetime.timedelta(hours=3)
+    if stream=='oper': 
+        ndtime=dtime+datetime.timedelta(hours=1)
+    if ndtime.month!=dtime.month:
+        fetch(variable,ndtime)
     if variable in monolevel_analysis:
-        return _fetch_analysis_data_for_month(variable,year,
-                                              month,
+        return _fetch_analysis_data_for_month(variable,dtime.year,
+                                              dtime.month,
                                               stream=stream)
     if variable in monolevel_forecast:
-        return _fetch_forecast_data_for_month(variable,year,
-                                              month,
+        return _fetch_forecast_data_for_month(variable,dtime.year,
+                                              dtime.month,
                                               stream=stream)
     raise StandardError("Unsupported variable %s" % variable)
 
@@ -110,8 +118,6 @@ def _fetch_forecast_data_for_month(variable,year,month,
             'grid'      : grid,
             'time'      : "%02d" % start_hour,
             'step'      : '0/to/18/by/1',
-            'grid'      : '1.25/1.25',
-            'number'    : '0/1/2/3/4/5/6/7/8/9',
             'date'      : "%04d-%02d-%02d/to/%04d-%02d-%02d" %
                            (year,month,1,
                             year,month,
