@@ -15,8 +15,9 @@
 
 import version_2c
 import version_3
+import datetime
 
-def fetch_observations(year,month=None,day=None,version='none'):
+def fetch_observations(dtime,version='none'):
     """Get observations from the 20CR archive at NERSC.
 
     Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by :func:`load_observations`. If the local files that would be produced already exists, this function does nothing.
@@ -24,33 +25,30 @@ def fetch_observations(year,month=None,day=None,version='none'):
     For 20CR version 2c, the data is retrieved in calendar year blocks, and the 'month' and 'day' arguments are ignored. 
 
     Args:
-        year (:obj:`int`): Year to get data for.
-        month (:obj:`int`, optional): Month to get data for (1-12).
-        day (:obj:`int`, optional): Day to get data for (1-31).
+        dtime (:obj:`datetime.datetime`): Date and time to get observations for.
         version (:obj:`str`): 20CR version to retrieve data for.
 
+    Will retrieve the data for the year of the given date-time. If the selected time is very close to the end of the calendar year, loading data for that time will also need data from the next calendar year (for interpolation). In this case, also fetch the data for the next calendar year. 
+
     Raises:
-        StandardError: If variable is not a supported value.
+        StandardError: If version is not a supported value.
  
     |
     """
 
     if version=='2c':
-        return version_2c.fetch_observations(year)
+        return version_2c.fetch_observations(dtime)
     if version in ('4.5.1','4.5.2'):
-        return version_3.fetch_observations(year,month,version)
+        return version_3.fetch_observations(dtime,version)
     raise StandardError("Unsupported version %s" % version)
 
-def load_observations_1file(year,month,day,hour,version='none'):
+def load_observations_1file(dtime,version='none'):
     """Load observations from disc, that were used in the assimilation run at the time specified.
 
     Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch_observations`.
 
     Args:
-        year (:obj:`int`): Year of assimilation run.
-        month (:obj:`int`): Month of assimilation run (1-12)
-        day (:obj:`int`): Day of assimilation run (1-31).
-        hour (:obj:`int`): Hour of assimilation run (0-23).
+        dtime (:obj:`int`): Date and time of assimilation run.
         version (:obj:`str`): 20CR version to load data from.
 
     Returns:
@@ -63,10 +61,9 @@ def load_observations_1file(year,month,day,hour,version='none'):
     """
 
     if version=='2c':
-        return version_2c.load_observations_1file(
-                                 year,month,day,hour)
+        return version_2c.load_observations_1file(dtime)
     if version in ('4.5.1','4.5.2'):
-        return version_3.load_observations_1file(year,month,day,hour,version)
+        return version_3.load_observations_1file(dtime,version)
     raise StandardError("Unsupported version %s" % version)
 
 def load_observations(start,end,version='none'):

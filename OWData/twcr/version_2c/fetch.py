@@ -15,6 +15,7 @@
 
 import os
 import subprocess
+import datetime
 
 from utils import _get_data_file_name
 
@@ -26,6 +27,8 @@ def _get_remote_file_name(variable,year):
     Args:
         variable (:obj:`str`): Variable to fetch (e.g. 'prmsl').
         year (:obj:`int`): Year to get data for.
+
+    Will retrieve the data for the year of the given date-time. If the selected time is very close to the end of the calendar year, loading data for that time will also need data from the next calendar year (for interpolation). In this case, also fetch the data for the next calendar year. 
 
     Raises:
         StandardError: If variable is not a supported value.
@@ -63,9 +66,13 @@ def _get_remote_file_name(variable,year):
         raise StandardError("Unsupported variable %s" % variable)
     return(remote_file)
 
-def fetch(variable,year):
+def fetch(variable,dtime):
     
-    local_file=_get_data_file_name(variable,year)
+    ndtime=dtime+datetime.timedelta(hours=6)
+    if ndtime.year!=dtime.year:
+        fetch(variable,ndtime)
+
+    local_file=_get_data_file_name(variable,dtime.year)
 
     if os.path.isfile(local_file): 
         # Got this data already
@@ -74,7 +81,7 @@ def fetch(variable,year):
     if not os.path.exists(os.path.dirname(local_file)):
         os.makedirs(os.path.dirname(local_file))
 
-    remote_file=_get_remote_file_name(variable,year)
+    remote_file=_get_remote_file_name(variable,dtime.year)
 
     cmd="wget -O %s %s" % (local_file,remote_file)
     wg_retvalue=subprocess.call(cmd,shell=True)

@@ -36,13 +36,16 @@ def _observations_file_name(year,month,day,hour,):
     return ("%s/observations/%04d/prepbufrobs_assim_%04d%02d%02d%02d.txt" % 
                             (_get_data_dir(),year,year,month,day,hour))
 
-def fetch_observations(year):
-    o_dir= "%s/observations/%04d" % (_get_data_dir(),year)
+def fetch_observations(dtime):
+    ndtime=dtime+datetime.timedelta(hours=6)
+    if ndtime.year!=dtime.year:
+        fetch_observations(ndtime)
+    o_dir= "%s/observations/%04d" % (_get_data_dir(),dtime.year)
     if os.path.exists(o_dir):
         if len(os.listdir(o_dir)) >= 1460:
             return
-    _download_observations(year)
-    _unpack_downloaded_observations(year)
+    _download_observations(dtime.year)
+    _unpack_downloaded_observations(dtime.year)
 
 def _download_observations(year):
     remote_file=_observations_remote_file(year)
