@@ -125,6 +125,10 @@ def load(variable,dtime,fc_init=None):
 
     |
     """
+
+    if ((variable not in monolevel_analysis) and 
+        (variable not in monolevel_forecast)):
+        raise StandardError("Unsupported variable %s" % variable)
     dhour=dtime.hour+dtime.minute/60.0+dtime.second/3600.0
     if _is_in_file(variable,dtime.year,dtime.month,
                                      dtime.day,dhour):
