@@ -1,7 +1,7 @@
 import unittest
 from mock import patch
 
-import OWData.era5 as era5
+import IRData.era5 as era5
 import datetime
 import ecmwfapi
 import os

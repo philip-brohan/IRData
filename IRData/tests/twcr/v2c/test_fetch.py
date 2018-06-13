@@ -1,7 +1,7 @@
 import unittest
 from mock import patch
 
-import OWData.twcr as twcr
+import IRData.twcr as twcr
 import datetime
 import subprocess
 import zipfile

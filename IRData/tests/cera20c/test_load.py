@@ -1,7 +1,7 @@
 import unittest
 from mock import patch
 
-import OWData.cera20c as cera20c
+import IRData.cera20c as cera20c
 import datetime
 import sys
 import os

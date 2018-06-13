@@ -1,7 +1,7 @@
 import unittest
 from mock import patch
 
-import OWData.era5 as era5
+import IRData.twcr as twcr
 import datetime
 import sys
 import os
@@ -11,13 +11,15 @@ import tempfile
 import iris
 import cf_units
 import numpy
+
+version='2c'
  
 # Can only load data if it's on disc - create fake data file
-def fake_data_file(variable,stream,year,month):
-    file_name="%s/ERA5/%s/hourly/%04d/%02d/%s.nc" % (
+def fake_data_file(variable,version,year):
+    file_name="%s/20CR/version_%s/hourly/%04d/%s.nc" % (
                  os.environ["SCRATCH"],
-                 stream,
-                 year,month,
+                 version,
+                 year,
                  variable)
     if os.path.isfile(file_name): return
     if not os.path.isdir(os.path.dirname(file_name)):
@@ -38,29 +40,18 @@ def fake_cube(file_name,constraint):
         minute=0
     dtime=datetime.datetime(year,month,day,hour,minute)
 
-    if 'enda' in file_name:
-        ensemble = iris.coords.DimCoord(numpy.linspace( 0, 9, 10 ),
-                                        long_name='ensemble member')
-        latitude = iris.coords.DimCoord(numpy.linspace(-90, 90, 19),
-                                        standard_name='latitude',
-                                        units='degrees')
-        longitude = iris.coords.DimCoord(numpy.linspace(-170, 180, 36),
-                                         standard_name='longitude',
-                                         units='degrees')
-        cube = iris.cube.Cube(numpy.zeros((10,19,36),numpy.float32),
-                    dim_coords_and_dims=[(ensemble,  0),
-                                         (latitude,  1),
-                                         (longitude, 2)])
-    else:  # 'oper' - twice the resolution, no ensemble
-        latitude = iris.coords.DimCoord(numpy.linspace(-90, 90, 19*2),
-                                        standard_name='latitude',
-                                        units='degrees')
-        longitude = iris.coords.DimCoord(numpy.linspace(-170, 180, 36*2),
-                                         standard_name='longitude',
-                                         units='degrees')
-        cube = iris.cube.Cube(numpy.zeros((19*2,36*2),numpy.float32),
-                    dim_coords_and_dims=[(latitude,  0),
-                                         (longitude, 1)])
+    ensemble = iris.coords.DimCoord(numpy.linspace( 0, 9, 10 ),
+                                    long_name='member')
+    latitude = iris.coords.DimCoord(numpy.linspace(-90, 90, 19),
+                                    standard_name='latitude',
+                                    units='degrees')
+    longitude = iris.coords.DimCoord(numpy.linspace(-170, 180, 36),
+                                     standard_name='longitude',
+                                     units='degrees')
+    cube = iris.cube.Cube(numpy.zeros((10,19,36),numpy.float32),
+                dim_coords_and_dims=[(ensemble,  0),
+                                     (latitude,  1),
+                                     (longitude, 2)])
     
     dthours=(dtime-datetime.datetime(1900,1,1)).total_seconds()/3600.0
     time      = iris.coords.AuxCoord(dthours,
@@ -80,19 +71,19 @@ class TestLoad(unittest.TestCase):
         os.environ["SCRATCH"]=tempfile.mkdtemp()
 
     def tearDown(self):
-        if os.path.isdir("%s/ERA5" % os.environ["SCRATCH"]):
-            shutil.rmtree("%s/ERA5" % os.environ["SCRATCH"])
+        if os.path.isdir("%s/20CR" % os.environ["SCRATCH"]):
+            shutil.rmtree("%s/20CR" % os.environ["SCRATCH"])
         os.rmdir(os.environ["SCRATCH"])
         os.environ["SCRATCH"]=self.oldscratch
 
     # load prmsl at analysis time
-    def test_load_prmsl_enda(self):
-        fake_data_file('prmsl','enda',2010,3)
+    def test_load_prmsl(self):
+        fake_data_file('prmsl',version,2010)
         with patch.object(iris,'load_cube', 
                                 side_effect=fake_cube) as mock_load: 
-            tc=era5.load('prmsl',
+            tc=twcr.load('prmsl',
                          datetime.datetime(2010,3,12,6),
-                         stream='enda')
+                         version=version)
         # Right dimensions
         self.assertEqual(len(tc.coords()),4)
         # Right ensemble dimension name?
@@ -100,26 +91,14 @@ class TestLoad(unittest.TestCase):
         # Right time?
         self.assertEqual(tc.coords()[3].points[0],965934)
 
-    def test_load_prmsl_oper(self):
-        fake_data_file('prmsl','oper',2010,3)
-        with patch.object(iris,'load_cube', 
-                                side_effect=fake_cube) as mock_load: 
-            tc=era5.load('prmsl',
-                         datetime.datetime(2010,3,12,6),
-                         stream='oper')
-        # Right dimensions
-        self.assertEqual(len(tc.coords()),3)
-        # Right time?
-        self.assertEqual(tc.coords()[2].points[0],965934)
-
     # load prmsl with interpolated time
     def test_load_prmsl_interpolated(self):
-        fake_data_file('prmsl','enda',2010,3)
+        fake_data_file('prmsl',version,2010)
         with patch.object(iris,'load_cube', 
                                 side_effect=fake_cube) as mock_load: 
-            tc=era5.load('prmsl',
+            tc=twcr.load('prmsl',
                          datetime.datetime(2010,3,12,9),
-                         stream='enda')
+                         version=version)
         # Right dimensions
         self.assertEqual(len(tc.coords()),4)
         # Right ensemble dimension name?
@@ -130,10 +109,10 @@ class TestLoad(unittest.TestCase):
     # Dud variable
     def test_fetch_mslp(self):
         with self.assertRaises(StandardError) as cm:
-            era5.load('mslp',
+            tc=twcr.load('mslp',
                          datetime.datetime(1969,3,12),
-                         stream='enda')
-        self.assertEqual("Unsupported variable mslp",
+                         version=version)
+        self.assertIn("One or more of the files specified did not exist",
                          str(cm.exception))
  
 if __name__ == '__main__':

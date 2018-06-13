@@ -1,7 +1,7 @@
-OWData.twcr
+IRData.twcr
 ===========
 
-.. automodule:: OWData.twcr
+.. automodule:: IRData.twcr
     :members:
     :imported-members:
 

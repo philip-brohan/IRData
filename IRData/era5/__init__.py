@@ -13,7 +13,7 @@
 """
 This package retrieves and loads data from the `ERA5 reanalysis <https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era5>`_.
 
-To retrieve the data, it uses the `ECMWF Public data API <https://software.ecmwf.int/wiki/display/WEBAPI/ECMWF+Web+API+Home>`_. You will need to install a key and the client libraries as described in `the API documentation <https://software.ecmwf.int/wiki/display/WEBAPI/Access+ECMWF+Public+Datasets>`_. Note that this is the same system used by `OWData.cera20c` - the same key and libraries will let you use that as well.
+To retrieve the data, it uses the `ECMWF Public data API <https://software.ecmwf.int/wiki/display/WEBAPI/ECMWF+Web+API+Home>`_. You will need to install a key and the client libraries as described in `the API documentation <https://software.ecmwf.int/wiki/display/WEBAPI/Access+ECMWF+Public+Datasets>`_. Note that this is the same system used by `IRData.cera20c` - the same key and libraries will let you use that as well.
 
 Only hourly data is supported (no daily or monthly averages) for 7 surface variables:
 
@@ -32,7 +32,7 @@ For example:
 .. code-block:: python
 
     import datetime
-    import OWData.era5 as era5
+    import IRData.era5 as era5
     era5.fetch('prate',
                datetime.datetime(2015,3,12),
                stream='enda')

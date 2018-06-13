@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# OWData documentation build configuration file.
+# IRData documentation build configuration file.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -142,7 +142,7 @@ html_title = u'An API for accessing synoptic-timescale reanalyis data'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
-html_short_title = u'OWData'
+html_short_title = u'IRData'
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
@@ -238,7 +238,7 @@ html_show_copyright = False
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'OWDatadoc'
+htmlhelp_basename = 'IRDatadoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -264,7 +264,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'OWData.tex', u'OWData Documentation',
+    (master_doc, 'IRData.tex', u'IRData Documentation',
      u'Philip Brohan', 'manual'),
 ]
 
@@ -306,7 +306,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'OWData', u'OWData Documentation',
+    (master_doc, 'IRData', u'IRData Documentation',
      [author], 1)
 ]
 
@@ -321,8 +321,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'OWData', u'OWData Documentation',
-     author, 'OWData', 'An API for accessing synoptic-timescale reanalyis data',
+    (master_doc, 'IRData', u'IRData Documentation',
+     author, 'IRData', 'An API for accessing synoptic-timescale reanalyis data',
      'Miscellaneous'),
 ]
 

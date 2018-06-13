@@ -13,7 +13,7 @@
 """
 This package retrieves and loads data from the `CERA-20C reanalysis <https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/cera-20c>`_.
 
-To retrieve the data, it uses the `ECMWF Public data API <https://software.ecmwf.int/wiki/display/WEBAPI/ECMWF+Web+API+Home>`_. You will need to install a key and the client libraries as described in `the API documentation <https://software.ecmwf.int/wiki/display/WEBAPI/Access+ECMWF+Public+Datasets>`_. Note that this is the same system used by `OWData.era5` - the same key and libraries will let you use that as well.
+To retrieve the data, it uses the `ECMWF Public data API <https://software.ecmwf.int/wiki/display/WEBAPI/ECMWF+Web+API+Home>`_. You will need to install a key and the client libraries as described in `the API documentation <https://software.ecmwf.int/wiki/display/WEBAPI/Access+ECMWF+Public+Datasets>`_. Note that this is the same system used by `IRData.era5` - the same key and libraries will let you use that as well.
 
 Only hourly data is supported (no daily or monthly averages) for 7 surface variables:
 
@@ -32,7 +32,7 @@ For example:
 .. code-block:: python
 
     import datetime
-    import OWData.cera20c as cera20c
+    import IRData.cera20c as cera20c
     cera20c.fetch('prate',datetime.datetime(1969,3,12))
 
 will retrieve precipitation rate data for the selected date. CERA20C data is fetched in one-calendar-month blocks, so this will retrieve data for the whole of March 1969. The retrieval is slow, as the data has to be fetched from MARS at ECMWF, but the retrieval is only run if necessary - if that month's data has been previously fetched and is already on local disc, the fetch command will detect this and return instantly.

@@ -32,7 +32,7 @@ For example:
 .. code-block:: python
 
     import datetime
-    import OWData.twcr as twcr
+    import IRData.twcr as twcr
     twcr.fetch('prate',
                datetime.datetime(1987,3,12),
                version='2c')

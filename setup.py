@@ -1,4 +1,4 @@
-"""Setup configuration for OWData package.
+"""Setup configuration for IRData package.
 
 """
 
@@ -13,14 +13,14 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='OWData',
-    version='0.0.1',
+    name='IRData',
+    version='0.1.0',
     description='An API for accessing synoptic-timescale reanalyis data',
 
     # From README - see above
     long_description=long_description,
 
-    url='https://brohan.org/OWData/',
+    url='https://brohan.org/IRData/',
 
     author='Philip Brohan',
     author_email='philip.brohan@metofice.gov.uk',
@@ -44,7 +44,7 @@ setup(
     # Tests are in OWData/tests organised as a module
     # (a unittest.TestSuite - just put __init__.py in all directories).
     # Name the module not the file here ('.' not '/').
-    test_suite="OWData.tests",
+    test_suite="IRData.tests",
 
     # Other packages that your project depends on.
     # iris>2 - does not work - can't find any iris?
@@ -56,8 +56,8 @@ setup(
     ],
 
     # other relevant URLs.
-    #project_urls={ 
-    #    'Bug Reports': 'https://github.com/philip-brohan/OWData/issues',
-    #    'Source': 'https://github.com/philip-brohan/OWData',
-    #},
+    project_urls={ 
+        'Bug Reports': 'https://github.com/philip-brohan/IRData/issues',
+        'Source': 'https://github.com/philip-brohan/IRData',
+    },
 )

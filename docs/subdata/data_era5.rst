@@ -1,7 +1,7 @@
-OWData.era5
+IRData.era5
 ===========
 
-.. automodule:: OWData.era5
+.. automodule:: IRData.era5
     :members:
     :imported-members:
 
