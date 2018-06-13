@@ -13,7 +13,7 @@
 """
 This package retrieves and loads data from the `CERA-20C reanalysis <https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/cera-20c>`_.
 
-To retrieve the data, it uses the `ECMWF Public data API <https://software.ecmwf.int/wiki/display/WEBAPI/ECMWF+Web+API+Home>`_. You will need to install a key and the client libraries as described in `the API documentation <https://software.ecmwf.int/wiki/display/WEBAPI/Access+ECMWF+Public+Datasets>`_. Note that this is the same system used by `IRData.era5` - the same key and libraries will let you use that as well.
+To retrieve the data, it uses the `ECMWF Public data API <https://software.ecmwf.int/wiki/display/WEBAPI/ECMWF+Web+API+Home>`_. You will need to install a key as described in `the API documentation <https://software.ecmwf.int/wiki/display/WEBAPI/Access+ECMWF+Public+Datasets>`_. Note that this is the same system used by `IRData.era5` - the same key will let you use that as well.
 
 Only hourly data is supported (no daily or monthly averages) for 7 surface variables:
 

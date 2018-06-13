@@ -1,5 +1,5 @@
-IRData.era5
-===========
+The ERA-5 reanalysis: IRData.era5
+=================================
 
 .. automodule:: IRData.era5
     :members:

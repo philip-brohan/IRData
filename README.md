@@ -9,7 +9,7 @@ and the code would find and download the data, interpolating to the requested ti
 ```
     import datetime
     dtime=datetime.datetime(1987,10,16,7)
-    import OWData.cera20c as cera20c
+    import IRData.cera20c as cera20c
     cera20c.fetch('air.2m',dtime)
     mycube=cera20c.load('air.2m',dtime)
 ```

@@ -28,7 +28,7 @@ def fetch_observations(dtime,version='none'):
         dtime (:obj:`datetime.datetime`): Date and time to get observations for.
         version (:obj:`str`): 20CR version to retrieve data for.
 
-    Will retrieve the data for the year of the given date-time. If the selected time is very close to the end of the calendar year, loading data for that time will also need data from the next calendar year (for interpolation). In this case, also fetch the data for the next calendar year. 
+    Will retrieve the data for the year of the given date-time.
 
     Raises:
         StandardError: If version is not a supported value.
