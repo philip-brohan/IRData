@@ -94,37 +94,35 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,version):
             hslice.coord('Forecast offset from initial time').points)
     return hslice
 
-def load(variable,year,month,day,hour,version='4.5.1'):
+def load(variable,dtime,version='4.5.1'):
     """Load requested data from disc, interpolating if necessary.
 
     Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch`.
 
     Args:
         variable (:obj:`str`): Variable to fetch (e.g. 'prmsl')
-        year (:obj:`int`): Year to get data for.
-        month (:obj:`int`): Month to get data for (1-12).
-        day (:obj:`int`): Day to get data for (1-31).
-        hour (:obj:`float`): Hour to get data for (0-23.99). Note that this isn't an integer, for minutes and seconds, use fractions of an hour.
+        dtime (:obj:`datetime.datetime`): Date and time to load data for.
 
     Returns:
         :obj:`iris.cube.Cube`: Global field of variable at time.
 
-    Note that 20CR data is only output every 3 hours, so if hour%3!=0, the result may be linearly interpolated in time. If you want data after 18:00 on the last day of a month, you will need to fetch the next month's data too, as it will be used in the interpolation.
+    Note that 20CR data is only output every 3 hours, so if hour%3!=0, the result may be linearly interpolated in time.
 
     Raises:
         StandardError: Data not on disc - see :func:`fetch`
 
     |
     """
-    if _is_in_file(variable,hour):
-        return(_get_slice_at_hour_at_timestep(variable,year,
-                                              month,day,
-                                              hour,version))
-    previous_step=_get_previous_field_time(variable,year,month,
-                                           day,hour)
-    next_step=_get_next_field_time(variable,year,month,
-                                   day,hour)
-    dt_current=datetime.datetime(year,month,day,int(hour),int((hour%1)*60))
+    dhour=dtime.hour+dtime.minute/60.0+dtime.second/3600.0
+    if _is_in_file(variable,dhour):
+        return(_get_slice_at_hour_at_timestep(variable,dtime.year,
+                                              dtime.month,dtime.day,
+                                              dhour,version))
+    previous_step=_get_previous_field_time(variable,dtime.year,dtime.month,
+                                           dtime.day,dhour)
+    next_step=_get_next_field_time(variable,dtime.year,dtime.month,
+                                   dtime.day,dhour)
+    dt_current=dtime
     dt_previous=datetime.datetime(previous_step['year'],
                                   previous_step['month'],
                                   previous_step['day'],
