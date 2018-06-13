@@ -1,7 +1,7 @@
-OWData.cera20c
+IRData.cera20c
 ==============
 
-.. automodule:: OWData.cera20c
+.. automodule:: IRData.cera20c
     :members:
     :imported-members:
 

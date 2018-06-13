@@ -1,6 +1,6 @@
-OWData.utils
+IRData.utils
 ============
 
-.. automodule:: OWData.utils
+.. automodule:: IRData.utils
     :members:
     :imported-members:
