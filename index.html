@@ -37,28 +37,23 @@
             <p class="logo"><a href="#">
               <img class="logo" src="_static/UK.GS1987.png" alt="Logo"/>
             </a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="install.html"
-                        title="next chapter">Installation</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/index.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<h3><a href="#">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="subdata/data_20CR.html">The 20th Century Reanalysis: IRData.twcr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subdata/data_cera20c.html">The CERA-20C reanalysis: IRData.cera20c</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subdata/data_era5.html">The ERA-5 reanalysis: IRData.era5</a></li>
+</ul>
+<h3><a href="https://github.com/philip-brohan/IRData">Get the source code</a></h3>
+
+<a href="https://github.com/philip-brohan/IRData"
+           rel="nofollow">Github source repository</a>
+
+<h3>Found a bug, or have a suggestion?</h3>
+
+Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an issue</a>.
         </div>
       </div>
 
@@ -69,10 +64,12 @@
             
   <div class="section" id="irdata-accessing-synoptic-timescale-reanalyis-data-with-iris">
 <h1>IRData: Accessing synoptic-timescale Reanalyis Data with Iris<a class="headerlink" href="#irdata-accessing-synoptic-timescale-reanalyis-data-with-iris" title="Permalink to this headline">¶</a></h1>
-<p>This code library extends <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/index.html">Iris</a> in providing tools for accessing reanalysis data. It uses Iris data structures and methods for handling the data, and extends Iris by providing functions for using synoptic-timescale reanalysis data from several sources.</p>
-<p>The idea is have an API for loading synoptic-timescale reanalysis data into an <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">iris.cube.Cube</span></code></a>. That is, to say something like:</p>
-<p>‘from the Twentieth Century reanalysis version 2c, load the 2m air temperature at 7am (utc) on 16th October 1987.`</p>
-<p>and the code would find and download the data, interpolating to the requested time as necessary. This module provides such an API, for several reanalyses. The request above is:</p>
+<p>This code library extends <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/index.html">Iris</a> in providing tools for accessing reanalysis data. It uses Iris data structures and methods for handling the data, and extends it by providing functions for using synoptic-timescale reanalysis data from several sources.</p>
+<p>The idea is have an API for loading synoptic-timescale reanalysis data into an <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">iris.cube.Cube</span></code></a>. That is, for a requirement like:</p>
+<blockquote>
+<div>“From the Twentieth Century Reanalysis version 2c, load the 2m air temperature at 7am (UTC) on 16th October 1987.”</div></blockquote>
+<p>to have code that would find and download the data, and then provide it as a cube, interpolating to the requested time as necessary.</p>
+<p>This module provides such an API, for several reanalyses. The request above is:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="n">dtime</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">IRData.twcr</span> <span class="kn">as</span> <span class="nn">twcr</span>
@@ -82,8 +79,8 @@
 </div>
 <p>Data is loaded in two steps:</p>
 <ol class="arabic simple">
-<li>first a block of data is ‘fetched’ from the reanalysis master archive and stored on local disk (in directory $SCRATCH). This step is slow (archives are typically on tape and may be on the other side of the world). Data is fetched in 1-calendar-month blocks (1 year blocks for 20CR2c)).</li>
-<li>then the data for a single point in time  is ‘loaded’ from the local disc copy. This step is fast.</li>
+<li>First a block of data is ‘fetched’ from the reanalysis master archive and stored on local disk (in directory $SCRATCH). This step is slow (archives are typically on tape and may be on the other side of the world). Data is fetched in 1-calendar-month blocks (1 year blocks for 20CR2c).</li>
+<li>Then the data for a single point in time  is ‘loaded’ from the local disc copy. This step is fast.</li>
 </ol>
 <p>There is one sub-package for each of several data sources; each with <cite>fetch</cite> methods for getting a copy of the data from a remote server to a local filesystem, and <cite>load</cite> methods for loading iris cubes from the fetched data.</p>
 <p>Installation instructions:</p>
@@ -95,9 +92,9 @@
 <p>Data sources:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="subdata/data_20CR.html">IRData.twcr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="subdata/data_cera20c.html">IRData.cera20c</a></li>
-<li class="toctree-l1"><a class="reference internal" href="subdata/data_era5.html">IRData.era5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subdata/data_20CR.html">The 20th Century Reanalysis: IRData.twcr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subdata/data_cera20c.html">The CERA-20C reanalysis: IRData.cera20c</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subdata/data_era5.html">The ERA-5 reanalysis: IRData.era5</a></li>
 </ul>
 </div>
 <div class="line-block">

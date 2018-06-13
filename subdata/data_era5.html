@@ -6,7 +6,7 @@
   <head>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>IRData.era5 &#8212; An API for accessing synoptic-timescale reanalyis data</title>
+    <title>The ERA-5 reanalysis: IRData.era5 &#8212; An API for accessing synoptic-timescale reanalyis data</title>
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="IRData.cera20c" href="data_cera20c.html" /> 
+    <link rel="prev" title="The CERA-20C reanalysis: IRData.cera20c" href="data_cera20c.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -27,7 +27,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="data_cera20c.html" title="IRData.cera20c"
+          <a href="data_cera20c.html" title="The CERA-20C reanalysis: IRData.cera20c"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IRData</a> &#187;</li> 
       </ul>
@@ -37,28 +37,23 @@
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/UK.GS1987.png" alt="Logo"/>
             </a></p>
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="data_cera20c.html"
-                        title="previous chapter">IRData.cera20c</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/subdata/data_era5.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="data_20CR.html">The 20th Century Reanalysis: IRData.twcr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_cera20c.html">The CERA-20C reanalysis: IRData.cera20c</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The ERA-5 reanalysis: IRData.era5</a></li>
+</ul>
+<h3><a href="https://github.com/philip-brohan/IRData">Get the source code</a></h3>
+
+<a href="https://github.com/philip-brohan/IRData"
+           rel="nofollow">Github source repository</a>
+
+<h3>Found a bug, or have a suggestion?</h3>
+
+Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an issue</a>.
         </div>
       </div>
 
@@ -68,9 +63,9 @@
           <div class="body" role="main">
             
   <div class="section" id="module-IRData.era5">
-<span id="irdata-era5"></span><h1>IRData.era5<a class="headerlink" href="#module-IRData.era5" title="Permalink to this headline">¶</a></h1>
+<span id="the-era-5-reanalysis-irdata-era5"></span><h1>The ERA-5 reanalysis: IRData.era5<a class="headerlink" href="#module-IRData.era5" title="Permalink to this headline">¶</a></h1>
 <p>This package retrieves and loads data from the <a class="reference external" href="https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era5">ERA5 reanalysis</a>.</p>
-<p>To retrieve the data, it uses the <a class="reference external" href="https://software.ecmwf.int/wiki/display/WEBAPI/ECMWF+Web+API+Home">ECMWF Public data API</a>. You will need to install a key and the client libraries as described in <a class="reference external" href="https://software.ecmwf.int/wiki/display/WEBAPI/Access+ECMWF+Public+Datasets">the API documentation</a>. Note that this is the same system used by <cite>IRData.cera20c</cite> - the same key and libraries will let you use that as well.</p>
+<p>To retrieve the data, it uses the <a class="reference external" href="https://software.ecmwf.int/wiki/display/WEBAPI/ECMWF+Web+API+Home">ECMWF Public data API</a>. You will need to install a key as described in <a class="reference external" href="https://software.ecmwf.int/wiki/display/WEBAPI/Access+ECMWF+Public+Datasets">the API documentation</a>. Note that this is the same system used by <cite>IRData.cera20c</cite> - the same key will let you use that as well.</p>
 <p>Only hourly data is supported (no daily or monthly averages) for 7 surface variables:</p>
 <ul class="simple">
 <li>Mean-sea-level pressure: ‘mslp’</li>
@@ -191,7 +186,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="data_cera20c.html" title="IRData.cera20c"
+          <a href="data_cera20c.html" title="The CERA-20C reanalysis: IRData.cera20c"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IRData</a> &#187;</li> 
       </ul>

@@ -1,13 +1,15 @@
 IRData: Accessing synoptic-timescale Reanalyis Data with Iris
 =============================================================
 
-This code library extends `Iris <http://scitools.org.uk/iris/docs/latest/index.html>`_ in providing tools for accessing reanalysis data. It uses Iris data structures and methods for handling the data, and extends Iris by providing functions for using synoptic-timescale reanalysis data from several sources.
+This code library extends `Iris <http://scitools.org.uk/iris/docs/latest/index.html>`_ in providing tools for accessing reanalysis data. It uses Iris data structures and methods for handling the data, and extends it by providing functions for using synoptic-timescale reanalysis data from several sources.
 
-The idea is have an API for loading synoptic-timescale reanalysis data into an :class:`iris.cube.Cube`. That is, to say something like:
+The idea is have an API for loading synoptic-timescale reanalysis data into an :class:`iris.cube.Cube`. That is, for a requirement like:
 
-'from the Twentieth Century reanalysis version 2c, load the 2m air temperature at 7am (utc) on 16th October 1987.`
+    "From the Twentieth Century Reanalysis version 2c, load the 2m air temperature at 7am (UTC) on 16th October 1987."
 
-and the code would find and download the data, interpolating to the requested time as necessary. This module provides such an API, for several reanalyses. The request above is:
+to have code that would find and download the data, and then provide it as a cube, interpolating to the requested time as necessary. 
+
+This module provides such an API, for several reanalyses. The request above is:
 
 .. code-block:: python
 
@@ -19,8 +21,8 @@ and the code would find and download the data, interpolating to the requested ti
 
 Data is loaded in two steps:
 
-1) first a block of data is 'fetched' from the reanalysis master archive and stored on local disk (in directory $SCRATCH). This step is slow (archives are typically on tape and may be on the other side of the world). Data is fetched in 1-calendar-month blocks (1 year blocks for 20CR2c)).
-2) then the data for a single point in time  is 'loaded' from the local disc copy. This step is fast.
+1) First a block of data is 'fetched' from the reanalysis master archive and stored on local disk (in directory $SCRATCH). This step is slow (archives are typically on tape and may be on the other side of the world). Data is fetched in 1-calendar-month blocks (1 year blocks for 20CR2c).
+2) Then the data for a single point in time  is 'loaded' from the local disc copy. This step is fast.
 
 There is one sub-package for each of several data sources; each with `fetch` methods for getting a copy of the data from a remote server to a local filesystem, and `load` methods for loading iris cubes from the fetched data. 
 

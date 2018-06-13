@@ -6,7 +6,7 @@
   <head>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>OWData.twcr.observations &#8212; An API for accessing synoptic-timescale reanalyis data</title>
+    <title>IRData.twcr.observations &#8212; An API for accessing synoptic-timescale reanalyis data</title>
     <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
@@ -25,7 +25,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">OWData</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">IRData</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
@@ -34,18 +34,23 @@
             <p class="logo"><a href="../../../index.html">
               <img class="logo" src="../../../_static/UK.GS1987.png" alt="Logo"/>
             </a></p>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../subdata/data_20CR.html">The 20th Century Reanalysis: IRData.twcr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../subdata/data_cera20c.html">The CERA-20C reanalysis: IRData.cera20c</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../subdata/data_era5.html">The ERA-5 reanalysis: IRData.era5</a></li>
+</ul>
+<h3><a href="https://github.com/philip-brohan/IRData">Get the source code</a></h3>
+
+<a href="https://github.com/philip-brohan/IRData"
+           rel="nofollow">Github source repository</a>
+
+<h3>Found a bug, or have a suggestion?</h3>
+
+Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an issue</a>.
         </div>
       </div>
 
@@ -54,7 +59,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for OWData.twcr.observations</h1><div class="highlight"><pre>
+  <h1>Source code for IRData.twcr.observations</h1><div class="highlight"><pre>
 <span></span><span class="c1"># (C) British Crown Copyright 2017, Met Office</span>
 <span class="c1">#</span>
 <span class="c1"># This code is free software: you can redistribute it and/or modify it under</span>
@@ -72,8 +77,9 @@
 
 <span class="kn">import</span> <span class="nn">version_2c</span>
 <span class="kn">import</span> <span class="nn">version_3</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
 
-<div class="viewcode-block" id="fetch_observations"><a class="viewcode-back" href="../../../subdata/data_20CR.html#OWData.twcr.fetch_observations">[docs]</a><span class="k">def</span> <span class="nf">fetch_observations</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">day</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="fetch_observations"><a class="viewcode-back" href="../../../subdata/data_20CR.html#IRData.twcr.fetch_observations">[docs]</a><span class="k">def</span> <span class="nf">fetch_observations</span><span class="p">(</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get observations from the 20CR archive at NERSC.</span>
 
 <span class="sd">    Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by :func:`load_observations`. If the local files that would be produced already exists, this function does nothing.</span>
@@ -81,33 +87,30 @@
 <span class="sd">    For 20CR version 2c, the data is retrieved in calendar year blocks, and the &#39;month&#39; and &#39;day&#39; arguments are ignored. </span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        year (:obj:`int`): Year to get data for.</span>
-<span class="sd">        month (:obj:`int`, optional): Month to get data for (1-12).</span>
-<span class="sd">        day (:obj:`int`, optional): Day to get data for (1-31).</span>
+<span class="sd">        dtime (:obj:`datetime.datetime`): Date and time to get observations for.</span>
 <span class="sd">        version (:obj:`str`): 20CR version to retrieve data for.</span>
 
+<span class="sd">    Will retrieve the data for the year of the given date-time.</span>
+
 <span class="sd">    Raises:</span>
-<span class="sd">        StandardError: If variable is not a supported value.</span>
+<span class="sd">        StandardError: If version is not a supported value.</span>
 <span class="sd"> </span>
 <span class="sd">    |</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">version</span><span class="o">==</span><span class="s1">&#39;2c&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">version_2c</span><span class="o">.</span><span class="n">fetch_observations</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">version_2c</span><span class="o">.</span><span class="n">fetch_observations</span><span class="p">(</span><span class="n">dtime</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">,</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">fetch_observations</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">version</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">fetch_observations</span><span class="p">(</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="p">)</span></div>
     <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Unsupported version </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span>
 
-<div class="viewcode-block" id="load_observations_1file"><a class="viewcode-back" href="../../../subdata/data_20CR.html#OWData.twcr.load_observations_1file">[docs]</a><span class="k">def</span> <span class="nf">load_observations_1file</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="load_observations_1file"><a class="viewcode-back" href="../../../subdata/data_20CR.html#IRData.twcr.load_observations_1file">[docs]</a><span class="k">def</span> <span class="nf">load_observations_1file</span><span class="p">(</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Load observations from disc, that were used in the assimilation run at the time specified.</span>
 
 <span class="sd">    Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch_observations`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        year (:obj:`int`): Year of assimilation run.</span>
-<span class="sd">        month (:obj:`int`): Month of assimilation run (1-12)</span>
-<span class="sd">        day (:obj:`int`): Day of assimilation run (1-31).</span>
-<span class="sd">        hour (:obj:`int`): Hour of assimilation run (0-23).</span>
+<span class="sd">        dtime (:obj:`int`): Date and time of assimilation run.</span>
 <span class="sd">        version (:obj:`str`): 20CR version to load data from.</span>
 
 <span class="sd">    Returns:</span>
@@ -120,13 +123,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">version</span><span class="o">==</span><span class="s1">&#39;2c&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">version_2c</span><span class="o">.</span><span class="n">load_observations_1file</span><span class="p">(</span>
-                                 <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">version_2c</span><span class="o">.</span><span class="n">load_observations_1file</span><span class="p">(</span><span class="n">dtime</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">,</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">load_observations_1file</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">version</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">load_observations_1file</span><span class="p">(</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="p">)</span></div>
     <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Unsupported version </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span>
 
-<div class="viewcode-block" id="load_observations"><a class="viewcode-back" href="../../../subdata/data_20CR.html#OWData.twcr.load_observations">[docs]</a><span class="k">def</span> <span class="nf">load_observations</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="load_observations"><a class="viewcode-back" href="../../../subdata/data_20CR.html#IRData.twcr.load_observations">[docs]</a><span class="k">def</span> <span class="nf">load_observations</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Load observations from disc, for the selected period</span>
 
 <span class="sd">    Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch`.</span>
@@ -152,7 +154,7 @@
         <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">load_observations</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="n">version</span><span class="p">)</span></div>
     <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Unsupported version </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span>
 
-<div class="viewcode-block" id="load_observations_fortime"><a class="viewcode-back" href="../../../subdata/data_20CR.html#OWData.twcr.load_observations_fortime">[docs]</a><span class="k">def</span> <span class="nf">load_observations_fortime</span><span class="p">(</span><span class="n">v_time</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="load_observations_fortime"><a class="viewcode-back" href="../../../subdata/data_20CR.html#IRData.twcr.load_observations_fortime">[docs]</a><span class="k">def</span> <span class="nf">load_observations_fortime</span><span class="p">(</span><span class="n">v_time</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Load observations from disc, that contribute to fields ata given time</span>
 
 <span class="sd">    Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch`.</span>
@@ -193,7 +195,7 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">OWData</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">IRData</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
