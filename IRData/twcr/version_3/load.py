@@ -22,9 +22,6 @@ import warnings
 
 from utils import _get_data_file_name
 
-# Eliminate incomprehensible warning message
-iris.FUTURE.netcdf_promote='True'
-
 # Need to add coordinate system metadata so they work with cartopy
 coord_s=iris.coord_systems.GeogCS(iris.fileformats.pp.EARTH_RADIUS)
 
