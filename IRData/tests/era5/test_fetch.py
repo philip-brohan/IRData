@@ -30,15 +30,18 @@ class TestFetch(unittest.TestCase):
                        stream='enda')
         mock_method.assert_called_once_with(
                 {'stream' : 'enda', 
+                 'class'  : 'ea',
                  'format' : 'netcdf',
+                 "expver" : "1",
                  'levtype': 'sfc', 
                  'dataset': 'era5',
                  'grid'   : '0.5/0.5',
+                 'number' : '0/1/2/3/4/5/6/7/8/9',
                  'date'   : '2010-03-01/to/2010-03-31',
                  'target' : '%s/ERA5/enda/hourly/2010/03/prmsl.nc' % \
                              os.getenv('SCRATCH'),
                  'param'  : 'msl',
-                 'time'   : '0/to/23/by/1',
+                 'time'   : '0/to/21/by/3',
                  'type'   : 'an'})
 
     # oper stream variable call
@@ -49,17 +52,17 @@ class TestFetch(unittest.TestCase):
                        datetime.datetime(2010,3,12),
                        stream='oper')
         mock_method.assert_called_once_with(
-                {'stream' : 'oper', 
-                 'format' : 'netcdf',
-                 'levtype': 'sfc', 
-                 'dataset': 'era5',
-                 'grid'   : '0.25/0.25',
-                 'date'   : '2010-03-01/to/2010-03-31',
-                 'target' : '%s/ERA5/oper/hourly/2010/03/prmsl.nc' % \
-                             os.getenv('SCRATCH'),
-                 'param'  : 'msl',
-                 'time'   : '0/to/23/by/1',
-                 'type'   : 'an'})
+               {'dataset'   : 'era5',
+                'stream'    : 'oper',
+                'type'      : 'an',
+                'levtype'   : 'sfc',
+                'param'     : 'msl',
+                'grid'      : '0.25/0.25',
+                'time'      : '0/to/23/by/1',
+                'date'      : '2010-03-01/to/2010-03-31',
+                'format'    : 'netcdf',
+                'target'    : '%s/ERA5/oper/hourly/2010/03/prmsl.nc' % \
+                                 os.getenv('SCRATCH')})
 
     # basic forecast variable call
     def test_fetch_prate(self):
@@ -70,18 +73,21 @@ class TestFetch(unittest.TestCase):
                        stream='enda')
         for start_hour in (6,18):
             mock_method.assert_any_call(
-               {'dataset'   : 'era5',
-                'stream'    : 'enda',
-                'type'      : 'fc',
-                'levtype'   : 'sfc',
-                'param'     : 'tp',
-                'grid'      : '0.5/0.5',
-                'time'      : "%02d" % start_hour,
-                'step'      : '0/to/18/by/1',
-                'date'      : '2010-03-01/to/2010-03-31',
-                'format'    : 'netcdf',
-                'target'    : '%s/ERA5/enda/hourly/2010/03/prate.%02d.nc' % \
-                                 (os.getenv('SCRATCH'),start_hour)})
+               {"class"   : "ea",
+                "dataset" : "era5",
+                'date'    : '2010-03-01/to/2010-03-31',
+                "expver"  : "1",
+                "levtype" : "sfc",
+                "number"  : "0/1/2/3/4/5/6/7/8/9",
+                "param"   : 'tp',
+                "stream"  : "enda",
+                'time'    : "%02d" % start_hour,
+                'step'    : '0/to/18/by/3',
+                "type"    : "fc",
+                'grid'    : '0.5/0.5',
+                'format'  : 'netcdf',
+                "target"  : '%s/ERA5/enda/hourly/2010/03/prate.%02d.nc' % \
+                                     (os.getenv('SCRATCH'),start_hour)})
 
     # Special case for end of month
     def test_fetch_prmsl_eom(self):
@@ -91,29 +97,35 @@ class TestFetch(unittest.TestCase):
                        datetime.datetime(2010,3,31,23,30),
                        stream='enda')
         mock_method.assert_called_with(
-                {'stream' : 'enda', 
-                 'format' : 'netcdf',
-                 'levtype': 'sfc', 
-                 'dataset': 'era5',
-                 'grid'   : '0.5/0.5',
-                 'date'   : '2010-03-01/to/2010-03-31',
-                 'target' : '%s/ERA5/enda/hourly/2010/03/prmsl.nc' % \
-                             os.getenv('SCRATCH'),
-                 'param'  : 'msl',
-                 'time'   : '0/to/23/by/1',
-                 'type'   : 'an'})
+           {"class"   : "ea",
+            "dataset" : "era5",
+            'date'    : "2010-03-01/to/2010-03-31",
+            "expver"  : "1",
+            "levtype" : "sfc",
+            "number"  : "0/1/2/3/4/5/6/7/8/9",
+            "param"   : 'msl',
+            "stream"  : "enda",
+            "time"    : "0/to/21/by/3",
+            "type"    : "an",
+            'grid'    : '0.5/0.5',
+            'format'  : 'netcdf',
+            "target"  : '%s/ERA5/enda/hourly/2010/03/prmsl.nc' % \
+                             os.getenv('SCRATCH')})
         mock_method.assert_any_call(
-                {'stream' : 'enda', 
-                 'format' : 'netcdf',
-                 'levtype': 'sfc', 
-                 'dataset': 'era5',
-                 'grid'   : '0.5/0.5',
-                 'date'   : '2010-04-01/to/2010-04-30',
-                 'target' : '%s/ERA5/enda/hourly/2010/04/prmsl.nc' % \
-                             os.getenv('SCRATCH'),
-                 'param'  : 'msl',
-                 'time'   : '0/to/23/by/1',
-                 'type'   : 'an'})
+           {"class"   : "ea",
+            "dataset" : "era5",
+            'date'    : "2010-04-01/to/2010-04-30",
+            "expver"  : "1",
+            "levtype" : "sfc",
+            "number"  : "0/1/2/3/4/5/6/7/8/9",
+            "param"   : 'msl',
+            "stream"  : "enda",
+            "time"    : "0/to/21/by/3",
+            "type"    : "an",
+            'grid'    : '0.5/0.5',
+            'format'  : 'netcdf',
+            "target"  : '%s/ERA5/enda/hourly/2010/04/prmsl.nc' % \
+                             os.getenv('SCRATCH')})
 
     # Dud variable
     def test_fetch_mslp(self):

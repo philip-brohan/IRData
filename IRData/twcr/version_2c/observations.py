@@ -66,8 +66,9 @@ def _unpack_downloaded_observations(year):
     zf.extractall("%s/observations/" % _get_data_dir())
     os.remove(local_file)
 
-def load_observations_1file(year,month,day,hour):
-    of_name=_observations_file_name(year,month,day,hour)
+def load_observations_1file(dtime):
+    of_name=_observations_file_name(dtime.year,dtime.month,
+                                    dtime.day,dtime.hour)
     if not os.path.isfile(of_name):
         raise IOError("No obs file for given version and date")
 
@@ -139,14 +140,14 @@ def load_observations(start,end):
 def load_observations_fortime(v_time):
     result=None
     if v_time.hour%6==0:
-        result=load_observations_1file(v_time.year,v_time.month,
-                                       v_time.day,v_time.hour)
+        result=load_observations_1file(v_time)
         result['weight']=numpy.repeat(1,len(result.index))
         return result
-    prev_time=v_time-datetime.timedelta(hours=v_time.hour%6)
-    prev_weight=(6-v_time.hour%6)/6.0
-    result=load_observations_1file(prev_time.year,prev_time.month,
-                                   prev_time.day,prev_time.hour)
+    prev_time=v_time-datetime.timedelta(hours=v_time.hour%6,
+                                        minutes=v_time.minutes,
+                                        seconds=v_time.seconds)
+    prev_weight=1-(v_time-prev_time).total_seconds()/3600
+    result=load_observations_1file(prev_time)
     result['weight']=numpy.repeat(prev_weight,len(result.index))
     next_time=prev_time+datetime.timedelta(hours=6)
     next_weight=1-prev_weight

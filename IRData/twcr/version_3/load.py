@@ -72,11 +72,10 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,version):
     fc_constraint=iris.Constraint(coord_values={
             'Forecast offset from initial time': lambda x: x==fc_time})
     try:
-        with iris.FUTURE.context(cell_datetime_objects=True):
-            with warnings.catch_warnings(): # Iris is v.fussy
-                warnings.simplefilter("ignore")
-                hslice=iris.load_cube(file_name,
-                                ic_constraint & fc_constraint)
+        with warnings.catch_warnings(): # Iris is v.fussy
+            warnings.simplefilter("ignore")
+            hslice=iris.load_cube(file_name,
+                            ic_constraint & fc_constraint)
     except iris.exceptions.ConstraintMismatchError:
        raise StandardError("%s not available for %04d-%02d-%02d:%02d" % 
                             (variable,year,month,day,hour))

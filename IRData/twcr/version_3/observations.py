@@ -32,13 +32,15 @@ def _observations_file_name(year,month,day,hour,version):
     return ("%s/observations/%04d/%04d%02d%02d%02d_psobs.txt" % 
                             (_get_data_dir(version),year,year,month,day,hour))
 
-def fetch_observations(year,month,version='4.5.1'):
+def fetch_observations(dtime,version='4.5.1'):
 
     #V3 data not yet publically available
     if getpass.getuser() not in ('hadpb','philip','brohanp'):
         raise StandardError('Unsupported user: V3 fetch only works for Philip')
-
-    o_dir= "%s/observations/%04d" % (_get_data_dir(version),year)
+    ndtime=dtime+datetime.timedelta(hours=6)
+    if ndtime.year!=dtime.year:
+        fetch_observations(ndtime)
+    o_dir= "%s/observations/%04d" % (_get_data_dir(version),dtime.year)
     if os.path.exists(o_dir):
         if len(os.listdir(o_dir)) >= 1460:
             return
@@ -54,9 +56,10 @@ def fetch_observations(year,month,version='4.5.1'):
     if scp_retvalue!=0:
         raise StandardError("Failed to retrieve data")
 
-def load_observations_1file(year,month,day,hour,version):
+def load_observations_1file(dtime,version):
     """Retrieve all the observations for an individual assimilation run."""
-    of_name=_observations_file_name(year,month,day,hour,version)
+    of_name=_observations_file_name(dtime.year,dtime.month,
+                                    dtime.day,dtime.hour,version)
     if not os.path.isfile(of_name):
         raise IOError("No obs file for given version and date")
 

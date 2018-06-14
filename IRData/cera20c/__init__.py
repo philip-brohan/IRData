@@ -45,6 +45,8 @@ Once the data has been fetched,
 
 will then load the precipitation rates at quarter past 3pm on March 12 1969 from the retrieved dataset as a :class:`iris.cube.Cube`. Note that as CERA only provides data at 3-hourly intervals, the value for 3:15pm will be interpolated between the 15:00 and 18:00 outputs (to get uninterpolated data, only call load for times when CERA-20C has output). Also, as CERA is an ensemble dataset, the result will include all 10 ensemble members.
 
+Note that precipitation in CERA-20C is reported as metres accumulated, and it accumulates over the whole 27-hour forecast, so it reports precip at 15:00 as (accumulated precip at 12:00)+(accumulation in the period 12-15). This module removes the across-timestep accumulation, so 'loading' precip at 15:00 only gives the accumulation in the period 12-15, and the units are 'm accumulated in the last 3-hours'. It is this 3-hour-accumulation that is interpolated if you 'load' the precipitation for a period between timesteps.
+
 |
 """
 

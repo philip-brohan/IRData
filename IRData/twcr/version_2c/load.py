@@ -61,9 +61,8 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour):
                                     day=day,
                                     hour=hour))
     try:
-        with iris.FUTURE.context(cell_datetime_objects=True):
-            hslice=iris.load_cube(file_name,
-                                  time_constraint)
+        hslice=iris.load_cube(file_name,
+                              time_constraint)
     except iris.exceptions.ConstraintMismatchError:
        raise StandardError("%s not available for %04d-%02d-%02d:%02d" % 
                             (variable,year,month,day,hour))

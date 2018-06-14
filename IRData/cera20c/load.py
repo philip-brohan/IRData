@@ -60,18 +60,22 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,
     if not _is_in_file(variable,year,month,day,hour):
         raise ValueError("Invalid hour - data not in file")
 
-    # Precipitation is accumulated over the forecast, and we want rate.
+    # Precipitation is accumulated over the forecast, convert to
+    # Accumulation over last (3-hour timestep)
+    # Still in weird units, be careful.
     if (variable=='prate' and deaccumulate and
        (hour!=21 or (fc_init is not None and fc_init=='last'))):
         r1=_get_slice_at_hour_at_timestep(variable,year,month,day,hour,
                                            fc_init=fc_init,deaccumulate=False)
         # Subtract the values from 3 hours ago
-        lt=datetime.datetime(year,month,day,hour)-datetime.timedelta(hours=3)
+        lt=datetime.datetime(year,month,day,int(hour))-datetime.timedelta(hours=3)
         r2=_get_slice_at_hour_at_timestep(variable,lt.year,lt.month,lt.day,lt.hour,
                                            fc_init=fc_init,deaccumulate=False)
-        r1=(r1-r2)/3 # to m/hr
-        r1=r1/3.6    # to kg m**-2 s**-1 - same as 20CR
-        r1.units='kg m**-2 s**-1'
+        r1.data=(r1.data-r2.data) # to m/(3-hour period)
+        # convert to kg m**-2 s**-1 (same as 20CR)
+        # Decided against doing this.
+        #r1.data=r1.data/10.8    # to kg m**-2 s**-1 - same as 20CR
+        #r1.units='kg m**-2 s**-1'
         return r1
 
     # Not precipitation - just get the data for this timestep
@@ -87,9 +91,8 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,
                                    day=day,
                                    hour=hour))
     try:
-        with iris.FUTURE.context(cell_datetime_objects=True):
-            hslice=iris.load_cube(file_name,
-                                  time_constraint)
+        hslice=iris.load_cube(file_name,
+                              time_constraint)
     # This isn't the right error to catch
     except iris.exceptions.ConstraintMismatchError:
        print("Data not available")

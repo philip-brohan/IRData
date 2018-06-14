@@ -70,25 +70,47 @@ def _fetch_analysis_data_for_month(variable,year,month,
     if not os.path.exists(os.path.dirname(local_file)):
         os.makedirs(os.path.dirname(local_file))
 
-    grid='0.5/0.5'
     if stream=='oper':
         grid='0.25/0.25'
-    server = ecmwfapi.ECMWFDataServer()
-    server.retrieve({
-        'dataset'   : 'era5',
-        'stream'    : stream,
-        'type'      : 'an',
-        'levtype'   : 'sfc',
-        'param'     : _translate_for_file_names(variable),
-        'grid'      : grid,
-        'time'      : '0/to/23/by/1',
-        'date'      : "%04d-%02d-%02d/to/%04d-%02d-%02d" %
-                       (year,month,1,
-                        year,month,
-                        calendar.monthrange(year,month)[1]),
-        'format'    : 'netcdf',
-        'target'    : local_file
-    })
+        server = ecmwfapi.ECMWFDataServer()
+        server.retrieve({
+            'dataset'   : 'era5',
+            'stream'    : 'oper',
+            'type'      : 'an',
+            'levtype'   : 'sfc',
+            'param'     : _translate_for_file_names(variable),
+            'grid'      : '0.25/0.25',
+            'time'      : '0/to/23/by/1',
+            'date'      : "%04d-%02d-%02d/to/%04d-%02d-%02d" %
+                           (year,month,1,
+                            year,month,
+                            calendar.monthrange(year,month)[1]),
+            'format'    : 'netcdf',
+            'target'    : local_file
+        })
+    elif stream=='enda':
+        server = ecmwfapi.ECMWFDataServer()
+        server.retrieve({
+            "class"   : "ea",
+            "dataset" : "era5",
+            'date'    : "%04d-%02d-%02d/to/%04d-%02d-%02d" %
+                           (year,month,1,
+                            year,month,
+                            calendar.monthrange(year,month)[1]),
+            "expver"  : "1",
+            "levtype" : "sfc",
+            "number"  : "0/1/2/3/4/5/6/7/8/9",
+            "param"   : _translate_for_file_names(variable),
+            "stream"  : "enda",
+            "time"    : "0/to/21/by/3",
+            "type"    : "an",
+            'grid'    : '0.5/0.5',
+            'format'  : 'netcdf',
+            "target"  : local_file
+        })
+    else:
+        raise StandardError("Unsupported stream %s" % stream)
+    
 
 def _fetch_forecast_data_for_month(variable,year,month,
                                    stream='enda'):
@@ -100,30 +122,51 @@ def _fetch_forecast_data_for_month(variable,year,month,
                                     fc_init=start_hour,stream=stream)
         if os.path.isfile(local_file):
             # Got this data already
-            return
+            continue
 
         if not os.path.exists(os.path.dirname(local_file)):
             os.makedirs(os.path.dirname(local_file))
 
-        grid='0.5/0.5'
         if stream=='oper':
-            grid='0.25/0.25'
-        server = ecmwfapi.ECMWFDataServer()
-        server.retrieve({
-            'dataset'   : 'era5',
-            'stream'    :  stream,
-            'type'      : 'fc',
-            'levtype'   : 'sfc',
-            'param'     : _translate_for_file_names(variable),
-            'grid'      : grid,
-            'time'      : "%02d" % start_hour,
-            'step'      : '0/to/18/by/1',
-            'date'      : "%04d-%02d-%02d/to/%04d-%02d-%02d" %
-                           (year,month,1,
-                            year,month,
-                            calendar.monthrange(year,month)[1]),
-            'format'    : 'netcdf',
-            'target'    : local_file
-        })
+            server = ecmwfapi.ECMWFDataServer()
+            server.retrieve({
+                'dataset' : 'era5',
+                'stream'  : 'oper',
+                'type'    : 'fc',
+                'levtype' : 'sfc',
+                'param'   : _translate_for_file_names(variable),
+                'grid'    : '0.25/0.25',
+                'time'    : "%02d" % start_hour,
+                'step'    : '0/to/18/by/1',
+                'date'    : "%04d-%02d-%02d/to/%04d-%02d-%02d" %
+                               (year,month,1,
+                                year,month,
+                                calendar.monthrange(year,month)[1]),
+                'format'  : 'netcdf',
+                'target'  : local_file
+            })
+        elif stream=='enda':
+            server = ecmwfapi.ECMWFDataServer()
+            server.retrieve({
+                "class"   : "ea",
+                "dataset" : "era5",
+                'date'    : "%04d-%02d-%02d/to/%04d-%02d-%02d" %
+                               (year,month,1,
+                                year,month,
+                                calendar.monthrange(year,month)[1]),
+                "expver"  : "1",
+                "levtype" : "sfc",
+                "number"  : "0/1/2/3/4/5/6/7/8/9",
+                "param"   : _translate_for_file_names(variable),
+                "stream"  : "enda",
+                'time'    : "%02d" % start_hour,
+                'step'    : '0/to/18/by/3',
+                "type"    : "fc",
+                'grid'    : '0.5/0.5',
+                'format'  : 'netcdf',
+                "target"  : local_file
+            })
+        else:
+            raise StandardError("Unsupported stream %s" % stream)
 
 
