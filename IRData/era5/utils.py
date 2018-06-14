@@ -92,7 +92,7 @@ def _hourly_get_file_name(variable,year,month,
         if fc_init==None:
             fc_init=18
             if hour>=6 and hour<18:
-                fc.init=6
+                fc_init=6
         if fc_init!=6 and fc_init!=18:
             raise StandardError(
              "Forcast initialisation time must be 6 or 18")

@@ -44,7 +44,7 @@ Once the data has been fetched,
 .. code-block:: python
 
     pr=era5.load('prate',
-                 datetime.datetime(1969,3,12,15,15),
+                 datetime.datetime(2015,3,12,15,15),
                  stream='enda')
 
 will then load the precipitation rates at quarter past 3pm on March 12 2015 from the retrieved dataset as a :class:`iris.cube.Cube`. Note that as ERA5 only provides data at hourly or 3-hourly intervals, the value for 3:15pm will be interpolated between the outputs. Also, as ERA5 stream 'enda' is an ensemble dataset, the result will include all 10 ensemble members.
