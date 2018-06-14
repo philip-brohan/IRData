@@ -122,12 +122,12 @@ def load_observations_1file(dtime):
 
 def load_observations(start,end):
     result=None
-    ct=start
-    while(ct<end):
+    ct=start-datetime.timedelta(hours=3)
+    while(ct<(end+datetime.timedelta(hours=3))):
         if(int(ct.hour)%6!=0):
            ct=ct+datetime.timedelta(hours=1)
            continue 
-        o=load_observations_1file(ct.year,ct.month,ct.day,ct.hour)
+        o=load_observations_1file(ct)
         dtm=pandas.to_datetime(o.UID.str.slice(0,10),format="%Y%m%d%H")
         o2=o[(dtm>=start) & (dtm<end)]
         if(result is None):
@@ -144,15 +144,14 @@ def load_observations_fortime(v_time):
         result['weight']=numpy.repeat(1,len(result.index))
         return result
     prev_time=v_time-datetime.timedelta(hours=v_time.hour%6,
-                                        minutes=v_time.minutes,
-                                        seconds=v_time.seconds)
-    prev_weight=1-(v_time-prev_time).total_seconds()/3600
+                                        minutes=v_time.minute,
+                                        seconds=v_time.second)
+    prev_weight=1-(v_time-prev_time).total_seconds()/(3600.0*6)
     result=load_observations_1file(prev_time)
     result['weight']=numpy.repeat(prev_weight,len(result.index))
     next_time=prev_time+datetime.timedelta(hours=6)
     next_weight=1-prev_weight
-    result2=load_observations_1file(next_time.year,next_time.month,
-                                    next_time.day,next_time.hour)
+    result2=load_observations_1file(next_time)
     result2['weight']=numpy.repeat(next_weight,len(result2.index))
     result=pandas.concat([result,result2])
     return result
