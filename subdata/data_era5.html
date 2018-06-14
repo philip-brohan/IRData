@@ -88,7 +88,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <p>will retrieve precipitation rate data for the selected date. ERA5 data is fetched in one-calendar-month blocks, so this will retrieve data for the whole of March 2015. The retrieval is slow, as the data has to be fetched from MARS at ECMWF, but the retrieval is only run if necessary - if that month’s data has been previously fetched and is already on local disc, the fetch command will detect this and return instantly.</p>
 <p>Once the data has been fetched,</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pr</span><span class="o">=</span><span class="n">era5</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;prate&#39;</span><span class="p">,</span>
-             <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1969</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span>
+             <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2015</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span>
              <span class="n">stream</span><span class="o">=</span><span class="s1">&#39;enda&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
