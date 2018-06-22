@@ -20,6 +20,8 @@ There is one sub-package for each of several data sources, with `fetch` methods 
 2.  IRData.cera20c - Data from the CERA20C Reanalysis.
 3.  IRData.era5 - Data from the ERA5 Reanalysis.
 
+See [the docs](http://brohan.org/IRData/).
+
 This is a personal software library; it builds on SciTools/Iris and is licensed on the same terms, but it does not have the same level of documentation, support, testing, or stability.
 
 
