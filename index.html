@@ -4,19 +4,28 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>IRData: Accessing synoptic-timescale Reanalyis Data with Iris &#8212; An API for accessing synoptic-timescale reanalyis data</title>
+    <title>IRData: Accessing synoptic-timescale Reanalysis Data with Iris &#8212; An API for accessing synoptic-timescale reanalyis data</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Installation" href="install.html" /> 
-  </head><body>
+  </head>
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -62,15 +71,15 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="irdata-accessing-synoptic-timescale-reanalyis-data-with-iris">
-<h1>IRData: Accessing synoptic-timescale Reanalyis Data with Iris<a class="headerlink" href="#irdata-accessing-synoptic-timescale-reanalyis-data-with-iris" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="irdata-accessing-synoptic-timescale-reanalysis-data-with-iris">
+<h1>IRData: Accessing synoptic-timescale Reanalysis Data with Iris<a class="headerlink" href="#irdata-accessing-synoptic-timescale-reanalysis-data-with-iris" title="Permalink to this headline">¶</a></h1>
 <p>This code library extends <a class="reference external" href="http://scitools.org.uk/iris/docs/latest/index.html">Iris</a> in providing tools for accessing reanalysis data. It uses Iris data structures and methods for handling the data, and extends it by providing functions for using synoptic-timescale reanalysis data from several sources.</p>
-<p>The idea is have an API for loading synoptic-timescale reanalysis data into an <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">iris.cube.Cube</span></code></a>. That is, for a requirement like:</p>
+<p>The idea is have an API for loading synoptic-timescale reanalysis data into an <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-class docutils literal"><span class="pre">iris.cube.Cube</span></code></a>. That is, for a requirement like:</p>
 <blockquote>
 <div>“From the Twentieth Century Reanalysis version 2c, load the 2m air temperature at 7am (UTC) on 16th October 1987.”</div></blockquote>
 <p>to have code that would find and download the data, and then provide it as a cube, interpolating to the requested time as necessary.</p>
 <p>This module provides such an API, for several reanalyses. The request above is:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="n">dtime</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">IRData.twcr</span> <span class="kn">as</span> <span class="nn">twcr</span>
 <span class="n">twcr</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;air.2m&#39;</span><span class="p">,</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
