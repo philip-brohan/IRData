@@ -48,7 +48,7 @@ def fetch_observations(dtime,version='4.5.1'):
         os.makedirs(o_dir)
 
     # Multiple files, use rsync
-    r_dir=_observations_remote_file(year,month,version)
+    r_dir=_observations_remote_file(dtime.year,dtime.month,version)
     cmd="rsync -Lr %s/ %s" % (r_dir,o_dir)
     scp_retvalue=subprocess.call(cmd,shell=True) # Why need shell=True?
     if scp_retvalue==3:

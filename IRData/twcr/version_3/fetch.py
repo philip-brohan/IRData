@@ -16,6 +16,7 @@
 import os
 import subprocess
 import getpass
+import datetime
 
 from utils import _get_data_file_name
 
@@ -47,14 +48,14 @@ def _get_remote_file_name(variable,year,month,version='4.5.1'):
     return(remote_file) 
 
 
-def fetch(variable,year,month,version='4.5.1'):
+def fetch(variable,dtime,version='4.5.1'):
 
     #V3 data not yet publically available
     if getpass.getuser() not in ('hadpb','philip','brohanp'):
         raise StandardError('Unsupported user: V3 fetch only works for Philip')
     
     local_file=_get_data_file_name(variable,
-                                   year,month,
+                                   dtime.year,dtime.month,
                                    version=version)
 
     if ((variable != 'observations') and os.path.isfile(local_file)): 
@@ -64,7 +65,8 @@ def fetch(variable,year,month,version='4.5.1'):
     if not os.path.exists(os.path.dirname(local_file)):
         os.makedirs(os.path.dirname(local_file))
 
-    remote_file=_get_remote_file_name(variable,year,month,version)
+    remote_file=_get_remote_file_name(variable,dtime.year,
+                                      dtime.month,version)
 
     if(variable=='observations'):
         # Multiple files - use rsync
