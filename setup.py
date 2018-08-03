@@ -14,7 +14,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='IRData',
-    version='0.1.0',
+    version='0.1.1',
     description='An API for accessing synoptic-timescale reanalyis data',
 
     # From README - see above

@@ -39,7 +39,7 @@ def load(variable,dtime,version=None):
     """
     if version=='2c':
         return version_2c.load(variable,dtime)
-    if version in ('4.5.1','4.5.2'):
+    if version[0:2] == '4.':
         return version_3.load(variable,dtime,version=version)
     raise StandardError('Invalid version number %s' % version)
 

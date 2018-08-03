@@ -38,7 +38,7 @@ def fetch_observations(dtime,version='none'):
 
     if version=='2c':
         return version_2c.fetch_observations(dtime)
-    if version in ('4.5.1','4.5.2'):
+    if version[0:2] == '4.':
         return version_3.fetch_observations(dtime,version)
     raise StandardError("Unsupported version %s" % version)
 
@@ -62,7 +62,7 @@ def load_observations_1file(dtime,version='none'):
 
     if version=='2c':
         return version_2c.load_observations_1file(dtime)
-    if version in ('4.5.1','4.5.2'):
+    if version[0:2] == '4.':
         return version_3.load_observations_1file(dtime,version)
     raise StandardError("Unsupported version %s" % version)
 
@@ -88,7 +88,7 @@ def load_observations(start,end,version='none'):
 
     if version=='2c':
         return version_2c.load_observations(start,end)
-    if version in ('4.5.1','4.5.2'):
+    if version[0:2] == '4.':
         return version_3.load_observations(start,end,version)
     raise StandardError("Unsupported version %s" % version)
 
@@ -114,6 +114,6 @@ def load_observations_fortime(v_time,version='none'):
 
     if version=='2c':
         return version_2c.load_observations_fortime(v_time)
-    if version in ('4.5.1','4.5.2'):
+    if version[0:2] == '4.':
         return version_3.load_observations_fortime(v_time,version)
     raise StandardError("Unsupported version %s" % version)
