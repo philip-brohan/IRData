@@ -17,7 +17,7 @@ import version_2c
 import version_3
 import datetime
 
-def fetch_observations(dtime,version='none'):
+def fetch_observations(dtime,version='none',user='pbrohan'):
     """Get observations from the 20CR archive at NERSC.
 
     Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by :func:`load_observations`. If the local files that would be produced already exists, this function does nothing.
@@ -27,6 +27,7 @@ def fetch_observations(dtime,version='none'):
     Args:
         dtime (:obj:`datetime.datetime`): Date and time to get observations for.
         version (:obj:`str`): 20CR version to retrieve data for.
+        user (:obj:`str`): NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to 'pbrohan'. This should be your NERSC username.
 
     Will retrieve the data for the year of the given date-time.
 
@@ -39,7 +40,7 @@ def fetch_observations(dtime,version='none'):
     if version=='2c':
         return version_2c.fetch_observations(dtime)
     if version[0:2] == '4.':
-        return version_3.fetch_observations(dtime,version)
+        return version_3.fetch_observations(dtime,version,user)
     raise StandardError("Unsupported version %s" % version)
 
 def load_observations_1file(dtime,version='none'):
@@ -50,6 +51,7 @@ def load_observations_1file(dtime,version='none'):
     Args:
         dtime (:obj:`int`): Date and time of assimilation run.
         version (:obj:`str`): 20CR version to load data from.
+        user (:obj:`str`): NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to 'pbrohan'. This should be your NERSC username.
 
     Returns:
         :obj:`pandas.DataFrame`: Dataframe of observations.
@@ -66,7 +68,7 @@ def load_observations_1file(dtime,version='none'):
         return version_3.load_observations_1file(dtime,version)
     raise StandardError("Unsupported version %s" % version)
 
-def load_observations(start,end,version='none'):
+def load_observations(start,end,version='none',user='pbrohan'):
     """Load observations from disc, for the selected period
 
     Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch`.

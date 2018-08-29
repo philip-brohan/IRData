@@ -18,7 +18,7 @@ import version_3
 import observations
 import datetime
 
-def fetch(variable,dtime,version='none'):
+def fetch(variable,dtime,version='none',user='pbrohan'):
     """Get data for one variable, from the 20CR archive at NERSC.
 
     Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by :func:`load`. If the local file that would be produced already exists, this function does nothing.
@@ -27,6 +27,7 @@ def fetch(variable,dtime,version='none'):
         variable (:obj:`str`): Variable to fetch (e.g. 'prmsl').
         dtime (:obj:`datetime.datetime`): Date and time to get data for.
         version (:obj:`str`): 20CR version to retrieve data for.
+        user (:obj:`str`): NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to 'pbrohan'. This should be your NERSC username.
 
     Raises:
         StandardError: If version is not a supported value.
@@ -36,11 +37,12 @@ def fetch(variable,dtime,version='none'):
 
     if variable=='observations':
         return observations.fetch_observations(dtime,
-                                      version=version)
+                                      version=version,
+                                      user=user)
 
     if version=='2c':
         return version_2c.fetch(variable,dtime)
     if version in ('4.5.1','4.5.2'):
-        return version_3.fetch(variable,dtime,version)
+        return version_3.fetch(variable,dtime,version,user=user)
 
     raise StandardError("Unsupported version %s" % version)
