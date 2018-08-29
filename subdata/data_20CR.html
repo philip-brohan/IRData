@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>The 20th Century Reanalysis: IRData.twcr &#8212; An API for accessing synoptic-timescale reanalyis data</title>
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -25,8 +17,7 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="The CERA-20C reanalysis: IRData.cera20c" href="data_cera20c.html" />
     <link rel="prev" title="Installation" href="../install.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -93,7 +84,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 </ul>
 <p>Data retrieved is stored in directory $SCRATCH/20CR - the ‘SCRATCH’ environment variable must be set.</p>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">IRData.twcr</span> <span class="kn">as</span> <span class="nn">twcr</span>
 <span class="n">twcr</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;prate&#39;</span><span class="p">,</span>
            <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span>
@@ -102,38 +93,33 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 </div>
 <p>Will retrieve precipitation rate data for the selected date. 20CR2c data is fetched in one-calendar-year blocks, so this will retrieve data for the whole of 1987. The retrieval is slow, as the data has to be fetched from NERSC, but the retrieval is only run if necessary - if that year’s data has been previously fetched and is already on local disc, the fetch command will detect this and return instantly.</p>
 <p>Once the data has been fetched,</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">pr</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;prate&#39;</span><span class="p">,</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pr</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;prate&#39;</span><span class="p">,</span>
              <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span>
              <span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>will then load the precipitation rates at quarter past 3pm on March 12 1987 from the retrieved dataset as an <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-obj docutils literal"><span class="pre">iris.cube.Cube</span></code></a>. Note that as 20CR only provides data at 6-hourly or 3-hourly intervals, the value for 3:15pm will be interpolated between the outputs (to get uninterpolated data, only call load for times when 20CR has output). Also, as 20CR2c is an ensemble dataset, the result will include all 56 ensemble members.</p>
+<p>will then load the precipitation rates at quarter past 3pm on March 12 1987 from the retrieved dataset as an <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.cube.Cube</span></code></a>. Note that as 20CR only provides data at 6-hourly or 3-hourly intervals, the value for 3:15pm will be interpolated between the outputs (to get uninterpolated data, only call load for times when 20CR has output). Also, as 20CR2c is an ensemble dataset, the result will include all 56 ensemble members.</p>
 <p>Observations files are also available. They can be fetched with:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="n">twcr</span><span class="o">.</span><span class="n">fetch_observations</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span>
                         <span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Observations are also fetched in one-calendar-year blocks, so this will retrieve observations (from NERSC) for the whole of 1987. Again, the retrieval is only run if necessary - if that year’s data has been previously fetched and is already on local disc, the fetch command will detect this and return instantly.</p>
 <p>Once the observations have been fetched, load all the observations valid between two times with:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="n">o</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span>
                          <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">18</span><span class="p">),</span>
                          <span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<<<<<<< HEAD
 <p>It’s also possible to load all the observations associated with a particular reanalysis field. 20CR assimilates observations every 6-hours, so there is one observations file for each 6-hourly assimilation run. Load all the observations available to the assimilation run for 12 noon on March 12 1987 (as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) with:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">o</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_1file</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span>
-=======
-<p>It’s also possible to load all the observations associated with a particular reanalysis field. 20CR assimilates observations every 6-hours, so there is one observations file for each 6-hourly assimilation run. Load all the observations available to the assimilation run for 12 noon on March 12 1987 (as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.1)"><code class="xref py py-obj docutils literal"><span class="pre">pandas.DataFrame</span></code></a>) with:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">o</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_1file</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span>
->>>>>>> 86f5a59d5c705519010951885351cdc004435aae
                                <span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>That’s only possible for times that match an assimilation time (hour=0,6,12,18). For in-between times (interpolated fields), load all the observations contributing to the field with:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">o</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">o</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span>
                                  <span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -159,26 +145,20 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 <dt id="IRData.twcr.fetch">
 <code class="descclassname">IRData.twcr.</code><code class="descname">fetch</code><span class="sig-paren">(</span><em>variable</em>, <em>dtime</em>, <em>version='none'</em>, <em>user='pbrohan'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/fetch.html#fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.fetch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get data for one variable, from the 20CR archive at NERSC.</p>
-<p>Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by <a class="reference internal" href="#IRData.twcr.load" title="IRData.twcr.load"><code class="xref py py-func docutils literal"><span class="pre">load()</span></code></a>. If the local file that would be produced already exists, this function does nothing.</p>
+<p>Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by <a class="reference internal" href="#IRData.twcr.load" title="IRData.twcr.load"><code class="xref py py-func docutils literal notranslate"><span class="pre">load()</span></code></a>. If the local file that would be produced already exists, this function does nothing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<<<<<<< HEAD
 <li><strong>variable</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – Variable to fetch (e.g. ‘prmsl’).</li>
 <li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Date and time to get data for.</li>
 <li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – 20CR version to retrieve data for.</li>
 <li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to ‘pbrohan’. This should be your NERSC username.</li>
-=======
-<li><strong>variable</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – Variable to fetch (e.g. ‘prmsl’).</li>
-<li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Date and time to get data for.</li>
-<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – 20CR version to retrieve data for.</li>
->>>>>>> 86f5a59d5c705519010951885351cdc004435aae
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">StandardError</span></code> – If version is not a supported value.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – If version is not a supported value.</p>
 </td>
 </tr>
 </tbody>
@@ -192,21 +172,16 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 <dt id="IRData.twcr.fetch_observations">
 <code class="descclassname">IRData.twcr.</code><code class="descname">fetch_observations</code><span class="sig-paren">(</span><em>dtime</em>, <em>version='none'</em>, <em>user='pbrohan'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/observations.html#fetch_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.fetch_observations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get observations from the 20CR archive at NERSC.</p>
-<p>Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by <a class="reference internal" href="#IRData.twcr.load_observations" title="IRData.twcr.load_observations"><code class="xref py py-func docutils literal"><span class="pre">load_observations()</span></code></a>. If the local files that would be produced already exists, this function does nothing.</p>
+<p>Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by <a class="reference internal" href="#IRData.twcr.load_observations" title="IRData.twcr.load_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_observations()</span></code></a>. If the local files that would be produced already exists, this function does nothing.</p>
 <p>For 20CR version 2c, the data is retrieved in calendar year blocks, and the ‘month’ and ‘day’ arguments are ignored.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<<<<<<< HEAD
 <li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Date and time to get observations for.</li>
 <li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – 20CR version to retrieve data for.</li>
 <li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to ‘pbrohan’. This should be your NERSC username.</li>
-=======
-<li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Date and time to get observations for.</li>
-<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – 20CR version to retrieve data for.</li>
->>>>>>> 86f5a59d5c705519010951885351cdc004435aae
 </ul>
 </td>
 </tr>
@@ -217,7 +192,7 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">StandardError</span></code> – If version is not a supported value.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – If version is not a supported value.</td>
 </tr>
 </tbody>
 </table>
@@ -230,22 +205,22 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 <dt id="IRData.twcr.load">
 <code class="descclassname">IRData.twcr.</code><code class="descname">load</code><span class="sig-paren">(</span><em>variable</em>, <em>dtime</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/load.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load requested data from disc, interpolating if necessary.</p>
-<p>Data must be available in directory $SCRATCH/20CR, previously retrieved by <a class="reference internal" href="#IRData.twcr.fetch" title="IRData.twcr.fetch"><code class="xref py py-func docutils literal"><span class="pre">fetch()</span></code></a>.</p>
+<p>Data must be available in directory $SCRATCH/20CR, previously retrieved by <a class="reference internal" href="#IRData.twcr.fetch" title="IRData.twcr.fetch"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>variable</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – Variable to fetch (e.g. ‘prmsl’)</li>
-<li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Date and time to load data for.</li>
-<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – 20CR version to load data from.</li>
+<li><strong>variable</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – Variable to fetch (e.g. ‘prmsl’)</li>
+<li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Date and time to load data for.</li>
+<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – 20CR version to load data from.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Global field of variable at time.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-obj docutils literal"><span class="pre">iris.cube.Cube</span></code></a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.cube.Cube</span></code></a></p>
 </td>
 </tr>
 </tbody>
@@ -255,7 +230,7 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch" title="IRData.twcr.fetch"><code class="xref py py-func docutils literal"><span class="pre">fetch()</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch" title="IRData.twcr.fetch"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch()</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -268,29 +243,25 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 <dt id="IRData.twcr.load_observations">
 <code class="descclassname">IRData.twcr.</code><code class="descname">load_observations</code><span class="sig-paren">(</span><em>start</em>, <em>end</em>, <em>version='none'</em>, <em>user='pbrohan'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/observations.html#load_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.load_observations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load observations from disc, for the selected period</p>
-<p>Data must be available in directory $SCRATCH/20CR, previously retrieved by <a class="reference internal" href="#IRData.twcr.fetch" title="IRData.twcr.fetch"><code class="xref py py-func docutils literal"><span class="pre">fetch()</span></code></a>.</p>
+<p>Data must be available in directory $SCRATCH/20CR, previously retrieved by <a class="reference internal" href="#IRData.twcr.fetch" title="IRData.twcr.fetch"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Get observations at or after this time.</li>
-<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Get observations before this time.</li>
-<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – 20CR version to load data from.</li>
+<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Get observations at or after this time.</li>
+<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Get observations before this time.</li>
+<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – 20CR version to load data from.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dataframe of observations.</p>
 </td>
 </tr>
-<<<<<<< HEAD
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
-=======
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.1)"><code class="xref py py-obj docutils literal"><span class="pre">pandas.DataFrame</span></code></a></p>
->>>>>>> 86f5a59d5c705519010951885351cdc004435aae
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal"><span class="pre">fetch_observations()</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_observations()</span></code></a></p>
 </td>
 </tr>
 </tbody>
@@ -304,34 +275,25 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 <dt id="IRData.twcr.load_observations_1file">
 <code class="descclassname">IRData.twcr.</code><code class="descname">load_observations_1file</code><span class="sig-paren">(</span><em>dtime</em>, <em>version='none'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/observations.html#load_observations_1file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.load_observations_1file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load observations from disc, that were used in the assimilation run at the time specified.</p>
-<p>Data must be available in directory $SCRATCH/20CR, previously retrieved by <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal"><span class="pre">fetch_observations()</span></code></a>.</p>
+<p>Data must be available in directory $SCRATCH/20CR, previously retrieved by <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_observations()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<<<<<<< HEAD
 <li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – Date and time of assimilation run.</li>
 <li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – 20CR version to load data from.</li>
 <li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to ‘pbrohan’. This should be your NERSC username.</li>
-=======
-<li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a>) – Date and time of assimilation run.</li>
-<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – 20CR version to load data from.</li>
->>>>>>> 86f5a59d5c705519010951885351cdc004435aae
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dataframe of observations.</p>
 </td>
 </tr>
-<<<<<<< HEAD
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
-=======
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.1)"><code class="xref py py-obj docutils literal"><span class="pre">pandas.DataFrame</span></code></a></p>
->>>>>>> 86f5a59d5c705519010951885351cdc004435aae
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal"><span class="pre">fetch_observations()</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_observations()</span></code></a></p>
 </td>
 </tr>
 </tbody>
@@ -345,29 +307,25 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 <dt id="IRData.twcr.load_observations_fortime">
 <code class="descclassname">IRData.twcr.</code><code class="descname">load_observations_fortime</code><span class="sig-paren">(</span><em>v_time</em>, <em>version='none'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/observations.html#load_observations_fortime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.load_observations_fortime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load observations from disc, that contribute to fields ata given time</p>
-<p>Data must be available in directory $SCRATCH/20CR, previously retrieved by <a class="reference internal" href="#IRData.twcr.fetch" title="IRData.twcr.fetch"><code class="xref py py-func docutils literal"><span class="pre">fetch()</span></code></a>.</p>
-<p>At the times when assimilation takes place, all the observations used at that time are provided by <a class="reference internal" href="#IRData.twcr.load_observations_1file" title="IRData.twcr.load_observations_1file"><code class="xref py py-func docutils literal"><span class="pre">load_observations_1file()</span></code></a> - this function serves the same function, but for intermediate times, where fields are obtained by interpolation. It gets all the observations from each field used in the interpolation, and assigns a weight to each one - the same as the weight used in interpolating the fields.</p>
+<p>Data must be available in directory $SCRATCH/20CR, previously retrieved by <a class="reference internal" href="#IRData.twcr.fetch" title="IRData.twcr.fetch"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch()</span></code></a>.</p>
+<p>At the times when assimilation takes place, all the observations used at that time are provided by <a class="reference internal" href="#IRData.twcr.load_observations_1file" title="IRData.twcr.load_observations_1file"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_observations_1file()</span></code></a> - this function serves the same function, but for intermediate times, where fields are obtained by interpolation. It gets all the observations from each field used in the interpolation, and assigns a weight to each one - the same as the weight used in interpolating the fields.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>v_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Get observations associated with this time.</li>
-<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – 20CR version to load data from.</li>
+<li><strong>v_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Get observations associated with this time.</li>
+<li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – 20CR version to load data from.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">same as from <a class="reference internal" href="#IRData.twcr.load_observations" title="IRData.twcr.load_observations"><code class="xref py py-func docutils literal"><span class="pre">load_observations()</span></code></a>, except with aded column ‘weight’ giving the weight of each observation at the given time.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">same as from <a class="reference internal" href="#IRData.twcr.load_observations" title="IRData.twcr.load_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_observations()</span></code></a>, except with aded column ‘weight’ giving the weight of each observation at the given time.</p>
 </td>
 </tr>
-<<<<<<< HEAD
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
-=======
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.1)"><code class="xref py py-obj docutils literal"><span class="pre">pandas.DataFrame</span></code></a></p>
->>>>>>> 86f5a59d5c705519010951885351cdc004435aae
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal"><span class="pre">fetch_observations()</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_observations()</span></code></a></p>
 </td>
 </tr>
 </tbody>

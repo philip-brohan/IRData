@@ -1,5 +1,5 @@
-IRData: Accessing synoptic-timescale Reanalysis Data with Iris
-==============================================================
+IRData: Accessing synoptic-timescale Reanalyis Data with Iris
+=============================================================
 
 This code library extends `Iris <http://scitools.org.uk/iris/docs/latest/index.html>`_ in providing tools for accessing reanalysis data. It uses Iris data structures and methods for handling the data, and extends it by providing functions for using synoptic-timescale reanalysis data from several sources.
 
