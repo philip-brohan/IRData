@@ -101,7 +101,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">version</span><span class="o">==</span><span class="s1">&#39;2c&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">version_2c</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="n">dtime</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">,</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;4.&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">)</span></div>
     <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s1">&#39;Invalid version number </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span>
 

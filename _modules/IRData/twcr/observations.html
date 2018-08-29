@@ -79,7 +79,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <span class="kn">import</span> <span class="nn">version_3</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 
-<div class="viewcode-block" id="fetch_observations"><a class="viewcode-back" href="../../../subdata/data_20CR.html#IRData.twcr.fetch_observations">[docs]</a><span class="k">def</span> <span class="nf">fetch_observations</span><span class="p">(</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="fetch_observations"><a class="viewcode-back" href="../../../subdata/data_20CR.html#IRData.twcr.fetch_observations">[docs]</a><span class="k">def</span> <span class="nf">fetch_observations</span><span class="p">(</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;pbrohan&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get observations from the 20CR archive at NERSC.</span>
 
 <span class="sd">    Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by :func:`load_observations`. If the local files that would be produced already exists, this function does nothing.</span>
@@ -89,6 +89,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <span class="sd">    Args:</span>
 <span class="sd">        dtime (:obj:`datetime.datetime`): Date and time to get observations for.</span>
 <span class="sd">        version (:obj:`str`): 20CR version to retrieve data for.</span>
+<span class="sd">        user (:obj:`str`): NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to &#39;pbrohan&#39;. This should be your NERSC username.</span>
 
 <span class="sd">    Will retrieve the data for the year of the given date-time.</span>
 
@@ -100,8 +101,8 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 
     <span class="k">if</span> <span class="n">version</span><span class="o">==</span><span class="s1">&#39;2c&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">version_2c</span><span class="o">.</span><span class="n">fetch_observations</span><span class="p">(</span><span class="n">dtime</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">,</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">fetch_observations</span><span class="p">(</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;4.&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">fetch_observations</span><span class="p">(</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="p">,</span><span class="n">user</span><span class="p">)</span></div>
     <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Unsupported version </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span>
 
 <div class="viewcode-block" id="load_observations_1file"><a class="viewcode-back" href="../../../subdata/data_20CR.html#IRData.twcr.load_observations_1file">[docs]</a><span class="k">def</span> <span class="nf">load_observations_1file</span><span class="p">(</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
@@ -112,6 +113,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <span class="sd">    Args:</span>
 <span class="sd">        dtime (:obj:`int`): Date and time of assimilation run.</span>
 <span class="sd">        version (:obj:`str`): 20CR version to load data from.</span>
+<span class="sd">        user (:obj:`str`): NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to &#39;pbrohan&#39;. This should be your NERSC username.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        :obj:`pandas.DataFrame`: Dataframe of observations.</span>
@@ -124,11 +126,11 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 
     <span class="k">if</span> <span class="n">version</span><span class="o">==</span><span class="s1">&#39;2c&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">version_2c</span><span class="o">.</span><span class="n">load_observations_1file</span><span class="p">(</span><span class="n">dtime</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">,</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;4.&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">load_observations_1file</span><span class="p">(</span><span class="n">dtime</span><span class="p">,</span><span class="n">version</span><span class="p">)</span></div>
     <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Unsupported version </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span>
 
-<div class="viewcode-block" id="load_observations"><a class="viewcode-back" href="../../../subdata/data_20CR.html#IRData.twcr.load_observations">[docs]</a><span class="k">def</span> <span class="nf">load_observations</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="load_observations"><a class="viewcode-back" href="../../../subdata/data_20CR.html#IRData.twcr.load_observations">[docs]</a><span class="k">def</span> <span class="nf">load_observations</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;pbrohan&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Load observations from disc, for the selected period</span>
 
 <span class="sd">    Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch`.</span>
@@ -150,7 +152,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 
     <span class="k">if</span> <span class="n">version</span><span class="o">==</span><span class="s1">&#39;2c&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">version_2c</span><span class="o">.</span><span class="n">load_observations</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">,</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;4.&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">load_observations</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="n">version</span><span class="p">)</span></div>
     <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Unsupported version </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span>
 
@@ -176,7 +178,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 
     <span class="k">if</span> <span class="n">version</span><span class="o">==</span><span class="s1">&#39;2c&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">version_2c</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">v_time</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">,</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;4.&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">load_observations_fortime</span><span class="p">(</span><span class="n">v_time</span><span class="p">,</span><span class="n">version</span><span class="p">)</span></div>
     <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Unsupported version </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span>
 </pre></div>

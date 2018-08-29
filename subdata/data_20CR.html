@@ -46,7 +46,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">The 20th Century Reanalysis: IRData.twcr</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The 20th Century Reanalysis: IRData.twcr</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pre-release-version-3">Pre-release version 3</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="data_cera20c.html">The CERA-20C reanalysis: IRData.cera20c</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_era5.html">The ERA-5 reanalysis: IRData.era5</a></li>
 </ul>
@@ -70,7 +73,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <span id="the-20th-century-reanalysis-irdata-twcr"></span><h1>The 20th Century Reanalysis: IRData.twcr<a class="headerlink" href="#module-IRData.twcr" title="Permalink to this headline">¶</a></h1>
 <p>This package retrieves and loads data from the <a class="reference external" href="https://www.esrl.noaa.gov/psd/data/20thC_Rean/">Twentieth Century Reanalysis (20CR)</a>.</p>
 <p>It retrieves the data from the <a class="reference external" href="http://portal.nersc.gov/project/20C_Reanalysis/">20CR portal</a> at <a class="reference external" href="http://www.nersc.gov">NERSC</a>.</p>
-<p>At the moment, only version ‘2c’ of 20CR is supported for public use.</p>
+<p>At the moment, only version ‘2c’ of 20CR is supported for public use. There is limited support for the pre-release of version 3 - versions ‘4.5.*’ - see below.</p>
 <p>Only hourly data is supported (no daily or monthly averages) for 5 surface variables:</p>
 <ul class="simple">
 <li>Mean-sea-level pressure: ‘mslp’</li>
@@ -110,7 +113,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
                          <span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>It’s also possible to load all the observations associated with a particular reanalysis field. 20CR assimilates observations every 6-hours, so there is one observations file for each 6-hourly assimilation run. Load all the observations available to the assimilation run for 12 noon on March 12 1987 (as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) with:</p>
+<p>It’s also possible to load all the observations associated with a particular reanalysis field. 20CR assimilates observations every 6-hours, so there is one observations file for each 6-hourly assimilation run. Load all the observations available to the assimilation run for 12 noon on March 12 1987 (as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) with:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">o</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_1file</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span>
                                <span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 </pre></div>
@@ -121,12 +124,26 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 </pre></div>
 </div>
 <p>This gets all the observations from each field used in the interpolation, and assigns a weight to each one - the same as the weight used in interpolating the fields.</p>
+<div class="section" id="pre-release-version-3">
+<h2>Pre-release version 3<a class="headerlink" href="#pre-release-version-3" title="Permalink to this headline">¶</a></h2>
+<p>Version numbers beginning ‘4.5.’ (mostly ‘4.5.1’ and ‘4.5.2’) are the pre-release data for 20CRv3 and all the functions described above will work in the same way, with the <em>major</em> caveat that the data are not yet released, so you can’t just ‘fetch’ them. To get proto-v3 data, first <a class="reference external" href="https://oldweather.github.io/20CRv3-diagnostics/extract_data/extract_data.html">create the data files at NERSC</a> and then fetch them as with 2c, except you will be downloading the data by ssh. This means you will need to <a class="reference external" href="http://www.nersc.gov/users/connecting-to-nersc/connecting-with-ssh/">setup your NERSC account to support passwordless ssh access from your local machine</a> and add your NERSC account name to the fetch command:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">IRData.twcr</span> <span class="kn">as</span> <span class="nn">twcr</span>
+<span class="n">twcr</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;prate&#39;</span><span class="p">,</span>
+           <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span>
+           <span class="n">version</span><span class="o">=</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">,</span>
+           <span class="n">user</span><span class="o">=</span><span class="s1">&#39;pbrohan&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that proto-v3 data is fetched in 1-month blocks (rather than 1-year as for 2c).
+All the ‘load’ functions then work exactly as for 2c.</p>
+<p>Note: NERSC is soon to enforce multi-factor authentication which will mess this up. Some changes will be required.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
 <dl class="function">
 <dt id="IRData.twcr.fetch">
-<code class="descclassname">IRData.twcr.</code><code class="descname">fetch</code><span class="sig-paren">(</span><em>variable</em>, <em>dtime</em>, <em>version='none'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/fetch.html#fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.fetch" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">IRData.twcr.</code><code class="descname">fetch</code><span class="sig-paren">(</span><em>variable</em>, <em>dtime</em>, <em>version='none'</em>, <em>user='pbrohan'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/fetch.html#fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.fetch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get data for one variable, from the 20CR archive at NERSC.</p>
 <p>Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by <a class="reference internal" href="#IRData.twcr.load" title="IRData.twcr.load"><code class="xref py py-func docutils literal notranslate"><span class="pre">load()</span></code></a>. If the local file that would be produced already exists, this function does nothing.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -137,6 +154,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <li><strong>variable</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – Variable to fetch (e.g. ‘prmsl’).</li>
 <li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Date and time to get data for.</li>
 <li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – 20CR version to retrieve data for.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to ‘pbrohan’. This should be your NERSC username.</li>
 </ul>
 </td>
 </tr>
@@ -152,7 +170,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 
 <dl class="function">
 <dt id="IRData.twcr.fetch_observations">
-<code class="descclassname">IRData.twcr.</code><code class="descname">fetch_observations</code><span class="sig-paren">(</span><em>dtime</em>, <em>version='none'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/observations.html#fetch_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.fetch_observations" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">IRData.twcr.</code><code class="descname">fetch_observations</code><span class="sig-paren">(</span><em>dtime</em>, <em>version='none'</em>, <em>user='pbrohan'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/observations.html#fetch_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.fetch_observations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get observations from the 20CR archive at NERSC.</p>
 <p>Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by <a class="reference internal" href="#IRData.twcr.load_observations" title="IRData.twcr.load_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_observations()</span></code></a>. If the local files that would be produced already exists, this function does nothing.</p>
 <p>For 20CR version 2c, the data is retrieved in calendar year blocks, and the ‘month’ and ‘day’ arguments are ignored.</p>
@@ -163,6 +181,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Date and time to get observations for.</li>
 <li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – 20CR version to retrieve data for.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to ‘pbrohan’. This should be your NERSC username.</li>
 </ul>
 </td>
 </tr>
@@ -222,7 +241,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 
 <dl class="function">
 <dt id="IRData.twcr.load_observations">
-<code class="descclassname">IRData.twcr.</code><code class="descname">load_observations</code><span class="sig-paren">(</span><em>start</em>, <em>end</em>, <em>version='none'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/observations.html#load_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.load_observations" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">IRData.twcr.</code><code class="descname">load_observations</code><span class="sig-paren">(</span><em>start</em>, <em>end</em>, <em>version='none'</em>, <em>user='pbrohan'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/observations.html#load_observations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.load_observations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load observations from disc, for the selected period</p>
 <p>Data must be available in directory $SCRATCH/20CR, previously retrieved by <a class="reference internal" href="#IRData.twcr.fetch" title="IRData.twcr.fetch"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -239,7 +258,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dataframe of observations.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_observations()</span></code></a></p>
@@ -264,13 +283,14 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – Date and time of assimilation run.</li>
 <li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – 20CR version to load data from.</li>
+<li><strong>user</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to ‘pbrohan’. This should be your NERSC username.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dataframe of observations.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_observations()</span></code></a></p>
@@ -302,7 +322,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">same as from <a class="reference internal" href="#IRData.twcr.load_observations" title="IRData.twcr.load_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_observations()</span></code></a>, except with aded column ‘weight’ giving the weight of each observation at the given time.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_observations()</span></code></a></p>
@@ -315,6 +335,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 </div>
 </dd></dl>
 
+</div>
 </div>
 
 
