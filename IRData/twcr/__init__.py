@@ -15,7 +15,7 @@ This package retrieves and loads data from the `Twentieth Century Reanalysis (20
 
 It retrieves the data from the `20CR portal <http://portal.nersc.gov/project/20C_Reanalysis/>`_ at `NERSC <http://www.nersc.gov>`_.
 
-At the moment, only version '2c' of 20CR is supported for public use.
+At the moment, only version '2c' of 20CR is supported for public use. There is limited support for the pre-release of version 3 - versions '4.5.*' - see below.
 
 Only hourly data is supported (no daily or monthly averages) for 5 surface variables:
 
@@ -84,6 +84,25 @@ That's only possible for times that match an assimilation time (hour=0,6,12,18).
                                      version='2c')
 
 This gets all the observations from each field used in the interpolation, and assigns a weight to each one - the same as the weight used in interpolating the fields.
+
+Pre-release version 3
+---------------------
+
+Version numbers beginning '4.5.' (mostly '4.5.1' and '4.5.2') are the pre-release data for 20CRv3 and all the functions described above will work in the same way, with the *major* caveat that the data are not yet released, so you can't just 'fetch' them. To get proto-v3 data, first `create the data files at NERSC <https://oldweather.github.io/20CRv3-diagnostics/extract_data/extract_data.html>`_ and then fetch them as with 2c, except you will be downloading the data by ssh. This means you will need to `setup your NERSC account to support passwordless ssh access from your local machine <http://www.nersc.gov/users/connecting-to-nersc/connecting-with-ssh/>`_ and add your NERSC account name to the fetch command:
+
+.. code-block:: python
+
+    import datetime
+    import IRData.twcr as twcr
+    twcr.fetch('prate',
+               datetime.datetime(1987,3,12),
+               version='4.5.1',
+               user='pbrohan')
+
+Note that proto-v3 data is fetched in 1-month blocks (rather than 1-year as for 2c).
+All the 'load' functions then work exactly as for 2c.
+
+Note: NERSC is soon to enforce multi-factor authentication which will mess this up. Some changes will be required.
 
 |
 """

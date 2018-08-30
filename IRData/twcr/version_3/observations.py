@@ -23,20 +23,17 @@ import getpass
 
 from utils import _get_data_dir
 
-def _observations_remote_file(year,month,version):
-    return (("pbrohan@dtn02.nersc.gov:/global/cscratch1/sd/pbrohan/"+
+def _observations_remote_file(year,month,version,user='pbrohan'):
+    return (("%s@dtn02.nersc.gov:/global/cscratch1/sd/%s/"+
             "20CRv3.final/version_%s/%04d/%02d/observations/") %
-             (version,year,month))
+             (user,user,version,year,month))
 
 def _observations_file_name(year,month,day,hour,version):
     return ("%s/observations/%04d/%04d%02d%02d%02d_psobs.txt" % 
                             (_get_data_dir(version),year,year,month,day,hour))
 
-def fetch_observations(dtime,version='4.5.1'):
+def fetch_observations(dtime,version='4.5.1',user='pbrohan'):
 
-    #V3 data not yet publically available
-    if getpass.getuser() not in ('hadpb','philip','brohanp'):
-        raise StandardError('Unsupported user: V3 fetch only works for Philip')
     ndtime=dtime+datetime.timedelta(hours=6)
     if ndtime.year!=dtime.year:
         fetch_observations(ndtime)
@@ -48,13 +45,11 @@ def fetch_observations(dtime,version='4.5.1'):
         os.makedirs(o_dir)
 
     # Multiple files, use rsync
-    r_dir=_observations_remote_file(dtime.year,dtime.month,version)
+    r_dir=_observations_remote_file(dtime.year,dtime.month,version,user)
     cmd="rsync -Lr %s/ %s" % (r_dir,o_dir)
     scp_retvalue=subprocess.call(cmd,shell=True) # Why need shell=True?
-    if scp_retvalue==3:
-        raise StandardError("Remote data not available")
     if scp_retvalue!=0:
-        raise StandardError("Failed to retrieve data")
+        raise StandardError("Failed to retrieve observations. Code: %d" % scp_retvalue)
 
 def load_observations_1file(dtime,version):
     """Retrieve all the observations for an individual assimilation run."""
