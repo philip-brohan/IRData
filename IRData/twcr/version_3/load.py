@@ -21,6 +21,8 @@ import datetime
 import warnings
 
 from utils import _get_data_file_name
+from utils import monolevel_analysis
+from utils import monolevel_forecast
 
 # Eliminate incomprehensible warning message
 iris.FUTURE.netcdf_promote='True'
@@ -51,29 +53,65 @@ def _get_next_field_time(variable,year,month,day,hour):
               'hour':dr['hour']-24}
     return dr
 
+def _time_to_time(variable,year,month,day,hour,version):
+    """Get initialisation time and forecast offset from
+       analysis validity time."""
+    dte=datetime.datetime(year,month,day,int(hour))
+    if variable in monolevel_analysis:
+        if hour%6==0:
+            ic_time=iris.time.PartialDateTime(
+                                       year=dte.year,
+                                       month=dte.month,
+                                       day=dte.day,
+                                       hour=dte.hour)
+            fc_time=0
+        elif hour%3==0:
+            dte=dte-datetime.timedelta(hours=3)
+            ic_time=iris.time.PartialDateTime(
+                                       year=dte.year,
+                                       month=dte.month,
+                                       day=dte.day,
+                                       hour=dte.hour)
+            fc_time=3
+        else: 
+            raise StandardError("Unsupported validity time %s" %
+                                dte.strftime("%Y-%m-%d:%H:%M:%S%z"))
+    elif variable in monolevel_forecast:
+        if hour%6==0:
+            dte=dte-datetime.timedelta(hours=6)
+            ic_time=iris.time.PartialDateTime(
+                                       year=dte.year,
+                                       month=dte.month,
+                                       day=dte.day,
+                                       hour=dte.hour)
+            fc_time=6
+        elif hour%3==0:
+            dte=dte-datetime.timedelta(hours=3)
+            ic_time=iris.time.PartialDateTime(
+                                       year=dte.year,
+                                       month=dte.month,
+                                       day=dte.day,
+                                       hour=dte.hour)
+            fc_time=3
+        else: 
+            raise StandardError("Unsupported validity time %s" %
+                                dte.strftime("%Y-%m-%d:%H:%M:%S%z"))
+    else:
+        raise StandardError("Unsupported variable %s" % variable)
+    return {'initial':ic_time,'offset':fc_time}        
+
+
 def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,version):
     """Get the cube with the data, given that the specified time
        matches a data timestep."""
     if not _is_in_file(variable,hour):
         raise ValueError("Invalid hour - data not in file")
     file_name=_get_data_file_name(variable,year,month,version)
-    ic_time=iris.time.PartialDateTime(
-                                   year=year,
-                                   month=month,
-                                   day=day,
-                                   hour=hour)
-    fc_time=0
-    if hour%6!=0:
-        ic_time=iris.time.PartialDateTime(
-                                   year=year,
-                                   month=month,
-                                   day=day,
-                                   hour=hour-3)
-        fc_time=3
+    file_times=_time_to_time(variable,year,month,day,hour,version)
     ic_constraint=iris.Constraint(coord_values={
-                   'initial time': lambda x: x==ic_time})
+                   'initial time': lambda x: x==file_times['initial']})
     fc_constraint=iris.Constraint(coord_values={
-            'Forecast offset from initial time': lambda x: x==fc_time})
+       'Forecast offset from initial time': lambda x: x==file_times['offset']})
     try:
         with warnings.catch_warnings(): # Iris is v.fussy
             warnings.simplefilter("ignore")

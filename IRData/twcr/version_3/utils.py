@@ -15,6 +15,11 @@
 
 import os
 
+# Supported analysis variables
+monolevel_analysis=('prmsl','air.2m','uwnd.10m','vwnd.10m','icec','sst')
+# Suported forecast variables
+monolevel_forecast=('prate')
+
 def _get_data_dir(version='4.5.1'):
     """Return the root directory containing 20CR netCDF files"""
     g="%s/20CR/version_%s/" % (os.environ['SCRATCH'],version)
