@@ -16,7 +16,7 @@
 import os
 
 # Supported analysis variables
-monolevel_analysis=('prmsl','air.2m','uwnd.10m','vwnd.10m','icec','sst')
+monolevel_analysis=('prmsl','air.2m','uwnd.10m','vwnd.10m','icec','sst','air.sfc')
 # Suported forecast variables
 monolevel_forecast=('prate')
 
