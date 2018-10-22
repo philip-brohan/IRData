@@ -24,9 +24,6 @@ from utils import _get_data_file_name
 from utils import monolevel_analysis
 from utils import monolevel_forecast
 
-# Eliminate incomprehensible warning message
-iris.FUTURE.netcdf_promote='True'
-
 # Need to add coordinate system metadata so they work with cartopy
 coord_s=iris.coord_systems.GeogCS(iris.fileformats.pp.EARTH_RADIUS)
 
@@ -115,9 +112,8 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,version):
     try:
         with warnings.catch_warnings(): # Iris is v.fussy
             warnings.simplefilter("ignore")
-            with iris.FUTURE.context(cell_datetime_objects=True):
-                hslice=iris.load_cube(file_name,
-                                ic_constraint & fc_constraint)
+            hslice=iris.load_cube(file_name,
+                            ic_constraint & fc_constraint)
     except iris.exceptions.ConstraintMismatchError:
        raise StandardError("%s not available for %04d-%02d-%02d:%02d" % 
                             (variable,year,month,day,hour))

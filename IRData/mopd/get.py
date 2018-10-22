@@ -23,9 +23,6 @@ import iris
 import iris.time
 import re
 
-# Eliminate incomprehensible warning message
-iris.FUTURE.netcdf_promote='True'
-
 # Map 20CR names to file variable names
 Names={'mogreps-g': {
                      'prmsl'    : 'air_pressure_at_sea_level',

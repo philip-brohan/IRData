@@ -14,7 +14,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='IRData',
-    version='0.1.2',
+    version='0.2.0',
     description='An API for accessing synoptic-timescale reanalyis data',
 
     # From README - see above
@@ -48,9 +48,9 @@ setup(
 
     # Other packages that your project depends on.
     install_requires=[
-        'numpy>1.13',
-        'scipy>0.18',
-        'pandas>0.20',
+        'numpy>=1.15.2',
+        'scipy>=1.1.0',
+        'pandas>=0.23.4',
         'ecmwf-api-client>1.4',
     ],
 
