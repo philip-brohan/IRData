@@ -17,6 +17,7 @@ import os
 
 # Supported analysis variables
 monolevel_analysis=('prmsl','air.2m','uwnd.10m','vwnd.10m','icec','sst','air.sfc')
+multilevel_analysis=('tmp','uwnd','vwnd','hgt','sphf')
 # Suported forecast variables
 monolevel_forecast=('prate')
 
@@ -25,11 +26,24 @@ def _get_data_dir(version='4.5.1'):
     g="%s/20CR/version_%s/" % (os.environ['SCRATCH'],version)
     return g
 
-def _get_data_file_name(variable,year,month,version='4.5.1'):
+def _get_data_file_name(variable,year,month,
+                        height=None,level=None,
+                        version='4.5.1'):
     """Return the name of the file containing data for the
        requested variable, at the specified time, from the
        20CR version."""
     base_dir=_get_data_dir(version)
-    name="%s/%04d/%02d/%s.nc" % (base_dir,year,month,variable)
+    if (variable in monolevel_analysis or 
+        variable in monolevel_forecast):
+        name="%s/%04d/%02d/%s.nc" % (base_dir,year,month,variable)
+    elif variable in multilevel_analysis:
+        if level is not None:
+            name="%s/%04d/%02d/%s.%dmb.nc" % (base_dir,year,month,variable,level)
+        elif height is not None:
+            name="%s/%04d/%02d/%s.%dm.nc" % (base_dir,year,month,variable,height)
+        else:
+            raise ValueError('No height or level specified for 3d variable')
+    else:
+        raise ValueError('Unsupported variable: %s' & variable)
     return name
 

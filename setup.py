@@ -48,9 +48,9 @@ setup(
 
     # Other packages that your project depends on.
     install_requires=[
-        'scitools-iris>=2.2',
-        'cartopy>=0.16',
-        'numpy>=1.15.2',
+#        'scitools-iris>=2.2',
+#        'cartopy>=0.16',
+#        'numpy>=1.15.2',
         'scipy>=1.1.0',
         'pandas>=0.23.4',
         'ecmwf-api-client>1.4',

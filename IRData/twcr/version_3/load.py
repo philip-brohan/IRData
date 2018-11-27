@@ -22,6 +22,7 @@ import warnings
 
 from utils import _get_data_file_name
 from utils import monolevel_analysis
+from utils import multilevel_analysis
 from utils import monolevel_forecast
 
 # Need to add coordinate system metadata so they work with cartopy
@@ -54,7 +55,8 @@ def _time_to_time(variable,year,month,day,hour,version):
     """Get initialisation time and forecast offset from
        analysis validity time."""
     dte=datetime.datetime(year,month,day,int(hour))
-    if variable in monolevel_analysis:
+    if (variable in monolevel_analysis or
+        variable in multilevel_analysis):
         if hour%6==0:
             ic_time=iris.time.PartialDateTime(
                                        year=dte.year,
@@ -98,12 +100,15 @@ def _time_to_time(variable,year,month,day,hour,version):
     return {'initial':ic_time,'offset':fc_time}        
 
 
-def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,version):
+def _get_slice_at_hour_at_timestep(variable,
+                                   year,month,day,hour,
+                                   height,level,
+                                   version):
     """Get the cube with the data, given that the specified time
        matches a data timestep."""
     if not _is_in_file(variable,hour):
         raise ValueError("Invalid hour - data not in file")
-    file_name=_get_data_file_name(variable,year,month,version)
+    file_name=_get_data_file_name(variable,year,month,height,level,version)
     file_times=_time_to_time(variable,year,month,day,hour,version)
     ic_constraint=iris.Constraint(coord_values={
                    'initial time': lambda x: x==file_times['initial']})
@@ -128,13 +133,17 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,version):
             hslice.coord('Forecast offset from initial time').points)
     return hslice
 
-def load(variable,dtime,version='4.5.1'):
+def load(variable,dtime,
+         height=None,level=None,
+         version='4.5.1'):
     """Load requested data from disc, interpolating if necessary.
 
     Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch`.
 
     Args:
         variable (:obj:`str`): Variable to fetch (e.g. 'prmsl')
+        height (:obj:`int`): Height above ground (m) for 3d variables. Variable must be in 20CR output at that exact height (no interpolation). Defaults to None - appropriate for 2d variables.
+        level (:obj:`int`): Pressure level (hPa) for 3d variables. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.
         dtime (:obj:`datetime.datetime`): Date and time to load data for.
 
     Returns:
@@ -151,7 +160,7 @@ def load(variable,dtime,version='4.5.1'):
     if _is_in_file(variable,dhour):
         return(_get_slice_at_hour_at_timestep(variable,dtime.year,
                                               dtime.month,dtime.day,
-                                              dhour,version))
+                                              dhour,height,level,version))
     previous_step=_get_previous_field_time(variable,dtime.year,dtime.month,
                                            dtime.day,dhour)
     next_step=_get_next_field_time(variable,dtime.year,dtime.month,
@@ -170,12 +179,14 @@ def load(variable,dtime,version='4.5.1'):
                                               previous_step['month'],
                                               previous_step['day'],
                                               previous_step['hour'],
+                                              height,level,
                                               version)
     s_next=_get_slice_at_hour_at_timestep(variable,
                                           next_step['year'],
                                           next_step['month'],
                                           next_step['day'],
                                           next_step['hour'],
+                                          height,level,
                                           version)
     # Iris won't merge cubes with different attributes
     s_previous.attributes=s_next.attributes
