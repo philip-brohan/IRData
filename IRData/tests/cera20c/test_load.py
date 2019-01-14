@@ -1,5 +1,5 @@
 import unittest
-from mock import patch
+from unittest.mock import patch
 
 import IRData.cera20c as cera20c
 import datetime
@@ -100,7 +100,7 @@ class TestLoad(unittest.TestCase):
 
     # Dud variable
     def test_fetch_mslp(self):
-        with self.assertRaises(StandardError) as cm:
+        with self.assertRaises(Exception) as cm:
             cera20c.load('mslp',
                           datetime.datetime(1969,3,12))
         self.assertEqual("Unsupported variable mslp",

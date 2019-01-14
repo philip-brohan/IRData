@@ -20,9 +20,9 @@ import iris.time
 import datetime
 import warnings
 
-from utils import _get_data_file_name
-from utils import monolevel_analysis
-from utils import monolevel_forecast
+from .utils import _get_data_file_name
+from .utils import monolevel_analysis
+from .utils import monolevel_forecast
 
 # Need to add coordinate system metadata so they work with cartopy
 coord_s=iris.coord_systems.GeogCS(iris.fileformats.pp.EARTH_RADIUS)
@@ -71,7 +71,7 @@ def _time_to_time(variable,year,month,day,hour,version):
                                        hour=dte.hour)
             fc_time=3
         else: 
-            raise StandardError("Unsupported validity time %s" %
+            raise Exception("Unsupported validity time %s" %
                                 dte.strftime("%Y-%m-%d:%H:%M:%S%z"))
     elif variable in monolevel_forecast:
         if hour%6==0:
@@ -91,10 +91,10 @@ def _time_to_time(variable,year,month,day,hour,version):
                                        hour=dte.hour)
             fc_time=3
         else: 
-            raise StandardError("Unsupported validity time %s" %
+            raise Exception("Unsupported validity time %s" %
                                 dte.strftime("%Y-%m-%d:%H:%M:%S%z"))
     else:
-        raise StandardError("Unsupported variable %s" % variable)
+        raise Exception("Unsupported variable %s" % variable)
     return {'initial':ic_time,'offset':fc_time}        
 
 
@@ -115,7 +115,7 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,version):
             hslice=iris.load_cube(file_name,
                             ic_constraint & fc_constraint)
     except iris.exceptions.ConstraintMismatchError:
-       raise StandardError("%s not available for %04d-%02d-%02d:%02d" % 
+       raise Exception("%s not available for %04d-%02d-%02d:%02d" % 
                             (variable,year,month,day,hour))
 
     # Enhance the names and metadata for iris/cartopy

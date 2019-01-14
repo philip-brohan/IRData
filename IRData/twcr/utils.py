@@ -13,8 +13,8 @@
 
 # Utility functions for file and variable name mapping for 20CR.
 
-import version_2c
-import version_3
+from . import version_2c
+from . import version_3
 
 # File name for data for a given variable and month
 def _hourly_get_file_name(variable,year,month=6,
@@ -27,4 +27,4 @@ def _hourly_get_file_name(variable,year,month=6,
         return version_3._get_data_file_name(
                                  variable,year,month)
        
-    raise StandardError('Invalid version %s' % version)
+    raise Exception('Invalid version %s' % version)

@@ -1,5 +1,5 @@
 import unittest
-from mock import patch
+from unittest.mock import patch
 
 import IRData.era5 as era5
 import datetime
@@ -129,7 +129,7 @@ class TestLoad(unittest.TestCase):
 
     # Dud variable
     def test_fetch_mslp(self):
-        with self.assertRaises(StandardError) as cm:
+        with self.assertRaises(Exception) as cm:
             era5.load('mslp',
                          datetime.datetime(1969,3,12),
                          stream='enda')

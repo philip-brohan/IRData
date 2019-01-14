@@ -17,7 +17,7 @@ import os
 import subprocess
 import datetime
 
-from utils import _get_data_file_name
+from .utils import _get_data_file_name
 
 def _get_remote_file_name(variable,year):
     """Get all data for one variable, for one month, from 20CR archive at NERSC.
@@ -63,7 +63,7 @@ def _get_remote_file_name(variable,year):
         remote_file=("%s/first_guess/prate/prate_%04d.nc" % (remote_dir,
                                                                  year))
     if(remote_file is None):
-        raise StandardError("Unsupported variable %s" % variable)
+        raise Exception("Unsupported variable %s" % variable)
     return(remote_file)
 
 def fetch(variable,dtime):
@@ -86,5 +86,5 @@ def fetch(variable,dtime):
     cmd="wget -O %s %s" % (local_file,remote_file)
     wg_retvalue=subprocess.call(cmd,shell=True)
     if wg_retvalue!=0:
-        raise StandardError("Failed to retrieve data")
+        raise Exception("Failed to retrieve data")
 

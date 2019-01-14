@@ -13,7 +13,7 @@
 
 # 2c-specific data handling functions
 
-from utils import *
-from load import *
-from fetch import *
-from observations import *
+from .utils import *
+from .load import *
+from .fetch import *
+from .observations import *

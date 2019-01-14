@@ -1,5 +1,5 @@
 import unittest
-from mock import patch
+from unittest.mock import patch
 
 import IRData.twcr as twcr
 import datetime

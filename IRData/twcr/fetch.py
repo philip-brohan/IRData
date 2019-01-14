@@ -13,9 +13,9 @@
 
 # Functions for getting data from NERSC.
 
-import version_2c
-import version_3
-import observations
+from . import version_2c
+from . import version_3
+from . import observations
 import datetime
 
 def fetch(variable,dtime,version='none',user='pbrohan'):
@@ -45,4 +45,4 @@ def fetch(variable,dtime,version='none',user='pbrohan'):
     if version in ('4.5.1','4.5.2'):
         return version_3.fetch(variable,dtime,version,user=user)
 
-    raise StandardError("Unsupported version %s" % version)
+    raise Exception("Unsupported version %s" % version)

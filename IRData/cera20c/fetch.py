@@ -19,10 +19,10 @@ import calendar
 import ecmwfapi
 import datetime
 
-from utils import _hourly_get_file_name
-from utils import _translate_for_file_names
-from utils import monolevel_analysis
-from utils import monolevel_forecast
+from .utils import _hourly_get_file_name
+from .utils import _translate_for_file_names
+from .utils import monolevel_analysis
+from .utils import monolevel_forecast
 
 def fetch(variable,dtime):
     """Get all data for one variable, for one month, from ECMWF's archive.
@@ -51,7 +51,7 @@ def fetch(variable,dtime):
     if variable in monolevel_forecast:
         return  _fetch_forecast_data_for_month(variable,
                                       dtime.year,dtime.month)
-    raise StandardError("Unsupported variable %s" % variable)
+    raise Exception("Unsupported variable %s" % variable)
 
 def _fetch_analysis_data_for_month(variable,year,month):
         

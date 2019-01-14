@@ -21,10 +21,10 @@ import iris.time
 import datetime
 import numpy as np
 
-from utils import _hourly_get_file_name
-from utils import _translate_for_file_names
-from utils import monolevel_analysis
-from utils import monolevel_forecast
+from .utils import _hourly_get_file_name
+from .utils import _translate_for_file_names
+from .utils import monolevel_analysis
+from .utils import monolevel_forecast
 
 # Need to add coordinate system metadata so they work with cartopy
 coord_s=iris.coord_systems.GeogCS(iris.fileformats.pp.EARTH_RADIUS)
@@ -45,7 +45,7 @@ def _get_previous_field_time(variable,year,month,day,hour,stream='enda'):
         return {'year':year,'month':month,'day':day,'hour':int(hour/3)*3}
     if stream=='oper':
         return {'year':year,'month':month,'day':day,'hour':int(hour)}
-    raise StandardError("Unknown stream %s" % stream)
+    raise Exception("Unknown stream %s" % stream)
 
 def _get_next_field_time(variable,year,month,day,hour,stream='enda'):
     """Get the earliest time, after the given time,
@@ -55,7 +55,7 @@ def _get_next_field_time(variable,year,month,day,hour,stream='enda'):
     elif stream=='oper':
        dr = {'year':year,'month':month,'day':day,'hour':int(hour)+1}
     else:
-       raise StandardError("Unknown stream %s" % stream) 
+       raise Exception("Unknown stream %s" % stream) 
     if dr['hour']>=24:
         d_next= ( datetime.date(dr['year'],dr['month'],dr['day']) 
                  + datetime.timedelta(days=1) )
@@ -72,7 +72,7 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,
     file_name=_hourly_get_file_name(variable,year,month,day,hour,
                                    stream=stream,fc_init=fc_init)
     if not os.path.isfile(file_name):
-        raise StandardError(("%s for %04d/%02d not available"+
+        raise Exception(("%s for %04d/%02d not available"+
                              " might need era5.fetch") % (variable,
                                                              year,month))
     time_constraint=iris.Constraint(time=iris.time.PartialDateTime(
@@ -119,7 +119,7 @@ def load(variable,dtime,
     """
     if ((variable not in monolevel_analysis) and 
         (variable not in monolevel_forecast)):
-        raise StandardError("Unsupported variable %s" % variable)
+        raise Exception("Unsupported variable %s" % variable)
     dhour=dtime.hour+dtime.minute/60.0+dtime.second/3600.0
     if _is_in_file(variable,
                    dtime.year,dtime.month,dtime.day,dhour,

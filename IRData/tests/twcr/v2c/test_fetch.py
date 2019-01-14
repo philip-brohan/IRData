@@ -1,5 +1,5 @@
 import unittest
-from mock import patch
+from unittest.mock import patch
 
 import IRData.twcr as twcr
 import datetime
@@ -63,7 +63,7 @@ class TestFetch(unittest.TestCase):
 
     # Dud variable
     def test_fetch_mslp(self):
-        with self.assertRaises(StandardError) as cm:
+        with self.assertRaises(Exception) as cm:
             twcr.fetch('mslp',
                        datetime.datetime(1969,3,12),
                        version=version)
