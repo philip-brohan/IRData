@@ -37,7 +37,7 @@ def _translate_for_variable_names(variable):
         return 'sst'
     if(variable=='prate'):
         return 'tp'
-    raise StandardError("Unsupported variable %s" % variable)
+    raise Exception("Unsupported variable %s" % variable)
 
 # ERA5 uses different file names from 20CR
 def _translate_for_file_names(variable):
@@ -56,15 +56,15 @@ def _translate_for_file_names(variable):
         return 'sst'
     if(variable=='prate'):
         return 'tp'
-    raise StandardError("Unsupported variable %s" % variable)
+    raise Exception("Unsupported variable %s" % variable)
 
 # Directory to keep downloaded data in
 def _get_data_dir():
     scratch=os.getenv('SCRATCH')
     if scratch is None:
-        raise StandardError("SCRATCH environment variable is undefined")
+        raise Exception("SCRATCH environment variable is undefined")
     if not os.path.isdir(scratch):
-        raise StandardError("Scratch directory %s does not exist" % 
+        raise Exception("Scratch directory %s does not exist" % 
                                scratch)
     base_file = "%s/ERA5" % scratch
     return base_file
@@ -94,13 +94,13 @@ def _hourly_get_file_name(variable,year,month,
             if hour>=6 and hour<18:
                 fc_init=6
         if fc_init!=6 and fc_init!=18:
-            raise StandardError(
+            raise Exception(
              "Forcast initialisation time must be 6 or 18")
         if fc_init==6 and hour<6 and hour>0:
-            raise StandardError(
+            raise Exception(
           "Hour more than 18 hours after forecast initialisation")
         if fc_init==18 and hour<18 and hour>12:
-            raise StandardError(
+            raise Exception(
           "Hour more than 18 hours after forecast initialisation")
         if hour<fc_init:
             dte=(datetime.datetime(year,month,day) -

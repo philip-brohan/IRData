@@ -21,9 +21,9 @@ import zipfile
 import pandas
 import numpy
 
-from utils import _get_data_dir
-from load import _get_previous_field_time
-from load import _get_next_field_time
+from .utils import _get_data_dir
+from .load import _get_previous_field_time
+from .load import _get_next_field_time
 
 def _observations_remote_file(year):
     return ("http://portal.nersc.gov/project/m958/2c_observations/"+
@@ -58,7 +58,7 @@ def _download_observations(year):
     wg_retvalue=subprocess.call(cmd,shell=True)
     if wg_retvalue!=0:
         os.remove(local_file)
-        raise StandardError("Failed to retrieve data")
+        raise Exception("Failed to retrieve data")
 
 def _unpack_downloaded_observations(year):
     local_file=_observations_zip_file(year)

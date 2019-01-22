@@ -13,8 +13,8 @@
 
 # Load 20CR data from local files.
 
-import version_2c
-import version_3
+from . import version_2c
+from . import version_3
 import datetime
 
 def load(variable,dtime,
@@ -47,5 +47,5 @@ def load(variable,dtime,
         return version_3.load(variable,dtime,
                               height,level,
                               version=version)
-    raise StandardError('Invalid version number %s' % version)
+    raise Exception('Invalid version number %s' % version)
 

@@ -31,7 +31,7 @@ class TestUM(unittest.TestCase):
                          'tp')
         self.assertEqual(cera20c.translate_for_variable_names('uwnd.10m'),
                          'u10')
-        with self.assertRaises(StandardError) as cm:
+        with self.assertRaises(Exception) as cm:
             cera20c.translate_for_variable_names('mslp')
         self.assertIn('Unsupported variable mslp',
                       cm.exception)
@@ -43,7 +43,7 @@ class TestUM(unittest.TestCase):
                          'tp')
         self.assertEqual(cera20c.translate_for_file_names('uwnd.10m'),
                          '10u')
-        with self.assertRaises(StandardError) as cm:
+        with self.assertRaises(Exception) as cm:
             cera20c.translate_for_file_names('mslp')
         self.assertIn('Unsupported variable mslp',
                       cm.exception)
@@ -51,7 +51,7 @@ class TestUM(unittest.TestCase):
     def test_get_data_dir(self):
         scratch=os.getenv('SCRATCH')
         del os.environ['SCRATCH']
-        with self.assertRaises(StandardError) as cm:
+        with self.assertRaises(Exception) as cm:
             cera20c.get_data_dir()
         self.assertIn('SCRATCH environment variable is undefined',
                       cm.exception)

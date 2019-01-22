@@ -107,7 +107,7 @@ Note: NERSC is soon to enforce multi-factor authentication which will mess this 
 |
 """
 
-from utils import *
-from load import *
-from fetch import *
-from observations import *
+from .utils import *
+from .load import *
+from .fetch import *
+from .observations import *

@@ -1,7 +1,7 @@
 Installation
 ============
 
-Known to work on with Python 2.7 on modern Linux and OS X systems. Not tested on anything else.
+Known to work on with Python 3.6 on modern Linux and OS X systems. Not tested on anything else.
 
 One environment variable must be set:
 

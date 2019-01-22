@@ -50,7 +50,7 @@ Note that precipitation in CERA-20C is reported as metres accumulated, and it ac
 |
 """
 
-from utils import *
-from fetch import *
-from load import *
+from .utils import *
+from .fetch import *
+from .load import *
 

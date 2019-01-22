@@ -15,7 +15,7 @@
 # Gets data via scp from NERSC - fetch won't work
 #  unless you have an account there.
 
-from utils import *
-from load import *
-from fetch import *
-from observations import *
+from .utils import *
+from .load import *
+from .fetch import *
+from .observations import *

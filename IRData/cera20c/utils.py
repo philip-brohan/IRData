@@ -36,7 +36,7 @@ def _translate_for_variable_names(variable):
         return 'sst'
     if(variable=='prate'):
         return 'tp'
-    raise StandardError("Unsupported variable %s" % variable)
+    raise Exception("Unsupported variable %s" % variable)
 
 # CERA20C uses different file names from 20CR
 def _translate_for_file_names(variable):
@@ -55,15 +55,15 @@ def _translate_for_file_names(variable):
         return 'sst'
     if(variable=='prate'):
         return 'tp'
-    raise StandardError("Unsupported variable %s" % variable)
+    raise Exception("Unsupported variable %s" % variable)
 
 # Directory to keep downloaded data in
 def _get_data_dir():
     scratch=os.getenv('SCRATCH')
     if scratch is None:
-        raise StandardError("SCRATCH environment variable is undefined")
+        raise Exception("SCRATCH environment variable is undefined")
     if not os.path.isdir(scratch):
-        raise StandardError("Scratch directory %s does not exist" % 
+        raise Exception("Scratch directory %s does not exist" % 
                                scratch)
     base_file = "%s/CERA_20C" % scratch
     return base_file

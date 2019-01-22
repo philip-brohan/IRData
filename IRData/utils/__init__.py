@@ -16,4 +16,4 @@ This is the 'miscellaneous' section - a collection of useful functions that don'
 |
 """
 
-from cube_operations import *
+from .cube_operations import *

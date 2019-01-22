@@ -21,7 +21,7 @@ import datetime
 import numpy as np
 import pandas
 
-from utils import _get_data_file_name
+from .utils import _get_data_file_name
 
 # Need to add coordinate system metadata so they work with cartopy
 coord_s=iris.coord_systems.GeogCS(iris.fileformats.pp.EARTH_RADIUS)
@@ -64,7 +64,7 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour):
         hslice=iris.load_cube(file_name,
                               time_constraint)
     except iris.exceptions.ConstraintMismatchError:
-       raise StandardError("%s not available for %04d-%02d-%02d:%02d" % 
+       raise Exception("%s not available for %04d-%02d-%02d:%02d" % 
                             (variable,year,month,day,hour))
 
     # Enhance the names and metadata for iris/cartopy

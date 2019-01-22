@@ -18,10 +18,10 @@ import subprocess
 import getpass
 import datetime
 
-from utils import _get_data_file_name
-from utils import monolevel_analysis
-from utils import multilevel_analysis
-from utils import monolevel_forecast
+from .utils import _get_data_file_name
+from .utils import monolevel_analysis
+from .utils import multilevel_analysis
+from .utils import monolevel_forecast
 
 def _get_remote_file_name(variable,year,month,
                           height=None,level=None,
@@ -92,12 +92,12 @@ def fetch(variable,dtime,
         cmd="rsync -Lr %s/ %s" % (remote_file,local_file)
         scp_retvalue=subprocess.call(cmd,shell=True) # Why need shell=True?
         if scp_retvalue!=0:
-            raise StandardError("Failed to retrieve observations. Code: %d" % scp_retvalue)
+            raise Exception("Failed to retrieve observations. Code: %d" % scp_retvalue)
         
     else:
         # Single file - use scp
         cmd="scp %s %s" % (remote_file,local_file)
         scp_retvalue=subprocess.call(cmd,shell=True)
         if scp_retvalue!=0:
-            raise StandardError("Failed to retrieve data. Code: %d" % scp_retvalue)
+            raise Exception("Failed to retrieve data. Code: %d" % scp_retvalue)
 

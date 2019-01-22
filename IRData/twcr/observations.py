@@ -13,8 +13,8 @@
 
 # Functions for handling observations.
 
-import version_2c
-import version_3
+from . import version_2c
+from . import version_3
 import datetime
 
 def fetch_observations(dtime,version='none',user='pbrohan'):
@@ -41,7 +41,7 @@ def fetch_observations(dtime,version='none',user='pbrohan'):
         return version_2c.fetch_observations(dtime)
     if version[0:2] == '4.':
         return version_3.fetch_observations(dtime,version,user)
-    raise StandardError("Unsupported version %s" % version)
+    raise Exception("Unsupported version %s" % version)
 
 def load_observations_1file(dtime,version='none'):
     """Load observations from disc, that were used in the assimilation run at the time specified.
@@ -66,7 +66,7 @@ def load_observations_1file(dtime,version='none'):
         return version_2c.load_observations_1file(dtime)
     if version[0:2] == '4.':
         return version_3.load_observations_1file(dtime,version)
-    raise StandardError("Unsupported version %s" % version)
+    raise Exception("Unsupported version %s" % version)
 
 def load_observations(start,end,version='none',user='pbrohan'):
     """Load observations from disc, for the selected period
@@ -92,7 +92,7 @@ def load_observations(start,end,version='none',user='pbrohan'):
         return version_2c.load_observations(start,end)
     if version[0:2] == '4.':
         return version_3.load_observations(start,end,version)
-    raise StandardError("Unsupported version %s" % version)
+    raise Exception("Unsupported version %s" % version)
 
 def load_observations_fortime(v_time,version='none'):
     """Load observations from disc, that contribute to fields ata given time
@@ -118,4 +118,4 @@ def load_observations_fortime(v_time,version='none'):
         return version_2c.load_observations_fortime(v_time)
     if version[0:2] == '4.':
         return version_3.load_observations_fortime(v_time,version)
-    raise StandardError("Unsupported version %s" % version)
+    raise Exception("Unsupported version %s" % version)
