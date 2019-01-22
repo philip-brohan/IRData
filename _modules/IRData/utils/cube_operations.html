@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>IRData.utils.cube_operations &#8212; An API for accessing synoptic-timescale reanalyis data</title>
     <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -34,7 +34,7 @@
             <p class="logo"><a href="../../../index.html">
               <img class="logo" src="../../../_static/UK.GS1987.png" alt="Logo"/>
             </a></p>
-<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<h3><a href="../../../index.html">Table of Contents</a></h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
 </ul>
@@ -107,20 +107,20 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
     <span class="k">for</span> <span class="n">crdi</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">crds2</span><span class="p">)):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">crds2</span><span class="p">[</span><span class="n">crdi</span><span class="p">]</span><span class="o">.</span><span class="n">points</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="n">crds</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">crds2</span><span class="p">[</span><span class="n">crdi</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">crds</span><span class="p">)</span><span class="o">!=</span><span class="nb">len</span><span class="p">(</span><span class="n">dims_list</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Cube has </span><span class="si">%d</span><span class="s2"> vector dimensions and </span><span class="si">%d</span><span class="s2"> were specified&quot;</span> <span class="o">%</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Cube has </span><span class="si">%d</span><span class="s2"> vector dimensions and </span><span class="si">%d</span><span class="s2"> were specified&quot;</span> <span class="o">%</span>
                              <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">crds</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">dims_list</span><span class="p">)))</span>
-    <span class="n">odr</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">dims_list</span><span class="p">))</span>
+    <span class="n">odr</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">dims_list</span><span class="p">)))</span>
     <span class="k">for</span> <span class="n">dim_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">dims_list</span><span class="p">)):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">odr</span><span class="p">[</span><span class="n">dim_i</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">crds</span><span class="p">))</span> 
                       <span class="k">if</span> <span class="p">(</span><span class="n">crds</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">long_name</span><span class="o">==</span><span class="n">dims_list</span><span class="p">[</span><span class="n">dim_i</span><span class="p">]</span> <span class="ow">or</span>
                           <span class="n">crds</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">standard_name</span><span class="o">==</span><span class="n">dims_list</span><span class="p">[</span><span class="n">dim_i</span><span class="p">])][</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">StandardError</span><span class="p">(</span><span class="s2">&quot;Cube does not have vector dimension </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Cube does not have vector dimension </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
                                  <span class="n">dims_list</span><span class="p">[</span><span class="n">dim_i</span><span class="p">])</span>
     <span class="n">result</span><span class="o">=</span><span class="n">cube</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">new_order</span><span class="o">=</span><span class="n">odr</span><span class="p">)</span></div>
-    <span class="k">return</span> <span class="n">result</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">new_order</span><span class="o">=</span><span class="n">odr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
 </pre></div>
 
           </div>
