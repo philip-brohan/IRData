@@ -46,7 +46,7 @@ def fetch(variable,dtime,
 
     if version=='2c':
         return version_2c.fetch(variable,dtime)
-    if version in ('4.5.1','4.5.2'):
+    if version in ('4.5.1','4.5.2','4.6.1'):
         return version_3.fetch(variable,dtime,
                                height,level,version,user=user)
 
