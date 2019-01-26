@@ -53,6 +53,7 @@ setup(
         'scipy>=1.1.0',
         'pandas>=0.23.4',
         'ecmwf-api-client>1.4',
+        'cdsapi'
     ],
 
     # other relevant URLs.

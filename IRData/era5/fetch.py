@@ -18,7 +18,7 @@ import os
 import subprocess
 import datetime
 import calendar
-import ecmwfapi
+import cdsapi
 
 from .utils import _hourly_get_file_name
 from .utils import _translate_for_file_names
@@ -72,9 +72,8 @@ def _fetch_analysis_data_for_month(variable,year,month,
 
     if stream=='oper':
         grid='0.25/0.25'
-        server = ecmwfapi.ECMWFDataServer()
-        server.retrieve({
-            'dataset'   : 'era5',
+        server = cdsapi.Client()
+        server.retrieve('reanalysis-era5-complete', {
             'stream'    : 'oper',
             'type'      : 'an',
             'levtype'   : 'sfc',
@@ -85,12 +84,10 @@ def _fetch_analysis_data_for_month(variable,year,month,
                            (year,month,1,
                             year,month,
                             calendar.monthrange(year,month)[1]),
-            'format'    : 'netcdf',
-            'target'    : local_file
-        })
+            'format'    : 'netcdf'
+            },local_file)
     elif stream=='enda':
-        server = ecmwfapi.ECMWFDataServer()
-        server.retrieve({
+        server.retrieve('reanalysis-era5-complete', {
             "class"   : "ea",
             "dataset" : "era5",
             'date'    : "%04d-%02d-%02d/to/%04d-%02d-%02d" %
@@ -105,9 +102,8 @@ def _fetch_analysis_data_for_month(variable,year,month,
             "time"    : "0/to/21/by/3",
             "type"    : "an",
             'grid'    : '0.5/0.5',
-            'format'  : 'netcdf',
-            "target"  : local_file
-        })
+            'format'  : 'netcdf'
+            },local_file)
     else:
         raise Exception("Unsupported stream %s" % stream)
     
@@ -128,9 +124,8 @@ def _fetch_forecast_data_for_month(variable,year,month,
             os.makedirs(os.path.dirname(local_file))
 
         if stream=='oper':
-            server = ecmwfapi.ECMWFDataServer()
-            server.retrieve({
-                'dataset' : 'era5',
+            server = cdsapi.Client()
+            server.retrieve('reanalysis-era5-complete', {
                 'stream'  : 'oper',
                 'type'    : 'fc',
                 'levtype' : 'sfc',
@@ -142,14 +137,12 @@ def _fetch_forecast_data_for_month(variable,year,month,
                                (year,month,1,
                                 year,month,
                                 calendar.monthrange(year,month)[1]),
-                'format'  : 'netcdf',
-                'target'  : local_file
-            })
+                'format'  : 'netcdf'
+                },local_file)
         elif stream=='enda':
-            server = ecmwfapi.ECMWFDataServer()
-            server.retrieve({
+            server = cdsapi.Client()
+            server.retrieve('reanalysis-era5-complete', {
                 "class"   : "ea",
-                "dataset" : "era5",
                 'date'    : "%04d-%02d-%02d/to/%04d-%02d-%02d" %
                                (year,month,1,
                                 year,month,
@@ -163,9 +156,8 @@ def _fetch_forecast_data_for_month(variable,year,month,
                 'step'    : '0/to/18/by/3',
                 "type"    : "fc",
                 'grid'    : '0.5/0.5',
-                'format'  : 'netcdf',
-                "target"  : local_file
-            })
+                'format'  : 'netcdf'
+                },local_file)
         else:
             raise Exception("Unsupported stream %s" % stream)
 
