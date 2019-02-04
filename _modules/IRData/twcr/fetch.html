@@ -85,7 +85,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 <div class="viewcode-block" id="fetch"><a class="viewcode-back" href="../../../subdata/data_20CR.html#IRData.twcr.fetch">[docs]</a><span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="n">dtime</span><span class="p">,</span>
-          <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+          <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">ilevel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
           <span class="n">version</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span><span class="n">user</span><span class="o">=</span><span class="s1">&#39;pbrohan&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get data for one variable, from the 20CR archive at NERSC.</span>
 
@@ -96,6 +96,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <span class="sd">        dtime (:obj:`datetime.datetime`): Date and time to get data for.</span>
 <span class="sd">        height (:obj:`int`): Height above ground (m) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact height (no interpolation). Defaults to None - appropriate for 2d variables.</span>
 <span class="sd">        level (:obj:`int`): Pressure level (hPa) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.</span>
+<span class="sd">        ilevel (:obj:`int`): Isentropic level (K) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.</span>
 <span class="sd">        version (:obj:`str`): 20CR version to retrieve data for.</span>
 <span class="sd">        user (:obj:`str`): NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to &#39;pbrohan&#39;. This should be your NERSC username.</span>
 
@@ -112,9 +113,10 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 
     <span class="k">if</span> <span class="n">version</span><span class="o">==</span><span class="s1">&#39;2c&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">version_2c</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="n">dtime</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">,</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;4.5.1&#39;</span><span class="p">,</span><span class="s1">&#39;4.5.2&#39;</span><span class="p">,</span><span class="s1">&#39;4.6.1&#39;</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="n">dtime</span><span class="p">,</span>
-                               <span class="n">height</span><span class="p">,</span><span class="n">level</span><span class="p">,</span><span class="n">version</span><span class="p">,</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+                               <span class="n">height</span><span class="p">,</span><span class="n">level</span><span class="p">,</span><span class="n">ilevel</span><span class="p">,</span>
+                               <span class="n">version</span><span class="p">,</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
 
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unsupported version </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span></div>
 </pre></div>

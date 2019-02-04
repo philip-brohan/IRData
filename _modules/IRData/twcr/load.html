@@ -84,7 +84,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 <div class="viewcode-block" id="load"><a class="viewcode-back" href="../../../subdata/data_20CR.html#IRData.twcr.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="n">dtime</span><span class="p">,</span>
-         <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">ilevel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
          <span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Load requested data from disc, interpolating if necessary.</span>
 
@@ -95,6 +95,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <span class="sd">        dtime (:obj:`datetime.datetime`): Date and time to load data for.</span>
 <span class="sd">        height (:obj:`int`): Height above ground (m) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact height (no interpolation). Defaults to None - appropriate for 2d variables.</span>
 <span class="sd">        level (:obj:`int`): Pressure level (hPa) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.</span>
+<span class="sd">        ilevel (:obj:`int`): Isentropic level (K) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.</span>
 <span class="sd">        version (:obj:`str`): 20CR version to load data from.</span>
 
 <span class="sd">    Returns:</span>
@@ -111,7 +112,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
         <span class="k">return</span> <span class="n">version_2c</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="n">dtime</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">version</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;4.&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">version_3</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="n">dtime</span><span class="p">,</span>
-                              <span class="n">height</span><span class="p">,</span><span class="n">level</span><span class="p">,</span>
+                              <span class="n">height</span><span class="p">,</span><span class="n">level</span><span class="p">,</span><span class="n">ilevel</span><span class="p">,</span>
                               <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">)</span>
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Invalid version number </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">version</span><span class="p">)</span></div>
 
