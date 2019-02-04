@@ -17,7 +17,7 @@ import os
 
 # Supported analysis variables
 monolevel_analysis=('prmsl','air.2m','uwnd.10m','vwnd.10m','icec','sst','air.sfc')
-multilevel_analysis=('tmp','uwnd','vwnd','hgt','spfh')
+multilevel_analysis=('tmp','uwnd','vwnd','hgt','spfh','pvort')
 # Suported forecast variables
 monolevel_forecast=('prate')
 
@@ -27,7 +27,7 @@ def _get_data_dir(version='4.5.1'):
     return g
 
 def _get_data_file_name(variable,year,month,
-                        height=None,level=None,
+                        height=None,level=None,ilevel=None,
                         version='4.5.1'):
     """Return the name of the file containing data for the
        requested variable, at the specified time, from the
@@ -39,10 +39,12 @@ def _get_data_file_name(variable,year,month,
     elif variable in multilevel_analysis:
         if level is not None:
             name="%s/%04d/%02d/%s.%dmb.nc" % (base_dir,year,month,variable,level)
+        elif ilevel is not None:
+            name="%s/%04d/%02d/%s.%dK.nc" % (base_dir,year,month,variable,ilevel)
         elif height is not None:
             name="%s/%04d/%02d/%s.%dm.nc" % (base_dir,year,month,variable,height)
         else:
-            raise ValueError('No height or level specified for 3d variable')
+            raise ValueError('No height, level, or ilevel specified for 3d variable')
     else:
         raise ValueError('Unsupported variable: %s' & variable)
     return name

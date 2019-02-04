@@ -102,13 +102,13 @@ def _time_to_time(variable,year,month,day,hour,version):
 
 def _get_slice_at_hour_at_timestep(variable,
                                    year,month,day,hour,
-                                   height,level,
+                                   height,level,ilevel,
                                    version):
     """Get the cube with the data, given that the specified time
        matches a data timestep."""
     if not _is_in_file(variable,hour):
         raise ValueError("Invalid hour - data not in file")
-    file_name=_get_data_file_name(variable,year,month,height,level,version)
+    file_name=_get_data_file_name(variable,year,month,height,level,ilevel,version)
     file_times=_time_to_time(variable,year,month,day,hour,version)
     ic_constraint=iris.Constraint(coord_values={
                    'initial time': lambda x: x==file_times['initial']})
@@ -134,7 +134,7 @@ def _get_slice_at_hour_at_timestep(variable,
     return hslice
 
 def load(variable,dtime,
-         height=None,level=None,
+         height=None,level=None,ilevel=None,
          version='4.5.1'):
     """Load requested data from disc, interpolating if necessary.
 
@@ -144,6 +144,7 @@ def load(variable,dtime,
         variable (:obj:`str`): Variable to fetch (e.g. 'prmsl')
         height (:obj:`int`): Height above ground (m) for 3d variables. Variable must be in 20CR output at that exact height (no interpolation). Defaults to None - appropriate for 2d variables.
         level (:obj:`int`): Pressure level (hPa) for 3d variables. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.
+        ilevel (:obj:`int`): Isentropic level (K) for 3d variables. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.
         dtime (:obj:`datetime.datetime`): Date and time to load data for.
 
     Returns:
@@ -160,7 +161,7 @@ def load(variable,dtime,
     if _is_in_file(variable,dhour):
         return(_get_slice_at_hour_at_timestep(variable,dtime.year,
                                               dtime.month,dtime.day,
-                                              dhour,height,level,version))
+                                              dhour,height,level,ilevel,version))
     previous_step=_get_previous_field_time(variable,dtime.year,dtime.month,
                                            dtime.day,dhour)
     next_step=_get_next_field_time(variable,dtime.year,dtime.month,
@@ -179,14 +180,14 @@ def load(variable,dtime,
                                               previous_step['month'],
                                               previous_step['day'],
                                               previous_step['hour'],
-                                              height,level,
+                                              height,level,ilevel,
                                               version)
     s_next=_get_slice_at_hour_at_timestep(variable,
                                           next_step['year'],
                                           next_step['month'],
                                           next_step['day'],
                                           next_step['hour'],
-                                          height,level,
+                                          height,level,ilevel,
                                           version)
     # Iris won't merge cubes with different attributes
     s_previous.attributes=s_next.attributes

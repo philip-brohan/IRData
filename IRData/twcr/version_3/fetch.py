@@ -24,7 +24,7 @@ from .utils import multilevel_analysis
 from .utils import monolevel_forecast
 
 def _get_remote_file_name(variable,year,month,
-                          height=None,level=None,
+                          height=None,level=None,ilevel=None,
                           version='4.5.1',user='pbrohan'):
 
     remote_dir=("%s@dtn02.nersc.gov:/global/cscratch1/sd/%s/"+
@@ -41,8 +41,10 @@ def _get_remote_file_name(variable,year,month,
     elif variable in multilevel_analysis:
         if level is not None:
             remote_file="%s/%04d/%02d/%s.%dmb.nc4" % (remote_dir,year,month,variable,level)
+        elif ilevel is not None:
+            remote_file="%s/%04d/%02d/%s.%dK.nc4" % (remote_dir,year,month,variable,ilevel)
         elif height is not None:
-            remote_file="%s/%04d/%02d/%s.%dm.nc" % (remote_dir,year,month,variable,height)
+            remote_file="%s/%04d/%02d/%s.%dm.nc4" % (remote_dir,year,month,variable,height)
         else:
             raise ValueError('No height or level specified for 3d variable')
     else:
@@ -51,7 +53,7 @@ def _get_remote_file_name(variable,year,month,
 
 
 def fetch(variable,dtime,
-          height=None,level=None,
+          height=None,level=None,ilevel=None,
           version='4.5.1',user='pbrohan'):
     """Get all data for one variable, for one month, from Cori SCRATCH directory at NERSC.
 
@@ -63,6 +65,7 @@ def fetch(variable,dtime,
         month (:obj:`int`): Month to get data for.
         height (:obj:`int`): Height above ground (m) for 3d variables. Variable must be in 20CR output at that exact height (no interpolation). Defaults to None - appropriate for 2d variables.
         level (:obj:`int`): Pressure level (hPa) for 3d variables. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.
+        ilevel (:obj:`int`): Isentropic level (K) for 3d variables. Variable must be in 20CR output at that exact level (no interpolation). Defaults to None - appropriate for 2d variables.
         user  (:obj:`str`): NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to 'pbrohan'. This should be your NERSC username.
 
     Raises:
@@ -73,7 +76,7 @@ def fetch(variable,dtime,
 
     local_file=_get_data_file_name(variable,
                                    dtime.year,dtime.month,
-                                   height,level,
+                                   height,level,ilevel,
                                    version=version)
 
     if ((variable != 'observations') and os.path.isfile(local_file)): 
@@ -84,7 +87,8 @@ def fetch(variable,dtime,
         os.makedirs(os.path.dirname(local_file))
 
     remote_file=_get_remote_file_name(variable,dtime.year,
-                                      dtime.month,height,level,version,user)
+                                      dtime.month,height,level,ilevel,
+                                      version,user)
 
     if(variable=='observations'):
         # Multiple files - use rsync

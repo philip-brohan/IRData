@@ -18,7 +18,7 @@ from . import version_3
 import datetime
 
 def load(variable,dtime,
-         height=None,level=None,
+         height=None,level=None,ilevel=None,
          version=None):
     """Load requested data from disc, interpolating if necessary.
 
@@ -29,6 +29,7 @@ def load(variable,dtime,
         dtime (:obj:`datetime.datetime`): Date and time to load data for.
         height (:obj:`int`): Height above ground (m) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact height (no interpolation). Defaults to None - appropriate for 2d variables.
         level (:obj:`int`): Pressure level (hPa) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.
+        ilevel (:obj:`int`): Isentropic level (K) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.
         version (:obj:`str`): 20CR version to load data from.
 
     Returns:
@@ -45,7 +46,7 @@ def load(variable,dtime,
         return version_2c.load(variable,dtime)
     if version[0:2] == '4.':
         return version_3.load(variable,dtime,
-                              height,level,
+                              height,level,ilevel,
                               version=version)
     raise Exception('Invalid version number %s' % version)
 

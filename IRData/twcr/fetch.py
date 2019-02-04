@@ -19,7 +19,7 @@ from . import observations
 import datetime
 
 def fetch(variable,dtime,
-          height=None,level=None,
+          height=None,level=None,ilevel=None,
           version='none',user='pbrohan'):
     """Get data for one variable, from the 20CR archive at NERSC.
 
@@ -30,6 +30,7 @@ def fetch(variable,dtime,
         dtime (:obj:`datetime.datetime`): Date and time to get data for.
         height (:obj:`int`): Height above ground (m) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact height (no interpolation). Defaults to None - appropriate for 2d variables.
         level (:obj:`int`): Pressure level (hPa) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.
+        ilevel (:obj:`int`): Isentropic level (K) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.
         version (:obj:`str`): 20CR version to retrieve data for.
         user (:obj:`str`): NERSC userid to use in retrieval. Only needed for v3-preliminary data. Defaults to 'pbrohan'. This should be your NERSC username.
 
@@ -48,6 +49,7 @@ def fetch(variable,dtime,
         return version_2c.fetch(variable,dtime)
     if version in ('4.5.1','4.5.2','4.6.1'):
         return version_3.fetch(variable,dtime,
-                               height,level,version,user=user)
+                               height,level,ilevel,
+                               version,user=user)
 
     raise Exception("Unsupported version %s" % version)
