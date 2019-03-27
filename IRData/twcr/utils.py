@@ -19,10 +19,10 @@ from . import version_3
 # File name for data for a given variable and month
 def _hourly_get_file_name(variable,year,month=6,
                           day=15,hour=12,
-                          version=None):
+                          version=None,type=None):
     if vn=='2c':
         return version_2c._get_data_file_name(
-                                 variable,year)
+                                 variable,year,type=type)
     if vn in ('4.5.1','4.5.2'):
         return version_3._get_data_file_name(
                                  variable,year,month)

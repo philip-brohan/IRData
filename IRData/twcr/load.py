@@ -19,7 +19,7 @@ import datetime
 
 def load(variable,dtime,
          height=None,level=None,ilevel=None,
-         version=None):
+         version=None,type=None):
     """Load requested data from disc, interpolating if necessary.
 
     Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch`.
@@ -31,6 +31,7 @@ def load(variable,dtime,
         level (:obj:`int`): Pressure level (hPa) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.
         ilevel (:obj:`int`): Isentropic level (K) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.
         version (:obj:`str`): 20CR version to load data from.
+        type (:obj:`str`): If None load raw data (default). If 'normal, or standard.deviations load those derived data.
 
     Returns:
         :obj:`iris.cube.Cube`: Global field of variable at time.
@@ -43,7 +44,7 @@ def load(variable,dtime,
     |
     """
     if version=='2c':
-        return version_2c.load(variable,dtime)
+        return version_2c.load(variable,dtime,type=type)
     if version[0:2] == '4.':
         return version_3.load(variable,dtime,
                               height,level,ilevel,

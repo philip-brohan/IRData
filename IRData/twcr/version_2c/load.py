@@ -22,6 +22,7 @@ import numpy as np
 import pandas
 
 from .utils import _get_data_file_name
+from .utils import _adjust_dtime_for_type
 
 # Need to add coordinate system metadata so they work with cartopy
 coord_s=iris.coord_systems.GeogCS(iris.fileformats.pp.EARTH_RADIUS)
@@ -49,12 +50,15 @@ def _get_next_field_time(variable,year,month,day,hour):
               'hour':dr['hour']-24}
     return dr
 
-def _get_slice_at_hour_at_timestep(variable,year,month,day,hour):
+def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,type=None):
     """Get the cube with the data, given that the specified time
        matches a data timestep."""
+    if type is not None:
+        (year,month,day,hour)=_adjust_dtime_for_type(
+                                  year,month,day,hour,type)
     if not _is_in_file(variable,hour):
         raise ValueError("Invalid hour - data not in file")
-    file_name=_get_data_file_name(variable,year)
+    file_name=_get_data_file_name(variable,year,type=type)
     time_constraint=iris.Constraint(time=iris.time.PartialDateTime(
                                     year=year,
                                     month=month,
@@ -70,10 +74,11 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour):
     # Enhance the names and metadata for iris/cartopy
     hslice.coord('latitude').coord_system=coord_s
     hslice.coord('longitude').coord_system=coord_s
-    hslice.dim_coords[0].rename('member') # Remove spaces in name
+    if type is None:
+        hslice.dim_coords[0].rename('member') # Remove spaces in name
     return hslice
 
-def load(variable,dtime):
+def load(variable,dtime,type=None):
     """Load requested data from disc, interpolating if necessary.
 
     Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch`.
@@ -81,6 +86,7 @@ def load(variable,dtime):
     Args:
         variable (:obj:`str`): Variable to fetch (e.g. 'prmsl')
         dtime (:obj:`datetime.datetime`): Date and time to load data for.
+        type (:obj:`str`): None (default) for raw data, 'normal' or 'standard.deviation' for derived values.
 
     Returns:
         :obj:`iris.cube.Cube`: Global field of variable at time.
@@ -96,7 +102,7 @@ def load(variable,dtime):
     if _is_in_file(variable,dhour):
         return(_get_slice_at_hour_at_timestep(variable,dtime.year,
                                               dtime.month,dtime.day,
-                                              dhour))
+                                              dhour,type=type))
     previous_step=_get_previous_field_time(variable,dtime.year,dtime.month,
                                            dtime.day,dhour)
     next_step=_get_next_field_time(variable,dtime.year,dtime.month,
@@ -114,12 +120,14 @@ def load(variable,dtime):
                                               previous_step['year'],
                                               previous_step['month'],
                                               previous_step['day'],
-                                              previous_step['hour'])
+                                              previous_step['hour'],
+                                              type=type)
     s_next=_get_slice_at_hour_at_timestep(variable,
                                           next_step['year'],
                                           next_step['month'],
                                           next_step['day'],
-                                          next_step['hour'])
+                                          next_step['hour'],
+                                          type=type)
     # Iris won't merge cubes with different attributes
     s_previous.attributes=s_next.attributes
     s_next=iris.cube.CubeList((s_previous,s_next)).merge_cube()
