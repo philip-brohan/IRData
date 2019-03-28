@@ -40,11 +40,13 @@ def _adjust_dtime_for_type(year,month,day,hour,type):
     """Things like normals are stored with year set to 1981, so
         the date needs changing before doing the retrieval."""
     if type=='normal' or type=='standard.deviation':
+        minute=int((hour%1)*60)
+        hour=int(hour)
         # No normals for Feb 29th - use previous day
         if (month==2 and day==29):
-            result=datetime.datetime(1981,month,28,hour)
+            result=datetime.datetime(1981,month,28,hour,minute)
         else:
-            result=datetime.datetime(1981,month,day,hour)
+            result=datetime.datetime(1981,month,day,hour,minute)
     else:
         raise ValueError('Unsupported type %s' % type)
     return (result.year,result.month,result.day,result.hour)
