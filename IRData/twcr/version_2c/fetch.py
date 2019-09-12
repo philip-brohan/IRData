@@ -48,7 +48,7 @@ def _get_remote_file_name(variable,year):
 
     remote_file=None
     if variable in ('prmsl','rh850','t850','u850','v850',
-                            'rh9950','t9950','u9950','v9950'):
+                    'rh9950','t9950','u9950','v9950','z500'):
         remote_file=("%s/analysis/%s/%s_%04d.nc" % (remote_dir,variable,
                                                      variable,year))
     if variable=='air.2m':
