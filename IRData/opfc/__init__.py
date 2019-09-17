@@ -13,9 +13,9 @@
 """
 This package retrieves and loads data from the Met Office Operational Forecast Archive.
 
-It will only work inside the Met Office (needs access to the MASS archive).
+It will only work inside the Met Office (needs access to the MASS archive). The same data is increasingly being distributed
 
-Only hourly data is supported (no daily or monthly averages) for 7 surface variables:
+Only instantaneous data is supported, for 9 surface variables:
 
 * Mean-sea-level pressure: 'mslp'
 * 2m air temperature: 'air.2m'
@@ -27,7 +27,7 @@ Only hourly data is supported (no daily or monthly averages) for 7 surface varia
 * Land Mask: 'lsmask'
 * Orography: 'orog'
 
-Data retrieved is stored in directory $SCRATCH/opfc - at the moment only the 'global deterministic' model is supported.
+Data retrieved is stored in directory $SCRATCH/opfc - at the moment only the 'global deterministic' model ('global') is supported.
 
 For example:
 
