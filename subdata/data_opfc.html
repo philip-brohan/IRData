@@ -1,0 +1,206 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Met Office operational models: IRData.opfc &#8212; An API for accessing synoptic-timescale reanalyis data</title>
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Authors and acknowledgements" href="../credits.html" />
+    <link rel="prev" title="The ERA-5 reanalysis: IRData.era5" href="data_era5.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../credits.html" title="Authors and acknowledgements"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="data_era5.html" title="The ERA-5 reanalysis: IRData.era5"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IRData</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/UK.GS1987.png" alt="Logo"/>
+            </a></p>
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="data_20CR.html">The 20th Century Reanalysis: IRData.twcr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_cera20c.html">The CERA-20C reanalysis: IRData.cera20c</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_era5.html">The ERA-5 reanalysis: IRData.era5</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Met Office operational models: IRData.opfc</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../uses.html">Uses of this package</a></li>
+</ul>
+<h3><a href="https://github.com/philip-brohan/IRData">Get the source code</a></h3>
+
+<a href="https://github.com/philip-brohan/IRData"
+           rel="nofollow">Github source repository</a>
+
+<h3>Found a bug, or have a suggestion?</h3>
+
+Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an issue</a>.
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-IRData.opfc">
+<span id="met-office-operational-models-irdata-opfc"></span><h1>Met Office operational models: IRData.opfc<a class="headerlink" href="#module-IRData.opfc" title="Permalink to this headline">¶</a></h1>
+<p>This package retrieves and loads data from the Met Office Operational Forecast Archive.</p>
+<p>It will only work inside the Met Office (needs access to the MASS archive). The same data is increasingly being distributed</p>
+<p>Only instantaneous data is supported, for 9 surface variables:</p>
+<ul class="simple">
+<li>Mean-sea-level pressure: ‘mslp’</li>
+<li>2m air temperature: ‘air.2m’</li>
+<li>Precipitation rate: ‘prate’</li>
+<li>10m meridional wind: ‘uwnd.10m’</li>
+<li>10m zonal wind: ‘vwnd.10m’</li>
+<li>Surface temperature: ‘tsurf’ - use ‘sst’ to get just the ocean component</li>
+<li>Sea-ice coverage: ‘icec’</li>
+<li>Land Mask: ‘lsmask’</li>
+<li>Orography: ‘orog’</li>
+</ul>
+<p>Data retrieved is stored in directory $SCRATCH/opfc - at the moment only the ‘global deterministic’ model (‘global’) is supported.</p>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">IRData.opfc</span> <span class="kn">as</span> <span class="nn">opfc</span>
+<span class="n">opfc</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;prate&#39;</span><span class="p">,</span>
+           <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2015</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span>
+           <span class="n">model</span><span class="o">=</span><span class="s1">&#39;global&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>will retrieve precipitation rate data for the selected date. Data is fetched in one-calendar-month blocks, so this will retrieve data for the whole of March 2015. The retrieval can slow, as the data has to be fetched from tape, but the retrieval is only run if necessary - if that month’s data has been previously fetched and is already on local disc, the fetch command will detect this and return instantly.</p>
+<p>Once the data has been fetched,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pr</span><span class="o">=</span><span class="n">opfc</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;prate&#39;</span><span class="p">,</span>
+             <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2015</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span>
+             <span class="n">model</span><span class="o">=</span><span class="s1">&#39;global&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>will then load the precipitation rates at quarter past 3pm on March 12 2015 from the retrieved dataset as a <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">iris.cube.Cube</span></code></a>. Note that as the analysis is only run at 6-hourly intervals, the value for 3:15pm will be interpolated between the outputs.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<dl class="function">
+<dt id="IRData.opfc.fetch">
+<code class="descclassname">IRData.opfc.</code><code class="descname">fetch</code><span class="sig-paren">(</span><em>variable</em>, <em>dtime</em>, <em>model='global'</em>, <em>fctime=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/opfc/fetch.html#fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.opfc.fetch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get data for for one month, from MASS. You can specify a variable, for consistency with related functions for other sources, but it gets all the supported variables because they are all in the same file on tape.</p>
+<blockquote>
+<div><p>As this function gets data from tape, it may take a long time (many minutes) to return.</p>
+<p>Data wil be stored locally in directory $SCRATCH/opfc, to be retrieved by <a class="reference internal" href="#IRData.opfc.load" title="IRData.opfc.load"><code class="xref py py-func docutils literal notranslate"><span class="pre">load()</span></code></a>. If the local file that would be produced already exists, this function does nothing.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>variable (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Variable to fetch (e.g. ‘prmsl’).
+dtime (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>): Date and time to get data for.
+model (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>): Which forecast model to use (currently must be ‘global’).
+fctime (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>): Forecast lead time (currently must be 0).</dd>
+</dl>
+</div></blockquote>
+<p>Batches retrievals by the calendar month. If you specify a dtime very close to the start or end of a month, it will do the retrieval for the previous or next month as well (so it provides enough data to interpolate the field at exactly the time requested.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Raises:</dt>
+<dd>StandardError: If variable is not a supported value, or if the requested data is not available on tape, or if the MASS system is down, or if the model requested is not supported.</dd>
+</dl>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="IRData.opfc.load">
+<code class="descclassname">IRData.opfc.</code><code class="descname">load</code><span class="sig-paren">(</span><em>variable</em>, <em>dtime</em>, <em>model='global'</em>, <em>fctime=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/opfc/load.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.opfc.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load requested data from disc, interpolating if necessary.</p>
+<p>Data must be available in directory $SCRATCH/opfc, previously retrieved by <a class="reference internal" href="#IRData.opfc.fetch" title="IRData.opfc.fetch"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>variable</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – Variable to fetch (e.g. ‘prmsl’)</li>
+<li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Run date and time to load data for.</li>
+<li><strong>model</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – Model to get data from - currently must be ‘global’.</li>
+<li><strong>fctime</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – Forecast time (hours) - currently must be 0.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Global field of variable at time.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.cube.Cube</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note that opfc data is only output every 6 hours (global model), so if hour%6!=0, the result may be linearly interpolated in time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code> – Data not on disc - see <a class="reference internal" href="#IRData.opfc.fetch" title="IRData.opfc.fetch"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch()</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../credits.html" title="Authors and acknowledgements"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="data_era5.html" title="The ERA-5 reanalysis: IRData.era5"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IRData</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    </div>
+  </body>
+</html>

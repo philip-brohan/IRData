@@ -4,29 +4,21 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>The CERA-20C reanalysis: IRData.cera20c &#8212; An API for accessing synoptic-timescale reanalyis data</title>
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="The ERA-5 reanalysis: IRData.era5" href="data_era5.html" />
     <link rel="prev" title="The 20th Century Reanalysis: IRData.twcr" href="data_20CR.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -50,7 +42,7 @@
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/UK.GS1987.png" alt="Logo"/>
             </a></p>
-<h3><a href="../index.html">Table Of Contents</a></h3>
+<h3><a href="../index.html">Table of Contents</a></h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
 </ul>
@@ -58,6 +50,11 @@
 <li class="toctree-l1"><a class="reference internal" href="data_20CR.html">The 20th Century Reanalysis: IRData.twcr</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">The CERA-20C reanalysis: IRData.cera20c</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_era5.html">The ERA-5 reanalysis: IRData.era5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_opfc.html">Met Office operational models: IRData.opfc</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../uses.html">Uses of this package</a></li>
 </ul>
 <h3><a href="https://github.com/philip-brohan/IRData">Get the source code</a></h3>
 
@@ -91,17 +88,17 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 </ul>
 <p>Data retrieved is stored in directory $SCRATCH/CERA_20C - the ‘SCRATCH’ environment variable must be set.</p>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">IRData.cera20c</span> <span class="kn">as</span> <span class="nn">cera20c</span>
 <span class="n">cera20c</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;prate&#39;</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1969</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>will retrieve precipitation rate data for the selected date. CERA20C data is fetched in one-calendar-month blocks, so this will retrieve data for the whole of March 1969. The retrieval is slow, as the data has to be fetched from MARS at ECMWF, but the retrieval is only run if necessary - if that month’s data has been previously fetched and is already on local disc, the fetch command will detect this and return instantly.</p>
 <p>Once the data has been fetched,</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">pr</span><span class="o">=</span><span class="n">cera20c</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;prate&#39;</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1969</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pr</span><span class="o">=</span><span class="n">cera20c</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;prate&#39;</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1969</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">15</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>will then load the precipitation rates at quarter past 3pm on March 12 1969 from the retrieved dataset as a <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-class docutils literal"><span class="pre">iris.cube.Cube</span></code></a>. Note that as CERA only provides data at 3-hourly intervals, the value for 3:15pm will be interpolated between the 15:00 and 18:00 outputs (to get uninterpolated data, only call load for times when CERA-20C has output). Also, as CERA is an ensemble dataset, the result will include all 10 ensemble members.</p>
+<p>will then load the precipitation rates at quarter past 3pm on March 12 1969 from the retrieved dataset as a <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">iris.cube.Cube</span></code></a>. Note that as CERA only provides data at 3-hourly intervals, the value for 3:15pm will be interpolated between the 15:00 and 18:00 outputs (to get uninterpolated data, only call load for times when CERA-20C has output). Also, as CERA is an ensemble dataset, the result will include all 10 ensemble members.</p>
 <p>Note that precipitation in CERA-20C is reported as metres accumulated, and it accumulates over the whole 27-hour forecast, so it reports precip at 15:00 as (accumulated precip at 12:00)+(accumulation in the period 12-15). This module removes the across-timestep accumulation, so ‘loading’ precip at 15:00 only gives the accumulation in the period 12-15, and the units are ‘m accumulated in the last 3-hours’. It is this 3-hour-accumulation that is interpolated if you ‘load’ the precipitation for a period between timesteps.</p>
 <div class="line-block">
 <div class="line"><br /></div>
@@ -110,15 +107,15 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <dt id="IRData.cera20c.fetch">
 <code class="descclassname">IRData.cera20c.</code><code class="descname">fetch</code><span class="sig-paren">(</span><em>variable</em>, <em>dtime</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/cera20c/fetch.html#fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.cera20c.fetch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all data for one variable, for one month, from ECMWF’s archive.</p>
-<p>Data wil be stored locally in directory $SCRATCH/CERA-20C, to be retrieved by <a class="reference internal" href="#IRData.cera20c.load" title="IRData.cera20c.load"><code class="xref py py-func docutils literal"><span class="pre">load()</span></code></a>. If the local file that would be produced already exists, this function does nothing.</p>
+<p>Data wil be stored locally in directory $SCRATCH/CERA-20C, to be retrieved by <a class="reference internal" href="#IRData.cera20c.load" title="IRData.cera20c.load"><code class="xref py py-func docutils literal notranslate"><span class="pre">load()</span></code></a>. If the local file that would be produced already exists, this function does nothing.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>variable</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – Variable to fetch (e.g. ‘prmsl’)</li>
-<li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Date-time to fetch the data for.</li>
-<li><strong>month</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">int</span></code></a>) – Month to get data for (1-12).</li>
+<li><strong>variable</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – Variable to fetch (e.g. ‘prmsl’)</li>
+<li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Date-time to fetch the data for.</li>
+<li><strong>month</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – Month to get data for (1-12).</li>
 </ul>
 </td>
 </tr>
@@ -129,7 +126,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">StandardError</span></code> – If Variable is not a supported value.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – If Variable is not a supported value.</td>
 </tr>
 </tbody>
 </table>
@@ -142,22 +139,22 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <dt id="IRData.cera20c.load">
 <code class="descclassname">IRData.cera20c.</code><code class="descname">load</code><span class="sig-paren">(</span><em>variable</em>, <em>dtime</em>, <em>fc_init=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/cera20c/load.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.cera20c.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load requested data from disc, interpolating if necessary.</p>
-<p>Data must be available in directory $SCRATCH/CERA-20C, previously retrieved by <a class="reference internal" href="#IRData.cera20c.fetch" title="IRData.cera20c.fetch"><code class="xref py py-func docutils literal"><span class="pre">fetch()</span></code></a>.</p>
+<p>Data must be available in directory $SCRATCH/CERA-20C, previously retrieved by <a class="reference internal" href="#IRData.cera20c.fetch" title="IRData.cera20c.fetch"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>variable</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – Variable to fetch (e.g. ‘prmsl’)</li>
-<li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Date-time to get data for.</li>
-<li><strong>fc_init</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – See below</li>
+<li><strong>variable</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – Variable to fetch (e.g. ‘prmsl’)</li>
+<li><strong>dtime</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Date-time to get data for.</li>
+<li><strong>fc_init</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – See below</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Global field of variable at time.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.1)"><code class="xref py py-obj docutils literal"><span class="pre">iris.cube.Cube</span></code></a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://scitools.org.uk/iris/docs/latest/iris/iris/cube.html#iris.cube.Cube" title="(in Iris v2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iris.cube.Cube</span></code></a></p>
 </td>
 </tr>
 </tbody>
@@ -168,7 +165,7 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">StandardError</span></code> – Data not on disc - see <a class="reference internal" href="#IRData.cera20c.fetch" title="IRData.cera20c.fetch"><code class="xref py py-func docutils literal"><span class="pre">fetch()</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – Data not on disc - see <a class="reference internal" href="#IRData.cera20c.fetch" title="IRData.cera20c.fetch"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch()</span></code></a></td>
 </tr>
 </tbody>
 </table>

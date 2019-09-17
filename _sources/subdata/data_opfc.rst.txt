@@ -1,0 +1,7 @@
+Met Office operational models: IRData.opfc
+==========================================
+
+.. automodule:: IRData.opfc
+    :members:
+    :imported-members:
+

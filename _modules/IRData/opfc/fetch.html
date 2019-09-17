@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>IRData.opfc.fetch &#8212; An API for accessing synoptic-timescale reanalyis data</title>
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">IRData</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/UK.GS1987.png" alt="Logo"/>
+            </a></p>
+<h3><a href="../../../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../subdata/data_20CR.html">The 20th Century Reanalysis: IRData.twcr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../subdata/data_cera20c.html">The CERA-20C reanalysis: IRData.cera20c</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../subdata/data_era5.html">The ERA-5 reanalysis: IRData.era5</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../subdata/data_opfc.html">Met Office operational models: IRData.opfc</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../credits.html">Authors and acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../uses.html">Uses of this package</a></li>
+</ul>
+<h3><a href="https://github.com/philip-brohan/IRData">Get the source code</a></h3>
+
+<a href="https://github.com/philip-brohan/IRData"
+           rel="nofollow">Github source repository</a>
+
+<h3>Found a bug, or have a suggestion?</h3>
+
+Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an issue</a>.
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for IRData.opfc.fetch</h1><div class="highlight"><pre>
+<span></span><span class="c1"># (C) British Crown Copyright 2017, Met Office</span>
+<span class="c1">#</span>
+<span class="c1"># This code is free software: you can redistribute it and/or modify it under</span>
+<span class="c1"># the terms of the GNU Lesser General Public License as published by the</span>
+<span class="c1"># Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This code is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU Lesser General Public License for more details.</span>
+<span class="c1">#</span>
+
+<span class="c1"># The functions in this module fetch MetO Operational data from MASS and</span>
+<span class="c1">#   store it in $SCRATCH.</span>
+<span class="c1"># Only works inside the Met Office.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">calendar</span>
+<span class="kn">import</span> <span class="nn">iris</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">_get_file_name</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">_get_data_times</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">_stash_from_variable_names</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">monolevel_analysis</span>
+
+<div class="viewcode-block" id="fetch"><a class="viewcode-back" href="../../../subdata/data_opfc.html#IRData.opfc.fetch">[docs]</a><span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="n">dtime</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="s1">&#39;global&#39;</span><span class="p">,</span><span class="n">fctime</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get data for for one month, from MASS. You can specify a variable, for consistency with related functions for other sources, but it gets all the supported variables because they are all in the same file on tape.</span>
+
+<span class="sd">    As this function gets data from tape, it may take a long time (many minutes) to return.</span>
+
+<span class="sd">    Data wil be stored locally in directory $SCRATCH/opfc, to be retrieved by :func:`load`. If the local file that would be produced already exists, this function does nothing.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        variable (:obj:`str`): Variable to fetch (e.g. &#39;prmsl&#39;).</span>
+<span class="sd">        dtime (:obj:`datetime.datetime`): Date and time to get data for.</span>
+<span class="sd">        model (:obj:`str`): Which forecast model to use (currently must be &#39;global&#39;).</span>
+<span class="sd">        fctime (:obj:`int`): Forecast lead time (currently must be 0).</span>
+
+<span class="sd">   Batches retrievals by the calendar month. If you specify a dtime very close to the start or end of a month, it will do the retrieval for the previous or next month as well (so it provides enough data to interpolate the field at exactly the time requested.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        StandardError: If variable is not a supported value, or if the requested data is not available on tape, or if the MASS system is down, or if the model requested is not supported.</span>
+<span class="sd"> </span>
+<span class="sd">    |</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">model</span><span class="o">==</span><span class="s1">&#39;global&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dtime</span><span class="o">.</span><span class="n">hour</span><span class="o">%</span><span class="mi">6</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dtm</span> <span class="ow">in</span> <span class="n">_get_data_times</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="n">dtime</span><span class="p">,</span><span class="n">fctime</span><span class="o">=</span><span class="n">fctime</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">):</span>
+                <span class="n">fetch</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="n">dtm</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span><span class="n">fctime</span><span class="o">=</span><span class="n">fctime</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">file_name</span><span class="o">=</span><span class="n">_get_file_name</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="n">dtime</span><span class="p">,</span><span class="n">fctime</span><span class="o">=</span><span class="n">fctime</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span> <span class="k">return</span>
+            <span class="n">dname</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+            <span class="n">startday</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%04d%02d</span><span class="s2">01&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dtime</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">dtime</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+            <span class="n">endday</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%04d%02d%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dtime</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">dtime</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
+                <span class="n">calendar</span><span class="o">.</span><span class="n">monthrange</span><span class="p">(</span><span class="n">dtime</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">dtime</span><span class="o">.</span><span class="n">month</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">stash</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">monolevel_analysis</span><span class="p">:</span>
+                <span class="n">stash</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">:p0 &quot;</span> <span class="o">%</span> <span class="n">_stash_from_variable_names</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">lbuser3</span><span class="p">()</span>
+            <span class="n">cmd</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;. ~frtr/trui/stable/bin/trui_env.ksh</span><span class="se">\n</span><span class="s1"> . trui_python_env</span><span class="se">\n</span><span class="s1"> &#39;</span><span class="o">+</span>
+                 <span class="s1">&#39;retr_from_opfc.py --model-name=global --cycle=&quot;00 06 12 18&quot; &#39;</span><span class="o">+</span>
+                 <span class="s1">&#39;--date=&quot;</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">&quot; --forecast-time=</span><span class="si">%d</span><span class="s1"> &#39;</span><span class="o">+</span>
+                 <span class="s1">&#39;--out-dir=</span><span class="si">%s</span><span class="s1"> &#39;</span> <span class="o">+</span>
+                 <span class="s1">&#39;--stash=&quot;</span><span class="si">%s</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">startday</span><span class="p">,</span><span class="n">endday</span><span class="p">,</span><span class="n">fctime</span><span class="p">,</span><span class="n">dname</span><span class="p">,</span><span class="n">stash</span><span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">check_returncode</span><span class="p">()</span> <span class="c1"># Throw exception if not 0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Unsupported model </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">model</span><span class="p">)</span>
+    <span class="k">return</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">IRData</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    </div>
+  </body>
+</html>
