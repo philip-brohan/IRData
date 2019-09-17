@@ -59,6 +59,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../uses.html">Uses of this package</a></li>
 </ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../credits.html">Authors and acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../uses.html">Uses of this package</a></li>
+</ul>
 <h3><a href="https://github.com/philip-brohan/IRData">Get the source code</a></h3>
 
 <a href="https://github.com/philip-brohan/IRData"
@@ -119,7 +123,11 @@ Please <a href="https://github.com/philip-brohan/IRData/issues/new">raise an iss
                          <span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<<<<<<< HEAD
 <p>It’s also possible to load all the observations associated with a particular reanalysis field. 20CR assimilates observations every 6-hours, so there is one observations file for each 6-hourly assimilation run. Load all the observations available to the assimilation run for 12 noon on March 12 1987 (as a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) with:</p>
+=======
+<p>It’s also possible to load all the observations associated with a particular reanalysis field. 20CR assimilates observations every 6-hours, so there is one observations file for each 6-hourly assimilation run. Load all the observations available to the assimilation run for 12 noon on March 12 1987 (as a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) with:</p>
+>>>>>>> 134de0216070ab10aad3d39136b8847981487263
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">o</span><span class="o">=</span><span class="n">twcr</span><span class="o">.</span><span class="n">load_observations_1file</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1987</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span>
                                <span class="n">version</span><span class="o">=</span><span class="s1">&#39;2c&#39;</span><span class="p">)</span>
 </pre></div>
@@ -212,7 +220,11 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 
 <dl class="function">
 <dt id="IRData.twcr.load">
+<<<<<<< HEAD
 <code class="descclassname">IRData.twcr.</code><code class="descname">load</code><span class="sig-paren">(</span><em>variable</em>, <em>dtime</em>, <em>height=None</em>, <em>level=None</em>, <em>ilevel=None</em>, <em>version=None</em>, <em>type=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/load.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.load" title="Permalink to this definition">¶</a></dt>
+=======
+<code class="descclassname">IRData.twcr.</code><code class="descname">load</code><span class="sig-paren">(</span><em>variable</em>, <em>dtime</em>, <em>height=None</em>, <em>level=None</em>, <em>ilevel=None</em>, <em>version=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/IRData/twcr/load.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#IRData.twcr.load" title="Permalink to this definition">¶</a></dt>
+>>>>>>> 134de0216070ab10aad3d39136b8847981487263
 <dd><p>Load requested data from disc, interpolating if necessary.</p>
 <p>Data must be available in directory $SCRATCH/20CR, previously retrieved by <a class="reference internal" href="#IRData.twcr.fetch" title="IRData.twcr.fetch"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -226,7 +238,10 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 <li><strong>level</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – Pressure level (hPa) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.</li>
 <li><strong>ilevel</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – Isentropic level (K) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.</li>
 <li><strong>version</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – 20CR version to load data from.</li>
+<<<<<<< HEAD
 <li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – If None load raw data (default). If ‘normal, or standard.deviations load those derived data.</li>
+=======
+>>>>>>> 134de0216070ab10aad3d39136b8847981487263
 </ul>
 </td>
 </tr>
@@ -271,7 +286,11 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dataframe of observations.</p>
 </td>
 </tr>
+<<<<<<< HEAD
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+=======
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+>>>>>>> 134de0216070ab10aad3d39136b8847981487263
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_observations()</span></code></a></p>
@@ -303,7 +322,11 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dataframe of observations.</p>
 </td>
 </tr>
+<<<<<<< HEAD
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+=======
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+>>>>>>> 134de0216070ab10aad3d39136b8847981487263
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_observations()</span></code></a></p>
@@ -335,7 +358,11 @@ All the ‘load’ functions then work exactly as for 2c.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">same as from <a class="reference internal" href="#IRData.twcr.load_observations" title="IRData.twcr.load_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_observations()</span></code></a>, except with aded column ‘weight’ giving the weight of each observation at the given time.</p>
 </td>
 </tr>
+<<<<<<< HEAD
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+=======
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+>>>>>>> 134de0216070ab10aad3d39136b8847981487263
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">StandardError</span></code> – Version number not supported, or data not on disc - see <a class="reference internal" href="#IRData.twcr.fetch_observations" title="IRData.twcr.fetch_observations"><code class="xref py py-func docutils literal notranslate"><span class="pre">fetch_observations()</span></code></a></p>

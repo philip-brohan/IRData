@@ -4,7 +4,11 @@
  *
  * Sphinx JavaScript utilities for the full-text search.
  *
+<<<<<<< HEAD
  * :copyright: Copyright 2007-2019 by the Sphinx team, see AUTHORS.
+=======
+ * :copyright: Copyright 2007-2018 by the Sphinx team, see AUTHORS.
+>>>>>>> 134de0216070ab10aad3d39136b8847981487263
  * :license: BSD, see LICENSE for details.
  *
  */
@@ -138,6 +142,10 @@ var Search = {
    */
   query : function(query) {
     var i;
+<<<<<<< HEAD
+=======
+    var stopwords = DOCUMENTATION_OPTIONS.SEARCH_LANGUAGE_STOP_WORDS;
+>>>>>>> 134de0216070ab10aad3d39136b8847981487263
 
     // stem the searchterms and add them to the correct list
     var stemmer = new Stemmer();
