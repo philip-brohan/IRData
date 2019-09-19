@@ -82,6 +82,12 @@ def _get_file_name(variable,dtime,
             file_name="%s/prods_op_gl-mn_%04d%02d%02d_%02d_%03d.pp" % (
                           dir_name,dtime.year,dtime.month,dtime.day,
                           dtime.hour,fctime)
+            # Fudge for peculiar 2018 file names
+            if not os.path.isfile(file_name):
+                file_name="%s/prods_op_gl-mn_%04d%02d%02d_%02d_%03d.calc.pp" % (
+                              dir_name,dtime.year,dtime.month,dtime.day,
+                              dtime.hour,fctime)
+
     else:
         raise Exception("Unsupported model %s" % model)
 
