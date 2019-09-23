@@ -62,9 +62,9 @@ def fetch(variable,dtime,model='global',fctime=0):
                 stash += "%d:p0 " % _stash_from_variable_names(var,model=model).lbuser3()
             cmd=('. ~frtr/trui/stable/bin/trui_env.ksh\n . trui_python_env\n '+
                  'retr_from_opfc.py --model-name=global --cycle="00 06 12 18" '+
-                 '--date="%s-%s" --forecast-time=%d '+
+                 '--date="%s-%s" --forecast-time="0 1 2 3 4 5" '+
                  '--out-dir=%s ' +
-                 '--stash="%s"\n') % (startday,endday,fctime,dname,stash)
+                 '--stash="%s"\n') % (startday,endday,dname,stash)
             res = subprocess.run(cmd,shell=True)
             res.check_returncode() # Throw exception if not 0
     else:
