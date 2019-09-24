@@ -26,7 +26,7 @@ from .utils import _get_data_times
 from .utils import _stash_from_variable_names
 from .utils import monolevel_analysis
 
-def fetch(variable,dtime,model='global',fctime=0):
+def fetch(variable,dtime,model='global'):
     """Get data for for one month, from MASS. You can specify a variable, for consistency with related functions for other sources, but it gets all the supported variables because they are all in the same file on tape.
 
     As this function gets data from tape, it may take a long time (many minutes) to return.
@@ -37,7 +37,6 @@ def fetch(variable,dtime,model='global',fctime=0):
         variable (:obj:`str`): Variable to fetch (e.g. 'prmsl').
         dtime (:obj:`datetime.datetime`): Date and time to get data for.
         model (:obj:`str`): Which forecast model to use (currently must be 'global').
-        fctime (:obj:`int`): Forecast lead time (currently must be 0).
 
    Batches retrievals by the calendar month. If you specify a dtime very close to the start or end of a month, it will do the retrieval for the previous or next month as well (so it provides enough data to interpolate the field at exactly the time requested.
 
@@ -47,11 +46,11 @@ def fetch(variable,dtime,model='global',fctime=0):
     |
     """
     if model=='global':
-        if dtime.hour%6 != 0:
-            for dtm in _get_data_times(variable,dtime,fctime=fctime,model=model):
-                fetch(variable,dtm,model=model,fctime=fctime)
+        if dtime.hour%1 != 0:
+            for dtm in _get_data_times(variable,dtime,model=model):
+                fetch(variable,dtm,model=model)
         else:
-            file_name=_get_file_name(variable,dtime,fctime=fctime,model=model)
+            file_name=_get_file_name(variable,dtime,model=model)
             if os.path.isfile(file_name): return
             dname=os.path.dirname(file_name)
             startday="%04d%02d01" % (dtime.year,dtime.month)
@@ -62,7 +61,7 @@ def fetch(variable,dtime,model='global',fctime=0):
                 stash += "%d:p0 " % _stash_from_variable_names(var,model=model).lbuser3()
             cmd=('. ~frtr/trui/stable/bin/trui_env.ksh\n . trui_python_env\n '+
                  'retr_from_opfc.py --model-name=global --cycle="00 06 12 18" '+
-                 '--date="%s-%s" --forecast-time="0 1 2 3 4 5" '+
+                 '--date="%s-%s" --forecast-time="0 1 2 3 4 5 6 7 8 9 10 11" '+
                  '--out-dir=%s ' +
                  '--stash="%s"\n') % (startday,endday,dname,stash)
             res = subprocess.run(cmd,shell=True)

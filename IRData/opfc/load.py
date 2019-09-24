@@ -23,6 +23,7 @@ import numpy as np
 
 from .utils import _get_file_name
 from .utils import _get_data_times
+from .utils import _get_fcst
 from .utils import _stash_from_variable_names
 from .utils import monolevel_analysis
 
@@ -32,7 +33,7 @@ coord_s=iris.coord_systems.GeogCS(iris.fileformats.pp.EARTH_RADIUS)
 def _is_in_file(variable,year,month,day,hour,model='global'):
     """Is the variable available for this time?
        Or will it have to be interpolated?"""
-    if model=='global' and hour%6==0:
+    if model=='global' and hour%1==0:
         return True
     return False
 
@@ -40,16 +41,23 @@ def _get_previous_field_time(variable,year,month,day,hour,model='global'):
     """Get the latest time, before the given time,
                      for which there is saved data"""
     if model=='global':
-        return {'year':year,'month':month,'day':day,'hour':int(hour/6)*6}
+        if variable=='lsmask':
+            return {'year':year,'month':month,'day':day,'hour':int(hour/6)*6}
+        else:
+            return {'year':year,'month':month,'day':day,'hour':int(hour)}
+    else:
         raise Exception("Unknown model %s" % model)
 
 def _get_next_field_time(variable,year,month,day,hour,model='global'):
     """Get the earliest time, after the given time,
                      for which there is saved data"""  
     if model=='global':
-       dr = {'year':year,'month':month,'day':day,'hour':int(hour/6)*6+6}
+        if variable=='lsmask':
+            dr = {'year':year,'month':month,'day':day,'hour':int(hour/6)*6+6}
+        else:
+            dr = {'year':year,'month':month,'day':day,'hour':int(hour)+1}
     else:
-       raise Exception("Unknown model %s" % model) 
+        raise Exception("Unknown model %s" % model) 
     if dr['hour']>=24:
         d_next= ( datetime.date(dr['year'],dr['month'],dr['day']) 
                  + datetime.timedelta(days=1) )
@@ -58,25 +66,27 @@ def _get_next_field_time(variable,year,month,day,hour,model='global'):
     return dr
 
 def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,
-                                   model='global',fctime=0):
+                                   model='global'):
     """Get the cube with the data, given that the specified time
        matches a data timestep."""
     if not _is_in_file(variable,year,month,day,hour,model=model):
         raise ValueError("Invalid hour - data not in file")
     file_name=_get_file_name(variable,datetime.datetime(year,month,day,int(hour)),
-                                   model=model,fctime=fctime)
+                                   model=model)
     if not os.path.isfile(file_name):
         raise Exception(("%s for %04d/%02d not available"+
                              " might need oper.fetch") % (variable,
                                                              year,month))
-    stsh=_stash_from_variable_names(variable,model=model)
-    hslice=iris.load_cube(file_name,
-                          iris.AttributeConstraint(STASH=stsh))
-
+    ftco =iris.Constraint(forecast_period=_get_fcst(variable,
+                                datetime.datetime(year,month,day,int(hour)),
+                                model='global'))
+    stco=iris.AttributeConstraint(STASH=_stash_from_variable_names(variable,
+                                                                   model=model))
+    hslice=iris.load_cube(file_name, stco & ftco)
     return hslice
 
 def load(variable,dtime,
-         model='global',fctime=0):
+         model='global'):
     """Load requested data from disc, interpolating if necessary.
 
     Data must be available in directory $SCRATCH/opfc, previously retrieved by :func:`fetch`.
@@ -85,12 +95,11 @@ def load(variable,dtime,
         variable (:obj:`str`): Variable to fetch (e.g. 'prmsl')
         dtime (:obj:`datetime.datetime`): Run date and time to load data for.
         model (:obj:`str`): Model to get data from - currently must be 'global'.
-        fctime (:obj:`int`): Forecast time (hours) - currently must be 0.
 
     Returns:
         :obj:`iris.cube.Cube`: Global field of variable at time.
 
-    Note that opfc data is only output every 6 hours (global model), so if hour%6!=0, the result may be linearly interpolated in time.
+    Note that opfc data is only output every hour (global model), so if hour%1!=0, the result may be linearly interpolated in time.
 
     Raises:
         Exception: Data not on disc - see :func:`fetch`
@@ -105,8 +114,7 @@ def load(variable,dtime,
                    model=model):
         return(_get_slice_at_hour_at_timestep(variable,dtime.year,
                                               dtime.month,dtime.day,
-                                              dhour,model=model,
-                                              fctime=fctime))
+                                              dhour,model=model))
     previous_step=_get_previous_field_time(variable,dtime.year,dtime.month,
                                            dtime.day,dhour,model=model)
     next_step=_get_next_field_time(variable,dtime.year,dtime.month,
@@ -125,15 +133,13 @@ def load(variable,dtime,
                                               previous_step['month'],
                                               previous_step['day'],
                                               previous_step['hour'],
-                                              model=model,
-                                              fctime=fctime)
+                                              model=model)
     s_next=_get_slice_at_hour_at_timestep(variable,
                                           next_step['year'],
                                           next_step['month'],
                                           next_step['day'],
                                           next_step['hour'],
-                                          model=model,
-                                          fctime=fctime)
+                                          model=model)
  
     # Iris won't merge cubes with different attributes
     s_previous.attributes=s_next.attributes
