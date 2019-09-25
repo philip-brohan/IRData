@@ -79,7 +79,7 @@ def _get_file_name(variable,dtime,
         if fcst>0 and fcst<4:
             fcst_f=3
         if fcst>=4:
-            fcsf_f=6
+            fcst_f=6
         if variable=='orog':
             file_name="%s/prodm_op_gl-mn_%04d%02d%02d_%02d_%03d.pp" % (
                           dir_name,dtime.year,dtime.month,dtime.day,
