@@ -58,7 +58,10 @@ def fetch(variable,dtime,model='global'):
                 calendar.monthrange(dtime.year,dtime.month)[1])
             stash=""
             for var in monolevel_analysis:
-                stash += "%d:p0 " % _stash_from_variable_names(var,model=model).lbuser3()
+                if variable=='prate':
+                    stash += "%d " % _stash_from_variable_names(var,model=model).lbuser3()
+                else:
+                    stash += "%d:p0 " % _stash_from_variable_names(var,model=model).lbuser3()
             cmd=('. ~frtr/trui/stable/bin/trui_env.ksh\n . trui_python_env\n '+
                  'retr_from_opfc.py --model-name=global --cycle="00 06 12 18" '+
                  '--date="%s-%s" --forecast-time="0 1 2 3 4 5 6 7 8 9 10 11" '+

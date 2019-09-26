@@ -66,6 +66,7 @@ def _get_next_field_time(variable,year,month,day,hour,model='global'):
     return dr
 
 def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,
+                                   methods=None,
                                    model='global'):
     """Get the cube with the data, given that the specified time
        matches a data timestep."""
@@ -82,10 +83,30 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,
                                 model='global'))
     stco=iris.AttributeConstraint(STASH=_stash_from_variable_names(variable,
                                                                    model=model))
-    hslice=iris.load_cube(file_name, stco & ftco)
-    return hslice
+    hslice=iris.load(file_name, stco & ftco)
+    for cbe in hslice:
+       if methods is None:
+           if len(cbe.cell_methods)==0:
+               return cbe
+       else:
+           if 'method' in methods:
+               if not any(cm.method==methods['method'] for cm in cbe.cell_methods):
+                   continue
+           if 'coord_names' in methods:
+               if not any(methods['coord_names'] in cm.coord_names for cm in cbe.cell_methods):
+                   continue
+           if 'intervals' in methods:
+               if not any(methods['intervals'] in cm.intervals for cm in cbe.cell_methods):
+                   continue
+           if 'comments' in methods:
+               if not any(methods['comments'] in cm.comments for cm in cbe.cell_methods):
+                   continue
+           return cbe
+
+    raise ValueError("Invalid methods - no cube with matching cell methods") 
 
 def load(variable,dtime,
+         methods=None,
          model='global'):
     """Load requested data from disc, interpolating if necessary.
 
@@ -114,7 +135,7 @@ def load(variable,dtime,
                    model=model):
         return(_get_slice_at_hour_at_timestep(variable,dtime.year,
                                               dtime.month,dtime.day,
-                                              dhour,model=model))
+                                              dhour,methods=methods,model=model))
     previous_step=_get_previous_field_time(variable,dtime.year,dtime.month,
                                            dtime.day,dhour,model=model)
     next_step=_get_next_field_time(variable,dtime.year,dtime.month,
