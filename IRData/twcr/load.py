@@ -15,11 +15,12 @@
 
 from . import version_2c
 from . import version_3
+from . import version_3_release
 import datetime
 
 def load(variable,dtime,
          height=None,level=None,ilevel=None,
-         version=None,type=None):
+         version=None,type=None,member=None):
     """Load requested data from disc, interpolating if necessary.
 
     Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch`.
@@ -30,6 +31,7 @@ def load(variable,dtime,
         height (:obj:`int`): Height above ground (m) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact height (no interpolation). Defaults to None - appropriate for 2d variables.
         level (:obj:`int`): Pressure level (hPa) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.
         ilevel (:obj:`int`): Isentropic level (K) for 3d variables. Only used in v3. Variable must be in 20CR output at that exact pressure level (no interpolation). Defaults to None - appropriate for 2d variables.
+        member (:obj:`int`): Member to load (version 3 only). Defaults to None - load all 80 members.
         version (:obj:`str`): 20CR version to load data from.
         type (:obj:`str`): If None load raw data (default). If 'normal, or standard.deviations load those derived data.
 
@@ -45,6 +47,8 @@ def load(variable,dtime,
     """
     if version=='2c':
         return version_2c.load(variable,dtime,type=type)
+    if version=='3':
+        return version_3_release.load(variable,dtime,member=member)
     if version[0:2] == '4.':
         return version_3.load(variable,dtime,
                               height,level,ilevel,

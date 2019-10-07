@@ -15,6 +15,7 @@
 
 from . import version_2c
 from . import version_3
+from . import version_3_release
 from . import observations
 import datetime
 
@@ -39,6 +40,9 @@ def fetch(variable,dtime,
  
     |
     """
+
+    if version=='3':
+        raise Exception("Fetch not available for version 3")
 
     if variable=='observations':
         return observations.fetch_observations(dtime,
