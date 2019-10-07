@@ -15,6 +15,7 @@
 
 from . import version_2c
 from . import version_3
+from . import version_3_release
 import datetime
 
 def fetch_observations(dtime,version='none',user='pbrohan'):

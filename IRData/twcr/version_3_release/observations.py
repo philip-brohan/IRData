@@ -23,14 +23,14 @@ import getpass
 
 from .utils import _get_data_dir
 
-def _observations_file_name(year,month,day,hour,version):
+def _observations_file_name(year,month,day,hour):
     return ("%s/%04d/observations/%04d%02d%02d%02d_psobs_posterior.txt" % 
-                            (_get_data_dir(version),year,year,month,day,hour))
+                            (_get_data_dir(),year,year,month,day,hour))
 
-def load_observations_1file(dtime,version):
+def load_observations_1file(dtime):
     """Retrieve all the observations for an individual assimilation run."""
     of_name=_observations_file_name(dtime.year,dtime.month,
-                                    dtime.day,dtime.hour,version)
+                                    dtime.day,dtime.hour)
     if not os.path.isfile(of_name):
         raise IOError("No obs file for given version and date")
 
@@ -116,14 +116,14 @@ def load_observations_1file(dtime,version):
                        comment=None)
     return(o)
 
-def load_observations(start,end,version):
+def load_observations(start,end):
     result=None
     ct=start
     while(ct<end):
         if(int(ct.hour)%6!=0):
            ct=ct+datetime.timedelta(hours=1)
            continue 
-        o=load_observations_1file(ct.year,ct.month,ct.day,ct.hour,version)
+        o=load_observations_1file(ct.year,ct.month,ct.day,ct.hour)
         dtm=pandas.to_datetime(o.UID.str.slice(0,10),format="%Y%m%d%H")
         o2=o[(dtm>=start) & (dtm<end)]
         if(result is None):
@@ -133,25 +133,25 @@ def load_observations(start,end,version):
         ct=ct+datetime.timedelta(hours=1)
     return(result)
 
-def load_observations_fortime(v_time,version):
+def load_observations_fortime(v_time):
     result=None
     if v_time.hour%6==0:
-        result=load_observations_1file(v_time,version)
+        result=load_observations_1file(v_time)
         result['weight']=numpy.repeat(1,len(result.index))
         return result
     if v_time.hour%6<=3:
         prev_time=v_time-datetime.timedelta(hours=v_time.hour%6)
         prev_weight=1.0
-        result=load_observations_1file(prev_time,version)
+        result=load_observations_1file(prev_time)
         result['weight']=numpy.repeat(prev_weight,len(result.index))
         return result
     prev_time=v_time-datetime.timedelta(hours=v_time.hour%6)
     prev_weight=(3-v_time.hour%3)/3.0
-    result=load_observations_1file(prev_time,version)
+    result=load_observations_1file(prev_time)
     result['weight']=numpy.repeat(prev_weight,len(result.index))
     next_time=prev_time+datetime.timedelta(hours=6)
     next_weight=1-prev_weight
-    result2=load_observations_1file(next_time,version)
+    result2=load_observations_1file(next_time)
     result2['weight']=numpy.repeat(next_weight,len(result2.index))
     result=pandas.concat([result,result2])
     return result
