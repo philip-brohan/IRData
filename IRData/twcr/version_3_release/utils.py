@@ -16,7 +16,7 @@
 import os
 
 # Supported analysis variables
-monolevel_analysis=('PRMSL','T2m','UGRD10m','VGRD10m','PRATE')
+monolevel_analysis=('PRMSL','TMP2m','UGRD10m','VGRD10m','PRATE')
 
 def _get_data_dir():
     """Return the root directory containing 20CR netCDF files"""

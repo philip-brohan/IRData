@@ -85,6 +85,13 @@ def _get_slice_at_hour_at_timestep(variable,
     # Enhance the names and metadata for iris/cartopy
     hslice.coord('latitude').coord_system=coord_s
     hslice.coord('longitude').coord_system=coord_s
+    # Get rid of unnecessary height dimensions
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            hslice=hslice.collapsed('height', iris.analysis.MEAN)
+    except Exception:
+        pass
     return hslice
 
 def load(variable,dtime,member=None):
