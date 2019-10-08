@@ -21,7 +21,7 @@ import iris
 
 # Names of analysis variables supported
 monolevel_analysis=('prmsl','air.2m','uwnd.10m','vwnd.10m',
-                    'icec','tsurf','orog','lsmask','prate')
+                    'icec','tsurf','prate')
 
 # Variable name to iris stash code
 #  See https://code.metoffice.gov.uk/trac/nwpscience/wiki/ModelInfo
