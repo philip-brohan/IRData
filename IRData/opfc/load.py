@@ -78,12 +78,19 @@ def _get_slice_at_hour_at_timestep(variable,year,month,day,hour,
         raise Exception(("%s for %04d/%02d not available"+
                              " might need oper.fetch") % (variable,
                                                              year,month))
-    ftco =iris.Constraint(forecast_period=_get_fcst(variable,
-                                datetime.datetime(year,month,day,int(hour)),
-                                model='global'))
+    if variable=='prate_a':
+        tp=_get_fcst(variable,datetime.datetime(year,month,day,int(hour)),
+                                    model=model)
+        ftco =iris.Constraint(forecast_period = lambda t: t.point==tp)
+    else:
+        ftco =iris.Constraint(forecast_period=_get_fcst(variable,
+                                    datetime.datetime(year,month,day,int(hour)),
+                                                        model=model))
     stco=iris.AttributeConstraint(STASH=_stash_from_variable_names(variable,
-                                                                   model=model))
+                                                               model=model))
     hslice=iris.load(file_name, stco & ftco)
+    if variable=='prate_a' and methods is None:
+        methods={'method':'mean','intervals':'1 hour'}
     for cbe in hslice:
        if methods is None:
            if len(cbe.cell_methods)==0:

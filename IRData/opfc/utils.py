@@ -21,7 +21,7 @@ import iris
 
 # Names of analysis variables supported
 monolevel_analysis=('prmsl','air.2m','uwnd.10m','vwnd.10m',
-                    'icec','tsurf','prate')
+                    'icec','tsurf','prate_i','prate_a')
 
 # Variable name to iris stash code
 #  See https://code.metoffice.gov.uk/trac/nwpscience/wiki/ModelInfo
@@ -46,7 +46,7 @@ def _stash_from_variable_names(variable,model='global'):
             return  iris.fileformats.pp.STASH(1,3,226)
         if(variable=='sst'):
             return _translate_for_variable_names('tsurf',model=model)
-        if(variable=='prate'):
+        if(variable=='prate_i' or variable=='prate_a'):
             return  iris.fileformats.pp.STASH(1,5,216)
         raise Exception("Unsupported variable %s" % variable)
     raise Exception("Unsupported model %s" % model)
@@ -125,8 +125,8 @@ def _get_fcst(variable,dtime,
     
     if model=='global':    
         if variable=='lsmask': return 0
-        if dtime.hour%6 == 0:
-            return 0
+        if variable=='prate_a':
+           return dtime.hour%6-0.5
         else:
            return dtime.hour%6
     else:
