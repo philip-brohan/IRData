@@ -62,72 +62,17 @@ def _get_data_dir():
     base_file = "%s/opfc" % scratch
     return base_file
 
-# File name for data for a given variable and time
-def _get_file_name(variable,dtime,
-                   model='global'):
-    base_dir=_get_data_dir()
-    startday="%04d%02d01" % (dtime.year,dtime.month)
-    endday="%04d%02d%02d" % (dtime.year,dtime.month,
-        calendar.monthrange(dtime.year,dtime.month)[1])
-
-    if model=='global':    
-        dir_name="%s/mo_glm_%s-%s" % (base_dir,startday,
-                                               endday)
-        fcst=_get_fcst(variable,dtime,model=model)
-        fcst_f=0
-        a_hour=dtime.hour-dtime.hour%6
-        if fcst>0 and fcst<4:
-            fcst_f=3
-        if fcst>=4:
-            fcst_f=6
-        if variable=='orog':
-            file_name="%s/prodm_op_gl-mn_%04d%02d%02d_%02d_%03d.pp" % (
-                          dir_name,dtime.year,dtime.month,dtime.day,
-                          a_hour,fcst_f)
-        else:
-            file_name="%s/prods_op_gl-mn_%04d%02d%02d_%02d_%03d.pp" % (
-                          dir_name,dtime.year,dtime.month,dtime.day,
-                          a_hour,fcst_f)
-            # Fudge for peculiar 2018 file names
-            if not os.path.isfile(file_name):
-                file_name="%s/prods_op_gl-mn_%04d%02d%02d_%02d_%03d.calc.pp" % (
-                              dir_name,dtime.year,dtime.month,dtime.day,
-                              a_hour,fcst_f)
-
-    else:
-        raise Exception("Unsupported model %s" % model)
-
-    return file_name
-
-# Get the before and after times with data for a time point that will
-#  need interpolation.
-def _get_data_times(variable,dtime,
-                    model='global'):
+# File name for data for a given variable and validity_time
+def _get_file_name(variable,validity_time,
+                   model='global',methods=None):
     if model=='global':
-        if variable=='lsmask': # Land mask only output at analysis timesteps
-            if dtime.hour%6 == 0:
-                return([dtime])
-            else:
-                return([dtime-datetime.timedelta(hours=dtime.hour%6),
-                        dtime+datetime.timedelta(hours=6-dtime.hour%6)])
-        else:
-            if dtime.hour%1 == 0:
-                return([dtime])
-            else:
-                return([dtime-datetime.timedelta(hours=dtime.hour%1),
-                       dtime+datetime.timedelta(hours=1-dtime.hour%1)])
+        ftime=validity_time    
+        if variable=='prate_a'and validity_time.hour >= 23:
+            ftime += datetime.timedelta(days=1)
+        return "%s/glm/%04d/%02d/%02d.pp" % (_get_data_dir(),
+                                               ftime.year,
+                                               ftime.month,
+                                               ftime.day)
     else:
         raise Exception("Unsupported model %s" % model)
 
-# Get the minimum forecast time for a requested time
-def _get_fcst(variable,dtime,
-                    model='global'):
-    
-    if model=='global':    
-        if variable=='lsmask': return 0
-        if variable=='prate_a':
-           return dtime.hour%6-0.5
-        else:
-           return dtime.hour%6
-    else:
-        raise Exception("Unsupported model %s" % model)

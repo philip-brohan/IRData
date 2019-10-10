@@ -22,7 +22,6 @@ import calendar
 import iris
 
 from .utils import _get_file_name
-from .utils import _get_data_times
 from .utils import _stash_from_variable_names
 from .utils import monolevel_analysis
 
