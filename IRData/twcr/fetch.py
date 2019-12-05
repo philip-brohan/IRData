@@ -41,8 +41,6 @@ def fetch(variable,dtime,
     |
     """
 
-    if version=='3':
-        raise Exception("Fetch not available for version 3")
 
     if variable=='observations':
         return observations.fetch_observations(dtime,
@@ -55,5 +53,7 @@ def fetch(variable,dtime,
         return version_3.fetch(variable,dtime,
                                height,level,ilevel,
                                version,user=user)
+    if version=='3':
+        return version_3_release.fetch(variable,dtime)
 
     raise Exception("Unsupported version %s" % version)

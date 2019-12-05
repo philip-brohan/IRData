@@ -39,7 +39,7 @@ def fetch_observations(dtime,version='none',user='pbrohan'):
     """
     
     if version=='3':
-        raise Exception("Fetch unavailable for version 3")
+        return version_3_release.fetch_observations(dtime)
     if version=='2c':
         return version_2c.fetch_observations(dtime)
     if version[0:2] == '4.':

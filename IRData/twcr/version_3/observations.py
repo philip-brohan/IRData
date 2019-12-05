@@ -11,28 +11,32 @@
 # GNU Lesser General Public License for more details.
 #
 
-# Handle observations for version 3-preliminary
+# Handle observations for version 3-release
 
 import datetime
 import os
 import os.path
 import subprocess
+import zipfile
 import pandas
 import numpy
 import getpass
 
 from .utils import _get_data_dir
 
-def _observations_remote_file(year,month,version,user='pbrohan'):
-    return (("%s@dtn02.nersc.gov:/global/cscratch1/sd/%s/"+
-            "20CRv3.final/version_%s/%04d/%02d/observations/") %
-             (user,user,version,year,month))
+def _observations_remote_file(year):
+        remote_file=("http://portal.nersc.gov/m958/v3_observations/"+
+                     "%04d.zip") % year
+        return remote_file
+
+def _observations_zip_file(year):
+    return "%s/observations/%04d.zip" % (_get_data_dir(),year)
 
 def _observations_file_name(year,month,day,hour,version):
     return ("%s/observations/%04d/%04d%02d%02d%02d_psobs_posterior.txt" % 
                             (_get_data_dir(version),year,year,month,day,hour))
 
-def fetch_observations(dtime,version='4.5.1',user='pbrohan'):
+def fetch_observations(dtime):
 
     ndtime=dtime+datetime.timedelta(hours=6)
     if ndtime.year!=dtime.year:
@@ -41,15 +45,27 @@ def fetch_observations(dtime,version='4.5.1',user='pbrohan'):
     if os.path.exists(o_dir):
         if len(os.listdir(o_dir)) >= 1460:
             return
-    else:
-        os.makedirs(o_dir)
+    _download_observations(dtime.year)
+    _unpack_downloaded_observations(dtime.year)
 
-    # Multiple files, use rsync
-    r_dir=_observations_remote_file(dtime.year,dtime.month,version,user)
-    cmd="rsync -Lr %s/ %s" % (r_dir,o_dir)
-    scp_retvalue=subprocess.call(cmd,shell=True) # Why need shell=True?
-    if scp_retvalue!=0:
-        raise Exception("Failed to retrieve observations. Code: %d" % scp_retvalue)
+def _download_observations(year):
+    remote_file=_observations_remote_file(year)
+    local_file=_observations_zip_file(year)
+    if os.path.isfile(local_file): 
+        return
+    if not os.path.exists(os.path.dirname(local_file)):
+        os.makedirs(os.path.dirname(local_file))
+    cmd="wget -O %s %s" % (local_file,remote_file)
+    wg_retvalue=subprocess.call(cmd,shell=True)
+    if wg_retvalue!=0:
+        os.remove(local_file)
+        raise Exception("Failed to retrieve data")
+
+def _unpack_downloaded_observations(year):
+    local_file=_observations_zip_file(year)
+    zf=zipfile.ZipFile(local_file)
+    zf.extractall("%s/observations/" % _get_data_dir())
+    os.remove(local_file)
 
 def load_observations_1file(dtime,version):
     """Retrieve all the observations for an individual assimilation run."""

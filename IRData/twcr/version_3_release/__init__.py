@@ -15,4 +15,5 @@
 
 from .utils import *
 from .load import *
+from .fetch import *
 from .observations import *
