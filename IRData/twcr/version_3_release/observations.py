@@ -31,9 +31,9 @@ def _observations_file_name(year,month,day,hour):
 def _observations_zip_file(year):
     return "%s/observations/%04d.zip" % (_get_data_dir(),year)
 
-def _observations_file_name(year,month,day,hour,version):
+def _observations_file_name(year,month,day,hour):
     return ("%s/observations/%04d/%04d%02d%02d%02d_psobs_posterior.txt" % 
-                            (_get_data_dir(version),year,year,month,day,hour))
+                            (_get_data_dir(),year,year,month,day,hour))
 
 def _observations_remote_file(year):
     remote_file=("http://portal.nersc.gov/project/m958/v3_observations/"+

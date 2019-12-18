@@ -135,7 +135,7 @@ def _get_slice_at_hour_at_timestep(variable,
 
 def load(variable,dtime,
          height=None,level=None,ilevel=None,
-         version='4.5.1'):
+         version='3'):
     """Load requested data from disc, interpolating if necessary.
 
     Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch`.
