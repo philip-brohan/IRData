@@ -32,8 +32,10 @@ def _observations_zip_file(year):
     return "%s/observations/%04d.zip" % (_get_data_dir(),year)
 
 def _observations_file_name(year,month,day,hour):
-    return ("%s/observations/%04d/%04d%02d%02d%02d_psobs_posterior.txt" % 
+    of = ("%s/observations/%04d/%04d%02d%02d%02d_psobs_posterior.txt" % 
                             (_get_data_dir(),year,year,month,day,hour))
+    if os.path.isfile(of): return of
+    return "%s.gz" % of
 
 def _observations_remote_file(year):
     remote_file=("http://portal.nersc.gov/project/m958/v3_observations/"+
@@ -158,7 +160,8 @@ def load_observations_1file(dtime):
                                           '-99','9999','-999','9999.99','10000.0',
                                           '-9.99',
                                           '999999999999','9'],
-                       comment=None)
+                       comment=None,
+                       compression='infer')
     return(o)
 
 def load_observations(start,end):

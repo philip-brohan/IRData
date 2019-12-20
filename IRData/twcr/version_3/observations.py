@@ -33,8 +33,10 @@ def _observations_zip_file(year):
     return "%s/observations/%04d.zip" % (_get_data_dir(),year)
 
 def _observations_file_name(year,month,day,hour,version):
-    return ("%s/observations/%04d/%04d%02d%02d%02d_psobs_posterior.txt" % 
+    of = ("%s/observations/%04d/%04d%02d%02d%02d_psobs_posterior.txt" % 
                             (_get_data_dir(version),year,year,month,day,hour))
+    if os.path.isfile(of): return of
+    return "%s.gz" % of
 
 def fetch_observations(dtime):
 
