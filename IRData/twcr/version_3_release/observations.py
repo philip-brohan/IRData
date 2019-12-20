@@ -168,7 +168,7 @@ def load_observations(start,end):
         if(int(ct.hour)%6!=0):
            ct=ct+datetime.timedelta(hours=1)
            continue 
-        o=load_observations_1file(ct.year,ct.month,ct.day,ct.hour)
+        o=load_observations_1file(ct)
         dtm=pandas.to_datetime(o.UID.str.slice(0,10),format="%Y%m%d%H")
         o2=o[(dtm>=start) & (dtm<end)]
         if(result is None):
