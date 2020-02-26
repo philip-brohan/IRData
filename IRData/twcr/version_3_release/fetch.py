@@ -56,8 +56,14 @@ def _get_tar_file_name(variable,year):
 def _unpack_downloaded(variable,year):
     local_file=_get_tar_file_name(variable,year)
     tar = tarfile.open(local_file, "r")
-    tar.extractall(path=os.path.dirname(local_file))
+    local_dir=os.path.dirname(local_file)
+    tar.extractall(path=local_dir)
     tar.close()
+    # Update the extracted file times
+    #  To stop SCRATCH deleting them as too old
+    nfiles=os.listdir("%s/%04d" % (local_dir,year))
+    for nfile in nfiles:
+        os.utime("%s/%04d/%s" % (local_dir,year,nfile))
     #os.remove(local_file)
 
 def fetch(variable,dtime):
