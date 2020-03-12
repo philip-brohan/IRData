@@ -37,10 +37,10 @@ def fetch_observations(dtime,version='4.5.1',user='pbrohan'):
 
     ndtime=dtime+datetime.timedelta(hours=6)
     if ndtime.year!=dtime.year:
-        fetch_observations(ndtime)
+        fetch_observations(ndtime,version=version,user=user)
     o_dir= "%s/observations/%04d" % (_get_data_dir(version),dtime.year)
     if os.path.exists(o_dir):
-        if len(os.listdir(o_dir)) >= 1460:
+        if len(os.listdir(o_dir)) >= 1460*3:
             return
     else:
         os.makedirs(o_dir)
