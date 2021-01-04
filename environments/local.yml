@@ -1,0 +1,22 @@
+name: IRDataL
+channels:
+  - default
+dependencies:
+  - python=3.7.*
+  - iris=2.4.*
+  - ecmwf-api-client=1.6.*
+  - numpy=1.15.*
+  - scipy=1.5.*
+  - pandas=1.1.*
+# Optional - source formatter
+  - black=20.*
+# Optional - documentation generator
+  - sphinx=3.*.*
+#
+# Actual IRData library from local disc
+#
+  - pip
+  - pip:
+    - git+file:///net/home/h03/hadpb/Projects/IRData
+
+  

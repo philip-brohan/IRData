@@ -45,15 +45,9 @@ setup(
     # Name the module not the file here ('.' not '/').
     test_suite="IRData.tests",
 
-    # Other packages that your project depends on.
-    install_requires=[
-#        'scitools-iris>=2.2',
-#        'cartopy>=0.16',
-#        'numpy>=1.15.2',
-        'scipy>=1.1.0',
-        'pandas>=0.23.4',
-        'ecmwf-api-client>1.4',
-    ],
+    # Relies on iris (only installable by conda)
+    # So dependencies managed externally in conda environment.
+    install_requires=[],
 
     # other relevant URLs.
     project_urls={ 
