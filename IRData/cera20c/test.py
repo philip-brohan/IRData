@@ -18,44 +18,36 @@ Test cases for Meteorographica.data.cera20c.
 import os
 import unittest
 from Meteorographica.data import cera20c
- 
+
+
 class TestUM(unittest.TestCase):
- 
     def setUp(self):
         pass
- 
+
     def test_translate_for_variable_names(self):
-        self.assertEqual(cera20c.translate_for_variable_names('prmsl'),
-                         'mslp')
-        self.assertEqual(cera20c.translate_for_variable_names('prate'),
-                         'tp')
-        self.assertEqual(cera20c.translate_for_variable_names('uwnd.10m'),
-                         'u10')
+        self.assertEqual(cera20c.translate_for_variable_names("prmsl"), "mslp")
+        self.assertEqual(cera20c.translate_for_variable_names("prate"), "tp")
+        self.assertEqual(cera20c.translate_for_variable_names("uwnd.10m"), "u10")
         with self.assertRaises(Exception) as cm:
-            cera20c.translate_for_variable_names('mslp')
-        self.assertIn('Unsupported variable mslp',
-                      cm.exception)
+            cera20c.translate_for_variable_names("mslp")
+        self.assertIn("Unsupported variable mslp", cm.exception)
 
     def test_translate_for_file_names(self):
-        self.assertEqual(cera20c.translate_for_file_names('prmsl'),
-                         'mslp')
-        self.assertEqual(cera20c.translate_for_file_names('prate'),
-                         'tp')
-        self.assertEqual(cera20c.translate_for_file_names('uwnd.10m'),
-                         '10u')
+        self.assertEqual(cera20c.translate_for_file_names("prmsl"), "mslp")
+        self.assertEqual(cera20c.translate_for_file_names("prate"), "tp")
+        self.assertEqual(cera20c.translate_for_file_names("uwnd.10m"), "10u")
         with self.assertRaises(Exception) as cm:
-            cera20c.translate_for_file_names('mslp')
-        self.assertIn('Unsupported variable mslp',
-                      cm.exception)
+            cera20c.translate_for_file_names("mslp")
+        self.assertIn("Unsupported variable mslp", cm.exception)
 
     def test_get_data_dir(self):
-        scratch=os.getenv('SCRATCH')
-        del os.environ['SCRATCH']
+        scratch = os.getenv("SCRATCH")
+        del os.environ["SCRATCH"]
         with self.assertRaises(Exception) as cm:
             cera20c.get_data_dir()
-        self.assertIn('SCRATCH environment variable is undefined',
-                      cm.exception)
-        os.environ['SCRATCH']=scratch
-        
-if __name__ == '__main__':
+        self.assertIn("SCRATCH environment variable is undefined", cm.exception)
+        os.environ["SCRATCH"] = scratch
+
+
+if __name__ == "__main__":
     unittest.main()

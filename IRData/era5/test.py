@@ -18,44 +18,36 @@ Test cases for Meteorographica.data.era5.
 import os
 import unittest
 from Meteorographica.data import era5
- 
+
+
 class TestUM(unittest.TestCase):
- 
     def setUp(self):
         pass
- 
+
     def test_translate_for_variable_names(self):
-        self.assertEqual(era5.translate_for_variable_names('prmsl'),
-                         'msl')
-        self.assertEqual(era5.translate_for_variable_names('prate'),
-                         'tp')
-        self.assertEqual(era5.translate_for_variable_names('uwnd.10m'),
-                         'u10')
+        self.assertEqual(era5.translate_for_variable_names("prmsl"), "msl")
+        self.assertEqual(era5.translate_for_variable_names("prate"), "tp")
+        self.assertEqual(era5.translate_for_variable_names("uwnd.10m"), "u10")
         with self.assertRaises(Exception) as cm:
-            era5.translate_for_variable_names('mslp')
-        self.assertIn('Unsupported variable mslp',
-                      cm.exception)
+            era5.translate_for_variable_names("mslp")
+        self.assertIn("Unsupported variable mslp", cm.exception)
 
     def test_translate_for_file_names(self):
-        self.assertEqual(era5.translate_for_file_names('prmsl'),
-                         'msl')
-        self.assertEqual(era5.translate_for_file_names('prate'),
-                         'tp')
-        self.assertEqual(era5.translate_for_file_names('uwnd.10m'),
-                         '10u')
+        self.assertEqual(era5.translate_for_file_names("prmsl"), "msl")
+        self.assertEqual(era5.translate_for_file_names("prate"), "tp")
+        self.assertEqual(era5.translate_for_file_names("uwnd.10m"), "10u")
         with self.assertRaises(Exception) as cm:
-            era5.translate_for_file_names('mslp')
-        self.assertIn('Unsupported variable mslp',
-                      cm.exception)
+            era5.translate_for_file_names("mslp")
+        self.assertIn("Unsupported variable mslp", cm.exception)
 
     def test_get_data_dir(self):
-        scratch=os.getenv('SCRATCH')
-        del os.environ['SCRATCH']
+        scratch = os.getenv("SCRATCH")
+        del os.environ["SCRATCH"]
         with self.assertRaises(Exception) as cm:
             era5.get_data_dir()
-        self.assertIn('SCRATCH environment variable is undefined',
-                      cm.exception)
-        os.environ['SCRATCH']=scratch
-        
-if __name__ == '__main__':
+        self.assertIn("SCRATCH environment variable is undefined", cm.exception)
+        os.environ["SCRATCH"] = scratch
+
+
+if __name__ == "__main__":
     unittest.main()

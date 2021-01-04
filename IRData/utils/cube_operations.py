@@ -15,9 +15,9 @@
 
 import copy
 
-# Control the order of the vector dimensions of a cube, so the 
+# Control the order of the vector dimensions of a cube, so the
 #  numpy array of data has the expected shape.
-def cube_order_dimensions(cube,dims_list):
+def cube_order_dimensions(cube, dims_list):
     """Reshape the data in an :class:`iris.cube.Cube` by re-ordering the dimensions.
 
     If the cube interface is not doing what I want, and I need to access the internal data array directly, then the exact shape of the array starts to matter, and a [latitude,longitude] array is not the same as a [longitude,latitude] one. This function sets the exact shape of the data array by specifying the order of the dimensions of the cube. Note that it does not modify the input cube, it returns a new one.
@@ -33,25 +33,32 @@ def cube_order_dimensions(cube,dims_list):
         StandardError: Names in the dims_list do not match the names of the vector dimensions of the cube.
 
     |
-    """ 
+    """
 
-    crds2=cube.coords()
-    crds=copy.deepcopy(crds2)
+    crds2 = cube.coords()
+    crds = copy.deepcopy(crds2)
     # Keep only the vector dimensions
-    for crdi in range(0,len(crds2)):
-        if len(crds2[crdi].points)==1: crds.remove(crds2[crdi])
-    if len(crds)!=len(dims_list):
-        raise Exception("Cube has %d vector dimensions and %d were specified" %
-                             (len(crds),len(dims_list)))
-    odr=list(range(0,len(dims_list)))
-    for dim_i in range(0,len(dims_list)):
+    for crdi in range(0, len(crds2)):
+        if len(crds2[crdi].points) == 1:
+            crds.remove(crds2[crdi])
+    if len(crds) != len(dims_list):
+        raise Exception(
+            "Cube has %d vector dimensions and %d were specified"
+            % (len(crds), len(dims_list))
+        )
+    odr = list(range(0, len(dims_list)))
+    for dim_i in range(0, len(dims_list)):
         try:
-            odr[dim_i]=[index for index in range(len(crds)) 
-                      if (crds[index].long_name==dims_list[dim_i] or
-                          crds[index].standard_name==dims_list[dim_i])][0]
+            odr[dim_i] = [
+                index
+                for index in range(len(crds))
+                if (
+                    crds[index].long_name == dims_list[dim_i]
+                    or crds[index].standard_name == dims_list[dim_i]
+                )
+            ][0]
         except IndexError:
-            raise Exception("Cube does not have vector dimension %s" %
-                                 dims_list[dim_i])
-    result=cube.copy()
+            raise Exception("Cube does not have vector dimension %s" % dims_list[dim_i])
+    result = cube.copy()
     result.transpose(new_order=odr)
     return result
