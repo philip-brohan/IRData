@@ -25,11 +25,8 @@ def _hourly_get_file_name(variable,year,month=6,
     if vn=='2c':
         return version_2c._get_data_file_name(
                                  variable,year,type=type)
-    if vn=='3':
+    if vn=='3' or vn[0]=='4' or vn[0]=='0':
         return version_3_release._get_data_file_name(
-                                 variable,year,member=member)
-    if vn in ('4.5.1','4.5.2'):
-        return version_3._get_data_file_name(
-                                 variable,year,month)
+                                 variable,year,month,member=member)
        
     raise Exception('Invalid version %s' % version)

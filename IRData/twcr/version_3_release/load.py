@@ -52,6 +52,7 @@ def _get_next_field_time(variable,year,month,day,hour):
 
 def _get_slice_at_hour_at_timestep(variable,
                                    year,month,day,hour,
+                                   version='3',
                                    member=None):
     """Get the cube with the data, given that the specified time
        matches a data timestep."""
@@ -62,12 +63,13 @@ def _get_slice_at_hour_at_timestep(variable,
         for mem in range(1,81):
             res.append(_get_slice_at_hour_at_timestep(variable,
                                                       year,month,day,hour,
+                                                      version=version,
                                                       member=mem))
             if mem>1: res[mem-1].attributes=res[0].attributes
             res[mem-1].add_aux_coord(iris.coords.AuxCoord(mem, 
                                      long_name='member'))        
         return res.merge_cube()
-    file_name=_get_data_file_name(variable,year,member=member)
+    file_name=_get_data_file_name(variable,year,month,version=version,member=member)
     time_constraint=iris.Constraint(time=iris.time.PartialDateTime(
                                     year=year,
                                     month=month,
@@ -94,7 +96,7 @@ def _get_slice_at_hour_at_timestep(variable,
         pass
     return hslice
 
-def load(variable,dtime,member=None):
+def load(variable,dtime,version='3',member=None):
     """Load requested data from disc, interpolating if necessary.
 
     Data must be available in directory $SCRATCH/20CR.
@@ -102,6 +104,7 @@ def load(variable,dtime,member=None):
     Args:
         variable (:obj:`str`): Variable to fetch (e.g. 'prmsl')
         dtime (:obj:`datetime.datetime`): Date and time to load data for.
+        version (:obj:`str`): Reanalysis version (e.g. '4.5.1') defaults to '3'
         member (:obj:`int`): Which member to load. Defaults to None - load all 80 members.
 
     Returns:
@@ -118,7 +121,7 @@ def load(variable,dtime,member=None):
     if _is_in_file(variable,dhour):
         return(_get_slice_at_hour_at_timestep(variable,dtime.year,
                                               dtime.month,dtime.day,
-                                              dhour,member=member))
+                                              dhour,version=version,member=member))
     previous_step=_get_previous_field_time(variable,dtime.year,dtime.month,
                                            dtime.day,dhour)
     next_step=_get_next_field_time(variable,dtime.year,dtime.month,
@@ -137,12 +140,14 @@ def load(variable,dtime,member=None):
                                               previous_step['month'],
                                               previous_step['day'],
                                               previous_step['hour'],
+                                              version=version,
                                               member=member)
     s_next=_get_slice_at_hour_at_timestep(variable,
                                           next_step['year'],
                                           next_step['month'],
                                           next_step['day'],
                                           next_step['hour'],
+                                          version=version,
                                           member=member)
     # Iris won't merge cubes with different attributes
     s_previous.attributes=s_next.attributes

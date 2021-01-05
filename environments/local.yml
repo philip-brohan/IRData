@@ -17,6 +17,6 @@ dependencies:
 #
   - pip
   - pip:
-    - git+file:///net/home/h03/hadpb/Projects/IRData
+    - file:///net/home/h03/hadpb/Projects/IRData
 
   

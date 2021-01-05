@@ -42,7 +42,7 @@ def fetch_observations(dtime,version='none',user='pbrohan'):
         return version_3_release.fetch_observations(dtime)
     if version=='2c':
         return version_2c.fetch_observations(dtime)
-    if version[0:2] == '4.':
+    if version[0:2] == '4.' or version[0:2]=='0.':
         return version_3.fetch_observations(dtime,version,user)
     raise Exception("Unsupported version %s" % version)
 
@@ -67,10 +67,8 @@ def load_observations_1file(dtime,version='none'):
 
     if version=='2c':
         return version_2c.load_observations_1file(dtime)
-    if version=='3':
+    if version=='3' or version[0]=='4' or version[0]=='0':
         return version_3_release.load_observations_1file(dtime)
-    if version[0:2] == '4.':
-        return version_3.load_observations_1file(dtime,version)
     raise Exception("Unsupported version %s" % version)
 
 def load_observations(start,end,version='none',user='pbrohan'):
@@ -95,14 +93,12 @@ def load_observations(start,end,version='none',user='pbrohan'):
 
     if version=='2c':
         return version_2c.load_observations(start,end)
-    if version=='3':
-        return version_3_release.load_observations(start,end)
-    if version[0:2] == '4.':
-        return version_3.load_observations(start,end,version)
+    if version=='3' or version[0]=='4' or version[0]=='0':
+        return version_3_release.load_observations_1file(dtime,version)
     raise Exception("Unsupported version %s" % version)
 
 def load_observations_fortime(v_time,version='none'):
-    """Load observations from disc, that contribute to fields ata given time
+    """Load observations from disc, that contribute to fields at a given time
 
     Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch`.
 
@@ -123,8 +119,6 @@ def load_observations_fortime(v_time,version='none'):
 
     if version=='2c':
         return version_2c.load_observations_fortime(v_time)
-    if version=='3':
-        return version_3_release.load_observations_fortime(v_time)
-    if version[0:2] == '4.':
-        return version_3.load_observations_fortime(v_time,version)
+    if version=='3' or version[0]=='4' or version[0]=='0':
+        return version_3_release.load_observations_fortime(v_time,version)
     raise Exception("Unsupported version %s" % version)

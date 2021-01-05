@@ -47,11 +47,7 @@ def load(variable,dtime,
     """
     if version=='2c':
         return version_2c.load(variable,dtime,type=type)
-    if version=='3':
-        return version_3_release.load(variable,dtime,member=member)
-    if version[0:2] == '4.':
-        return version_3.load(variable,dtime,
-                              height,level,ilevel,
-                              version=version)
+    if version=='3' or version[0]=='4' or version[0]=='0':
+        return version_3_release.load(variable,dtime,version=version,member=member)
     raise Exception('Invalid version number %s' % version)
 
