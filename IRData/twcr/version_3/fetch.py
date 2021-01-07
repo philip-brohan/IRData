@@ -23,38 +23,69 @@ from .utils import monolevel_analysis
 from .utils import multilevel_analysis
 from .utils import monolevel_forecast
 
-def _get_remote_file_name(variable,year,month,
-                          height=None,level=None,ilevel=None,
-                          version='4.5.1',user='pbrohan'):
 
-    remote_dir=("%s@dtn02.nersc.gov:/global/cscratch1/sd/%s/"+
-                "20CRv3.final/version_%s") % (user,user,version)
-    
-    if variable=='observations':
-        remote_file="%s/%04d/%02d/observations/" % (remote_dir,
-                     year,month)
-        return(remote_file) 
+def _get_remote_file_name(
+    variable,
+    year,
+    month,
+    height=None,
+    level=None,
+    ilevel=None,
+    version="4.5.1",
+    user="pbrohan",
+):
 
-    if (variable in monolevel_analysis or 
-        variable in monolevel_forecast):
-        remote_file="%s/%04d/%02d/%s.nc4" % (remote_dir,year,month,variable)
+    remote_dir = (
+        "%s@dtn02.nersc.gov:/global/cscratch1/sd/%s/" + "20CRv3.final/version_%s"
+    ) % (user, user, version)
+
+    if variable == "observations":
+        remote_file = "%s/%04d/%02d/observations/" % (remote_dir, year, month)
+        return remote_file
+
+    if variable in monolevel_analysis or variable in monolevel_forecast:
+        remote_file = "%s/%04d/%02d/%s.nc4" % (remote_dir, year, month, variable)
     elif variable in multilevel_analysis:
         if level is not None:
-            remote_file="%s/%04d/%02d/%s.%dmb.nc4" % (remote_dir,year,month,variable,level)
+            remote_file = "%s/%04d/%02d/%s.%dmb.nc4" % (
+                remote_dir,
+                year,
+                month,
+                variable,
+                level,
+            )
         elif ilevel is not None:
-            remote_file="%s/%04d/%02d/%s.%dK.nc4" % (remote_dir,year,month,variable,ilevel)
+            remote_file = "%s/%04d/%02d/%s.%dK.nc4" % (
+                remote_dir,
+                year,
+                month,
+                variable,
+                ilevel,
+            )
         elif height is not None:
-            remote_file="%s/%04d/%02d/%s.%dm.nc4" % (remote_dir,year,month,variable,height)
+            remote_file = "%s/%04d/%02d/%s.%dm.nc4" % (
+                remote_dir,
+                year,
+                month,
+                variable,
+                height,
+            )
         else:
-            raise ValueError('No height or level specified for 3d variable')
+            raise ValueError("No height or level specified for 3d variable")
     else:
-        raise ValueError('Unsupported variable: %s' & variable)
+        raise ValueError("Unsupported variable: %s" & variable)
     return remote_file
 
 
-def fetch(variable,dtime,
-          height=None,level=None,ilevel=None,
-          version='4.5.1',user='pbrohan'):
+def fetch(
+    variable,
+    dtime,
+    height=None,
+    level=None,
+    ilevel=None,
+    version="4.5.1",
+    user="pbrohan",
+):
     """Get all data for one variable, for one month, from Cori SCRATCH directory at NERSC.
 
     Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by :func:`load`. If the local file that would be produced already exists, this function does nothing.
@@ -70,38 +101,36 @@ def fetch(variable,dtime,
 
     Raises:
         StandardError: If variable is not a supported value.
- 
+
     |
     """
 
-    local_file=_get_data_file_name(variable,
-                                   dtime.year,dtime.month,
-                                   height,level,ilevel,
-                                   version=version)
+    local_file = _get_data_file_name(
+        variable, dtime.year, dtime.month, height, level, ilevel, version=version
+    )
 
-    if ((variable != 'observations') and os.path.isfile(local_file)): 
+    if (variable != "observations") and os.path.isfile(local_file):
         # Got this data already
         return
 
     if not os.path.exists(os.path.dirname(local_file)):
         os.makedirs(os.path.dirname(local_file))
 
-    remote_file=_get_remote_file_name(variable,dtime.year,
-                                      dtime.month,height,level,ilevel,
-                                      version,user)
+    remote_file = _get_remote_file_name(
+        variable, dtime.year, dtime.month, height, level, ilevel, version, user
+    )
 
-    if(variable=='observations'):
+    if variable == "observations":
         # Multiple files - use rsync
-        local_file=os.path.dirname(local_file)
-        cmd="rsync -Lr %s/ %s" % (remote_file,local_file)
-        scp_retvalue=subprocess.call(cmd,shell=True) # Why need shell=True?
-        if scp_retvalue!=0:
+        local_file = os.path.dirname(local_file)
+        cmd = "rsync -Lr %s/ %s" % (remote_file, local_file)
+        scp_retvalue = subprocess.call(cmd, shell=True)  # Why need shell=True?
+        if scp_retvalue != 0:
             raise Exception("Failed to retrieve observations. Code: %d" % scp_retvalue)
-        
+
     else:
         # Single file - use scp
-        cmd="scp %s %s" % (remote_file,local_file)
-        scp_retvalue=subprocess.call(cmd,shell=True)
-        if scp_retvalue!=0:
+        cmd = "scp %s %s" % (remote_file, local_file)
+        scp_retvalue = subprocess.call(cmd, shell=True)
+        if scp_retvalue != 0:
             raise Exception("Failed to retrieve data. Code: %d" % scp_retvalue)
-

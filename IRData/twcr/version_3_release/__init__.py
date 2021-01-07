@@ -16,4 +16,5 @@
 from .utils import *
 from .load import *
 from .fetch import *
+from .fetch_ssh import *
 from .observations import *

@@ -19,9 +19,16 @@ from . import version_3_release
 from . import observations
 import datetime
 
-def fetch(variable,dtime,
-          height=None,level=None,ilevel=None,
-          version='none',user='pbrohan'):
+
+def fetch(
+    variable,
+    dtime,
+    height=None,
+    level=None,
+    ilevel=None,
+    version="none",
+    user="pbrohan",
+):
     """Get data for one variable, from the 20CR archive at NERSC.
 
     Data wil be stored locally in directory $SCRATCH/20CR, to be retrieved by :func:`load`. If the local file that would be produced already exists, this function does nothing.
@@ -37,23 +44,18 @@ def fetch(variable,dtime,
 
     Raises:
         StandardError: If version is not a supported value.
- 
+
     |
     """
 
+    if variable == "observations":
+        return observations.fetch_observations(dtime, version=version, user=user)
 
-    if variable=='observations':
-        return observations.fetch_observations(dtime,
-                                      version=version,
-                                      user=user)
-
-    if version=='2c':
-        return version_2c.fetch(variable,dtime)
-    if version[0:2]=='4.':
-        return version_3.fetch(variable,dtime,
-                               height,level,ilevel,
-                               version,user=user)
-    if version=='3':
-        return version_3_release.fetch(variable,dtime)
+    if version == "2c":
+        return version_2c.fetch(variable, dtime)
+    if version[0:2] == "4." or version[0:2] == "0.":
+        return version_3_release.fetch_ssh(variable, dtime, version, user=user)
+    if version == "3":
+        return version_3_release.fetch(variable, dtime)
 
     raise Exception("Unsupported version %s" % version)

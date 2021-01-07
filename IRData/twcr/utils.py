@@ -18,15 +18,14 @@ from . import version_3
 from . import version_3_release
 
 # File name for data for a given variable and month
-def _hourly_get_file_name(variable,year,month=6,
-                          day=15,hour=12,
-                          member=None,
-                          version=None,type=None):
-    if vn=='2c':
-        return version_2c._get_data_file_name(
-                                 variable,year,type=type)
-    if vn=='3' or vn[0]=='4' or vn[0]=='0':
+def _hourly_get_file_name(
+    variable, year, month=6, day=15, hour=12, member=None, version=None, type=None
+):
+    if vn == "2c":
+        return version_2c._get_data_file_name(variable, year, type=type)
+    if vn == "3" or vn[0] == "4" or vn[0] == "0":
         return version_3_release._get_data_file_name(
-                                 variable,year,month,member=member)
-       
-    raise Exception('Invalid version %s' % version)
+            variable, year, month, member=member
+        )
+
+    raise Exception("Invalid version %s" % version)

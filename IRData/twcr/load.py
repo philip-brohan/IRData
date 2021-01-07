@@ -18,9 +18,17 @@ from . import version_3
 from . import version_3_release
 import datetime
 
-def load(variable,dtime,
-         height=None,level=None,ilevel=None,
-         version=None,type=None,member=None):
+
+def load(
+    variable,
+    dtime,
+    height=None,
+    level=None,
+    ilevel=None,
+    version=None,
+    type=None,
+    member=None,
+):
     """Load requested data from disc, interpolating if necessary.
 
     Data must be available in directory $SCRATCH/20CR, previously retrieved by :func:`fetch`.
@@ -45,9 +53,8 @@ def load(variable,dtime,
 
     |
     """
-    if version=='2c':
-        return version_2c.load(variable,dtime,type=type)
-    if version=='3' or version[0]=='4' or version[0]=='0':
-        return version_3_release.load(variable,dtime,version=version,member=member)
-    raise Exception('Invalid version number %s' % version)
-
+    if version == "2c":
+        return version_2c.load(variable, dtime, type=type)
+    if version == "3" or version[0] == "4" or version[0] == "0":
+        return version_3_release.load(variable, dtime, version=version, member=member)
+    raise Exception("Invalid version number %s" % version)
