@@ -70,7 +70,7 @@ def load_observations_1file(dtime, version="none"):
     if version == "2c":
         return version_2c.load_observations_1file(dtime)
     if version == "3" or version[0] == "4" or version[0] == "0":
-        return version_3_release.load_observations_1file(dtime)
+        return version_3_release.load_observations_1file(dtime,version)
     raise Exception("Unsupported version %s" % version)
 
 

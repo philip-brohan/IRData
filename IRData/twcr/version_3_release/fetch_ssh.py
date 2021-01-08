@@ -111,4 +111,4 @@ def fetch_ssh(variable, dtime, version, user="pbrohan"):
     scp_retvalue = subprocess.call(cmd, shell=True)
     if scp_retvalue != 0:
         raise Exception("Failed to retrieve data. Code: %d" % scp_retvalue)
-    _unpack_downloaded_ssh(variable, dtime.year, dtime.month)
+    _unpack_downloaded_ssh(variable, dtime.year, dtime.month, version)

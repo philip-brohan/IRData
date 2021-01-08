@@ -30,6 +30,7 @@ def _observations_zip_file(year, version="3"):
 
 
 def _observations_file_name(year, month, day, hour, version="3"):
+    # Two possible locations, and might be compressed
     of = "%s/observations/%04d/%04d%02d%02d%02d_psobs_posterior.txt" % (
         _get_data_dir(version),
         year,
@@ -40,8 +41,23 @@ def _observations_file_name(year, month, day, hour, version="3"):
     )
     if os.path.isfile(of):
         return of
-    return "%s.gz" % of
-
+    of = "%s.gz" % of
+    if os.path.isfile(of):
+        return of
+    of = "%s/observations/%04d/%04d%02d%02d%02d/psobs_posterior.txt" % (
+        _get_data_dir(version),
+        year,
+        year,
+        month,
+        day,
+        hour,
+    )
+    if os.path.isfile(of):
+        return of
+    of = "%s.gz" % of
+    if os.path.isfile(of):
+        return of
+    return None
 
 def _observations_remote_file(year):
     remote_file = (
