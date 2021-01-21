@@ -21,7 +21,6 @@ import datetime
 import warnings
 
 from .utils import _get_data_file_name
-from .utils import monolevel_analysis
 
 # Need to add coordinate system metadata so they work with cartopy
 coord_s = iris.coord_systems.GeogCS(iris.fileformats.pp.EARTH_RADIUS)
@@ -33,7 +32,6 @@ def _is_in_file(variable, hour):
     if hour % 3 == 0:
         return True
     return False
-
 
 def _get_previous_field_time(variable, year, month, day, hour):
     """Get the latest time, before the given time,

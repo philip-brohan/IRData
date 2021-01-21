@@ -15,23 +15,19 @@
 
 import os
 
-# Supported analysis variables
-monolevel_analysis = ("PRMSL", "TMP2m", "UGRD10m", "VGRD10m", "PRATE")
-
-
 def _get_data_dir(version="3"):
     """Return the root directory containing 20CR netCDF files"""
     g = "%s/20CR/version_%s/" % (os.environ["SCRATCH"], version)
     return g
 
 
-def _get_data_file_name(variable, year, month, version="3", member=1):
+def _get_data_file_name(variable, year, month=None, version="3", member=1):
     """Return the name of the file containing data for the
     requested variable, at the specified time, from the
     20CR version."""
     base_dir = _get_data_dir(version=version)
-    if variable in monolevel_analysis:
-        # If monthly file exists, use that, otherwise, annual file
+    # If monthly file exists, use that, otherwise, annual file
+    if month is not None:
         name = "%s/%04d/%s.%04d%02d_mem%03d.nc" % (
             base_dir,
             year,
@@ -40,14 +36,12 @@ def _get_data_file_name(variable, year, month, version="3", member=1):
             month,
             member,
         )
-        if not os.path.isfile(name):
-            name = "%s/%04d/%s.%04d_mem%03d.nc" % (
-                base_dir,
-                year,
-                variable,
-                year,
-                member,
-            )
-    else:
-        raise ValueError("Unsupported variable: %s" % variable)
+    if month is None or not os.path.isfile(name):
+        name = "%s/%04d/%s.%04d_mem%03d.nc" % (
+            base_dir,
+            year,
+            variable,
+            year,
+            member,
+        )
     return name
