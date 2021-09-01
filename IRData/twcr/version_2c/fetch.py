@@ -37,12 +37,12 @@ def _get_remote_file_name(variable, year):
     |
     """
 
-    # remote_dir=("http://portal.nersc.gov/pydap/"+
-    #            "20C_Reanalysis_version2c_ensemble/")
-    remote_dir = (
-        "http://portal.nersc.gov/project/20C_Reanalysis/"
-        + "20C_Reanalysis_version2c_ensemble/"
-    )
+    remote_dir=("https://portal.nersc.gov/pydap/"+
+                "20C_Reanalysis_version2c_ensemble/")
+    #remote_dir = (
+    #    "https://portal.nersc.gov/project/20C_Reanalysis/"
+    #    + "20C_Reanalysis_version2c_ensemble/"
+    #)
 
     if variable == "observations":
         remote_file = (
