@@ -61,7 +61,7 @@ def _observations_file_name(year, month, day, hour, version="3"):
 
 def _observations_remote_file(year):
     remote_file = (
-        "http://portal.nersc.gov/project/m958/v3_observations/" + "%04d.zip"
+        "https://portal.nersc.gov/project/m958/v3_observations/" + "%04d.zip"
     ) % year
     return remote_file
 
