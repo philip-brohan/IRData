@@ -27,7 +27,7 @@ from .load import _get_next_field_time
 
 
 def _observations_remote_file(year):
-    return ("http://portal.nersc.gov/project/m958/2c_observations/" + "%04d.zip") % year
+    return ("https://portal.nersc.gov/project/m958/2c_observations/" + "%04d.zip") % year
 
 
 def _observations_zip_file(year):

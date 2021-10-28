@@ -46,7 +46,7 @@ def _get_remote_file_name(variable, year):
 
     if variable == "observations":
         remote_file = (
-            "http://portal.nersc.gov/m958/2c_observations/" + "%04d.zip"
+            "https://portal.nersc.gov/m958/2c_observations/" + "%04d.zip"
         ) % year
         return remote_file
 
