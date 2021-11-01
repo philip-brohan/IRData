@@ -118,7 +118,7 @@ def load_observations_1file(dtime):
             (192, 206),
         ],
         header=None,
-        encoding="ascii",
+        encoding="ISO-8859-1",
         names=[
             "UID",
             "NCEP.Type",
