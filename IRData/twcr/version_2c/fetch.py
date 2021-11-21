@@ -71,6 +71,8 @@ def _get_remote_file_name(variable, year):
         )
     if variable == "air.2m":
         remote_file = "%s/first_guess/t2m/t2m_%04d.nc" % (remote_dir, year)
+    if variable == "tsfc":
+        remote_file = "%s/first_guess/tsfc/tsfc_%04d.nc" % (remote_dir, year)
     if variable == "uwnd.10m":
         remote_file = "%s/first_guess/u10m/u10m_%04d.nc" % (remote_dir, year)
     if variable == "vwnd.10m":
